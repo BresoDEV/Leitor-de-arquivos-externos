@@ -51,6 +51,14 @@ namespace Extern_Reader
 			Arquivo.close();
 		}
 
+		void LogSemHora(string texto)
+		{
+			ofstream Arquivo;
+			Arquivo.open(arquivoTXT, std::ios_base::app);
+			Arquivo << texto << endl;
+			Arquivo.close();
+		}
+
 		void ReiniciarLog()
 		{
 			ofstream Arquivo;
@@ -143,7 +151,7 @@ namespace Extern_Reader
 		}
 
 		namespace String
-		{ 
+		{
 			std::vector<std::string> GetValues()
 			{
 				std::vector<std::string> TempVECTOR;
@@ -193,7 +201,7 @@ namespace Extern_Reader
 		}
 
 		namespace Int
-		{ 
+		{
 			std::vector<int> GetValues()
 			{
 				std::vector<int> TempVECTOR;
@@ -238,7 +246,7 @@ namespace Extern_Reader
 				return (std::string)buf;
 			}
 		}
-		
+
 		namespace Int
 		{
 			void GravarInt(int value, std::string app, std::string key)
@@ -402,6 +410,7 @@ namespace GTA
 	struct Spawn_Struct
 	{
 		std::string Model;
+		DWORD Hash;
 		float PosX;
 		float PosY;
 		float PosZ;
@@ -429,15 +438,16 @@ namespace GTA
 			else
 			{
 				Spawn.Model = Extern_Reader::INIFile::String::LerString(buffer, "Modelo");
+				Spawn.Hash = Extern_Reader::INIFile::Int::LerInt(buffer, "Hash");
 				Spawn.PosX = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosX");
 				Spawn.PosY = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosY");
 				Spawn.PosZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosZ");
 				Spawn.RotX = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotX");
 				Spawn.RotY = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotY");
 				Spawn.RotZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotZ");
-				
+
 				//Void de spawn aqui
-				
+
 				/*
 				cout << "[" << i << "]" << endl;
 				cout << "Model=" << i << Spawn.Model << endl;
@@ -471,6 +481,7 @@ namespace GTA
 			else
 			{
 				Spawn.Model = Extern_Reader::INIFile::String::LerString(buffer, "Modelo");
+				Spawn.Hash = Extern_Reader::INIFile::Int::LerInt(buffer, "Hash");
 				Spawn.PosX = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosX");
 				Spawn.PosY = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosY");
 				Spawn.PosZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosZ");
@@ -513,6 +524,7 @@ namespace GTA
 			else
 			{
 				Spawn.Model = Extern_Reader::INIFile::String::LerString(buffer, "Modelo");
+				Spawn.Hash = Extern_Reader::INIFile::Int::LerInt(buffer, "Hash");
 				Spawn.PosX = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosX");
 				Spawn.PosY = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosY");
 				Spawn.PosZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosZ");
@@ -547,6 +559,7 @@ namespace GTA
 			char buffer[5000];
 			snprintf(buffer, 5000, "%i", i);
 			Extern_Reader::INIFile::String::GravarString("", buffer, "Modelo");
+			Extern_Reader::INIFile::Int::GravarInt(0, buffer, "Hash");
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "PosX");
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "PosY");
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "PosZ");
@@ -563,6 +576,7 @@ namespace RDR2
 	struct Spawn_Struct
 	{
 		std::string Model;
+		DWORD Hash;
 		float PosX;
 		float PosY;
 		float PosZ;
@@ -590,6 +604,7 @@ namespace RDR2
 			else
 			{
 				Spawn.Model = Extern_Reader::INIFile::String::LerString(buffer, "Modelo");
+				Spawn.Hash = Extern_Reader::INIFile::Int::LerInt(buffer, "Hash");
 				Spawn.PosX = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosX");
 				Spawn.PosY = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosY");
 				Spawn.PosZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosZ");
@@ -632,6 +647,7 @@ namespace RDR2
 			else
 			{
 				Spawn.Model = Extern_Reader::INIFile::String::LerString(buffer, "Modelo");
+				Spawn.Hash = Extern_Reader::INIFile::Int::LerInt(buffer, "Hash");
 				Spawn.PosX = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosX");
 				Spawn.PosY = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosY");
 				Spawn.PosZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosZ");
@@ -674,6 +690,7 @@ namespace RDR2
 			else
 			{
 				Spawn.Model = Extern_Reader::INIFile::String::LerString(buffer, "Modelo");
+				Spawn.Hash = Extern_Reader::INIFile::Int::LerInt(buffer, "Hash");
 				Spawn.PosX = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosX");
 				Spawn.PosY = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosY");
 				Spawn.PosZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "PosZ");
@@ -708,6 +725,7 @@ namespace RDR2
 			char buffer[5000];
 			snprintf(buffer, 5000, "%i", i);
 			Extern_Reader::INIFile::String::GravarString("", buffer, "Modelo");
+			Extern_Reader::INIFile::Int::GravarInt(0, buffer, "Hash");
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "PosX");
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "PosY");
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "PosZ");
@@ -719,9 +737,564 @@ namespace RDR2
 	}
 }
 
+namespace Menyoo
+{
+	std::string XMLPath;
+
+	namespace SalvarXML
+	{
+		/*
+		Exemplo de salvar:
+
+		Menyoo::XMLPath = ".\\MapaMenyoo.xml";
+		Menyoo::SalvarXML::MenyooCabecalho();
+		Menyoo::SalvarXML::ReferenceCoords(1111.1111, 2222.2222, 3333.3333);
+		GTA::Spawn_Struct SpawnPed;
+		GTA::Spawn_Struct SpawnProp;
+		GTA::Spawn_Struct SpawnVeh;
+		Menyoo::SalvarXML::AddSpawn_Ped(SpawnPed);
+		Menyoo::SalvarXML::AddSpawnToXML_Prop(SpawnProp);
+		Menyoo::SalvarXML::AddSpawn_Vehicle(SpawnVeh);
+		Menyoo::SalvarXML::FinalizarXML();
+
+	*/
+
+		void MenyooCabecalho()
+		{
+			Extern_Reader::LOG::arquivoTXT = XMLPath;
+			Extern_Reader::LOG::LogSemHora("<?xml version=\"1.0\" encoding=\"ISO - 8859 - 1\"?>");
+			Extern_Reader::LOG::LogSemHora("<SpoonerPlacements>");
+			Extern_Reader::LOG::LogSemHora("<Note />");
+			Extern_Reader::LOG::LogSemHora("<AudioFile volume=\"400\" /> ");
+			Extern_Reader::LOG::LogSemHora("<ClearDatabase>false</ClearDatabase>");
+			Extern_Reader::LOG::LogSemHora("<ClearWorld>0</ClearWorld>");
+			Extern_Reader::LOG::LogSemHora("<ClearMarkers>false</ClearMarkers>");
+			Extern_Reader::LOG::LogSemHora("<IPLsToLoad load_mp_maps=\"false\" load_sp_maps=\"false\" />");
+			Extern_Reader::LOG::LogSemHora("<IPLsToRemove />");
+			Extern_Reader::LOG::LogSemHora("<InteriorsToEnable />");
+			Extern_Reader::LOG::LogSemHora("<InteriorsToCap />");
+			Extern_Reader::LOG::LogSemHora("<WeatherToSet></WeatherToSet>");
+			Extern_Reader::LOG::LogSemHora("<TimecycleModifier strength=\"1\"></TimecycleModifier>");
+			Extern_Reader::LOG::LogSemHora("<StartTaskSequencesOnLoad>true</StartTaskSequencesOnLoad>");
+
+		}
+
+		void ReferenceCoords(float x, float y, float z)
+		{
+			Extern_Reader::LOG::arquivoTXT = XMLPath;
+			Extern_Reader::LOG::LogSemHora("<ReferenceCoords>");
+			Extern_Reader::LOG::LogSemHora("<X>" + to_string(x) + "</X>");
+			Extern_Reader::LOG::LogSemHora("<Y>" + to_string(y) + "</Y>");
+			Extern_Reader::LOG::LogSemHora("<Z>" + to_string(z) + "</Z>");
+			Extern_Reader::LOG::LogSemHora("</ReferenceCoords>");
+		}
+
+		void AddSpawnToXML_Prop(GTA::Spawn_Struct Estrutura)
+		{
+			Extern_Reader::LOG::arquivoTXT = XMLPath;
+			Extern_Reader::LOG::LogSemHora("<Placement>");
+			Extern_Reader::LOG::LogSemHora("<ModelHash>" + to_string(Estrutura.Hash) + "</ModelHash>");
+			Extern_Reader::LOG::LogSemHora("<Type>3</Type>");
+			Extern_Reader::LOG::LogSemHora("<Dynamic>false</Dynamic>");
+			Extern_Reader::LOG::LogSemHora("<FrozenPos>true</FrozenPos>");
+			Extern_Reader::LOG::LogSemHora("<HashName>" + Estrutura.Model + "</HashName>");
+			Extern_Reader::LOG::LogSemHora("<InitialHandle>777734</InitialHandle>");
+			Extern_Reader::LOG::LogSemHora("<ObjectProperties>");
+			Extern_Reader::LOG::LogSemHora("<TextureVariation>0</TextureVariation>");
+			Extern_Reader::LOG::LogSemHora("</ObjectProperties>");
+			Extern_Reader::LOG::LogSemHora("<OpacityLevel>255</OpacityLevel>");
+			Extern_Reader::LOG::LogSemHora("<LodDistance>16960</LodDistance>");
+			Extern_Reader::LOG::LogSemHora("<IsVisible>true</IsVisible>");
+			Extern_Reader::LOG::LogSemHora("<MaxHealth>1000</MaxHealth>");
+			Extern_Reader::LOG::LogSemHora("<Health>1000</Health>");
+			Extern_Reader::LOG::LogSemHora("<HasGravity>true</HasGravity>");
+			Extern_Reader::LOG::LogSemHora("<IsOnFire>false</IsOnFire>");
+			Extern_Reader::LOG::LogSemHora("<IsInvincible>false</IsInvincible>");
+			Extern_Reader::LOG::LogSemHora("<IsBulletProof>false</IsBulletProof>");
+			Extern_Reader::LOG::LogSemHora("<IsCollisionProof>false</IsCollisionProof>");
+			Extern_Reader::LOG::LogSemHora("<IsExplosionProof>false</IsExplosionProof>");
+			Extern_Reader::LOG::LogSemHora("<IsFireProof>false</IsFireProof>");
+			Extern_Reader::LOG::LogSemHora("<IsMeleeProof>false</IsMeleeProof>");
+			Extern_Reader::LOG::LogSemHora("<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>");
+			Extern_Reader::LOG::LogSemHora("<PositionRotation>");
+			Extern_Reader::LOG::LogSemHora("<X>" + to_string(Estrutura.PosX) + "</X>");
+			Extern_Reader::LOG::LogSemHora("<Y>" + to_string(Estrutura.PosY) + "</Y>");
+			Extern_Reader::LOG::LogSemHora("<Z>" + to_string(Estrutura.PosZ) + "</Z>");
+
+			Extern_Reader::LOG::LogSemHora("<Pitch>" + to_string(Estrutura.PosZ) + "</Pitch>");
+			Extern_Reader::LOG::LogSemHora("<Roll>" + to_string(Estrutura.PosZ) + "</Roll>");
+			Extern_Reader::LOG::LogSemHora("<Yaw>" + to_string(Estrutura.PosZ) + "</Yaw>");
+			Extern_Reader::LOG::LogSemHora("</PositionRotation>");
+			Extern_Reader::LOG::LogSemHora("<Attachment isAttached=\"false\" />");
+			Extern_Reader::LOG::LogSemHora("</Placement>");
+		}
+
+		void AddSpawn_Vehicle(GTA::Spawn_Struct Estrutura)
+		{
+			Extern_Reader::LOG::arquivoTXT = XMLPath;
+			Extern_Reader::LOG::LogSemHora("<Placement>");
+			Extern_Reader::LOG::LogSemHora("<ModelHash>" + to_string(Estrutura.Hash) + "</ModelHash>");
+			Extern_Reader::LOG::LogSemHora("<Type>2</Type>");
+			Extern_Reader::LOG::LogSemHora("<Dynamic>true</Dynamic>");
+			Extern_Reader::LOG::LogSemHora("<FrozenPos>false</FrozenPos>");
+			Extern_Reader::LOG::LogSemHora("<HashName>" + Estrutura.Model + "</HashName>");
+			Extern_Reader::LOG::LogSemHora("<InitialHandle>495113</InitialHandle>");
+			Extern_Reader::LOG::LogSemHora("<VehicleProperties>");
+			Extern_Reader::LOG::LogSemHora("<Colours>");
+			Extern_Reader::LOG::LogSemHora("<Primary>12</Primary>");
+			Extern_Reader::LOG::LogSemHora("<Secondary>12</Secondary>");
+			Extern_Reader::LOG::LogSemHora("<Pearl>0</Pearl>");
+			Extern_Reader::LOG::LogSemHora("<Rim>156</Rim>");
+			Extern_Reader::LOG::LogSemHora("<Mod1_a>6</Mod1_a>");
+			Extern_Reader::LOG::LogSemHora("<Mod1_b>-1</Mod1_b>");
+			Extern_Reader::LOG::LogSemHora("<Mod1_c>-1</Mod1_c>");
+			Extern_Reader::LOG::LogSemHora("<Mod2_a>6</Mod2_a>");
+			Extern_Reader::LOG::LogSemHora("<Mod2_b>-1</Mod2_b>");
+			Extern_Reader::LOG::LogSemHora("<IsPrimaryColourCustom>false</IsPrimaryColourCustom>");
+			Extern_Reader::LOG::LogSemHora("<IsSecondaryColourCustom>false</IsSecondaryColourCustom>");
+			Extern_Reader::LOG::LogSemHora("<tyreSmoke_R>255</tyreSmoke_R>");
+			Extern_Reader::LOG::LogSemHora("<tyreSmoke_G>255</tyreSmoke_G>");
+			Extern_Reader::LOG::LogSemHora("<tyreSmoke_B>255</tyreSmoke_B>");
+			Extern_Reader::LOG::LogSemHora("<LrInterior>0</LrInterior>");
+			Extern_Reader::LOG::LogSemHora("<LrDashboard>0</LrDashboard>");
+			Extern_Reader::LOG::LogSemHora("<LrXenonHeadlights>0</LrXenonHeadlights>");
+			Extern_Reader::LOG::LogSemHora("</Colours>");
+			Extern_Reader::LOG::LogSemHora("<Livery>-1</Livery>");
+			Extern_Reader::LOG::LogSemHora("<NumberPlateText>80HSK762</NumberPlateText>");
+			Extern_Reader::LOG::LogSemHora("<NumberPlateIndex>0</NumberPlateIndex>");
+			Extern_Reader::LOG::LogSemHora("<WheelType>3</WheelType>");
+			Extern_Reader::LOG::LogSemHora("<WheelsInvisible>false</WheelsInvisible>");
+			Extern_Reader::LOG::LogSemHora("<EngineSoundName></EngineSoundName>");
+			Extern_Reader::LOG::LogSemHora("<WindowTint>1</WindowTint>");
+			Extern_Reader::LOG::LogSemHora("<BulletProofTyres>false</BulletProofTyres>");
+			Extern_Reader::LOG::LogSemHora("<DirtLevel>0</DirtLevel>");
+			Extern_Reader::LOG::LogSemHora("<PaintFade>0.298039228</PaintFade>");
+			Extern_Reader::LOG::LogSemHora("<RoofState>0</RoofState>");
+			Extern_Reader::LOG::LogSemHora("<SirenActive>false</SirenActive>");
+			Extern_Reader::LOG::LogSemHora("<EngineOn>false</EngineOn>");
+			Extern_Reader::LOG::LogSemHora("<EngineHealth>1000</EngineHealth>");
+			Extern_Reader::LOG::LogSemHora("<LightsOn>false</LightsOn>");
+			Extern_Reader::LOG::LogSemHora("<IsRadioLoud>0</IsRadioLoud>");
+			Extern_Reader::LOG::LogSemHora("<LockStatus>1</LockStatus>");
+			Extern_Reader::LOG::LogSemHora("<Neons>");
+			Extern_Reader::LOG::LogSemHora("<Left>false</Left>");
+			Extern_Reader::LOG::LogSemHora("<Right>false</Right>");
+			Extern_Reader::LOG::LogSemHora("<Front>false</Front>");
+			Extern_Reader::LOG::LogSemHora("<Back>false</Back>");
+			Extern_Reader::LOG::LogSemHora("<R>255</R>");
+			Extern_Reader::LOG::LogSemHora("<G>0</G>");
+			Extern_Reader::LOG::LogSemHora("<B>255</B>");
+			Extern_Reader::LOG::LogSemHora("</Neons>");
+			Extern_Reader::LOG::LogSemHora("<DoorsOpen>");
+			Extern_Reader::LOG::LogSemHora("<BackLeftDoor>false</BackLeftDoor>");
+			Extern_Reader::LOG::LogSemHora("<BackRightDoor>false</BackRightDoor>");
+			Extern_Reader::LOG::LogSemHora("<FrontLeftDoor>false</FrontLeftDoor>");
+			Extern_Reader::LOG::LogSemHora("<FrontRightDoor>false</FrontRightDoor>");
+			Extern_Reader::LOG::LogSemHora("<Hood>false</Hood>");
+			Extern_Reader::LOG::LogSemHora("<Trunk>false</Trunk>");
+			Extern_Reader::LOG::LogSemHora("<Trunk2>false</Trunk2>");
+			Extern_Reader::LOG::LogSemHora("</DoorsOpen>");
+			Extern_Reader::LOG::LogSemHora("<DoorsBroken>");
+			Extern_Reader::LOG::LogSemHora("<BackLeftDoor>false</BackLeftDoor>");
+			Extern_Reader::LOG::LogSemHora("<BackRightDoor>false</BackRightDoor>");
+			Extern_Reader::LOG::LogSemHora("<FrontLeftDoor>false</FrontLeftDoor>");
+			Extern_Reader::LOG::LogSemHora("<FrontRightDoor>false</FrontRightDoor>");
+			Extern_Reader::LOG::LogSemHora("<Hood>false</Hood>");
+			Extern_Reader::LOG::LogSemHora("<Trunk>false</Trunk>");
+			Extern_Reader::LOG::LogSemHora("<Trunk2>false</Trunk2>");
+			Extern_Reader::LOG::LogSemHora("</DoorsBroken>");
+			Extern_Reader::LOG::LogSemHora("<TyresBursted>");
+			Extern_Reader::LOG::LogSemHora("<FrontLeft>false</FrontLeft>");
+			Extern_Reader::LOG::LogSemHora("<FrontRight>false</FrontRight>");
+			Extern_Reader::LOG::LogSemHora("<_2>false</_2>");
+			Extern_Reader::LOG::LogSemHora("<_3>false</_3>");
+			Extern_Reader::LOG::LogSemHora("<BackLeft>false</BackLeft>");
+			Extern_Reader::LOG::LogSemHora("<BackRight>false</BackRight>");
+			Extern_Reader::LOG::LogSemHora("<_6>false</_6>");
+			Extern_Reader::LOG::LogSemHora("<_7>false</_7>");
+			Extern_Reader::LOG::LogSemHora("<_8>false</_8>");
+			Extern_Reader::LOG::LogSemHora("</TyresBursted>");
+			Extern_Reader::LOG::LogSemHora("<ModExtras>");
+			Extern_Reader::LOG::LogSemHora("<_10>true</_10>");
+			Extern_Reader::LOG::LogSemHora("<_12>false</_12>");
+			Extern_Reader::LOG::LogSemHora("</ModExtras>");
+			Extern_Reader::LOG::LogSemHora("<Mods>");
+			Extern_Reader::LOG::LogSemHora("<_0>-1,0</_0>");
+			Extern_Reader::LOG::LogSemHora("<_1>-1,0</_1>");
+			Extern_Reader::LOG::LogSemHora("<_2>-1,0</_2>");
+			Extern_Reader::LOG::LogSemHora("<_3>-1,0</_3>");
+			Extern_Reader::LOG::LogSemHora("<_4>-1,0</_4>");
+			Extern_Reader::LOG::LogSemHora("<_5>-1,0</_5>");
+			Extern_Reader::LOG::LogSemHora("<_6>-1,0</_6>");
+			Extern_Reader::LOG::LogSemHora("<_7>-1,0</_7>");
+			Extern_Reader::LOG::LogSemHora("<_8>-1,0</_8>");
+			Extern_Reader::LOG::LogSemHora("<_9>-1,0</_9>");
+			Extern_Reader::LOG::LogSemHora("<_10>-1,0</_10>");
+			Extern_Reader::LOG::LogSemHora("<_11>-1,0</_11>");
+			Extern_Reader::LOG::LogSemHora("<_12>-1,0</_12>");
+			Extern_Reader::LOG::LogSemHora("<_13>-1,0</_13>");
+			Extern_Reader::LOG::LogSemHora("<_14>-1,0</_14>");
+			Extern_Reader::LOG::LogSemHora("<_15>-1,0</_15>");
+			Extern_Reader::LOG::LogSemHora("<_16>-1,0</_16>");
+			Extern_Reader::LOG::LogSemHora("<_17>false</_17>");
+			Extern_Reader::LOG::LogSemHora("<_18>false</_18>");
+			Extern_Reader::LOG::LogSemHora("<_19>false</_19>");
+			Extern_Reader::LOG::LogSemHora("<_20>false</_20>");
+			Extern_Reader::LOG::LogSemHora("<_21>false</_21>");
+			Extern_Reader::LOG::LogSemHora("<_22>false</_22>");
+			Extern_Reader::LOG::LogSemHora("<_23>-1,0</_23>");
+			Extern_Reader::LOG::LogSemHora("<_24>-1,0</_24>");
+			Extern_Reader::LOG::LogSemHora("<_25>-1,0</_25>");
+			Extern_Reader::LOG::LogSemHora("<_26>-1,0</_26>");
+			Extern_Reader::LOG::LogSemHora("<_27>-1,0</_27>");
+			Extern_Reader::LOG::LogSemHora("<_28>-1,0</_28>");
+			Extern_Reader::LOG::LogSemHora("<_29>-1,0</_29>");
+			Extern_Reader::LOG::LogSemHora("<_30>-1,0</_30>");
+			Extern_Reader::LOG::LogSemHora("<_31>-1,0</_31>");
+			Extern_Reader::LOG::LogSemHora("<_32>-1,0</_32>");
+			Extern_Reader::LOG::LogSemHora("<_33>-1,0</_33>");
+			Extern_Reader::LOG::LogSemHora("<_34>-1,0</_34>");
+			Extern_Reader::LOG::LogSemHora("<_35>-1,0</_35>");
+			Extern_Reader::LOG::LogSemHora("<_36>-1,0</_36>");
+			Extern_Reader::LOG::LogSemHora("<_37>-1,0</_37>");
+			Extern_Reader::LOG::LogSemHora("<_38>-1,0</_38>");
+			Extern_Reader::LOG::LogSemHora("<_39>-1,0</_39>");
+			Extern_Reader::LOG::LogSemHora("<_40>-1,0</_40>");
+			Extern_Reader::LOG::LogSemHora("<_41>-1,0</_41>");
+			Extern_Reader::LOG::LogSemHora("<_42>-1,0</_42>");
+			Extern_Reader::LOG::LogSemHora("<_43>-1,0</_43>");
+			Extern_Reader::LOG::LogSemHora("<_44>-1,0</_44>");
+			Extern_Reader::LOG::LogSemHora("<_45>-1,0</_45>");
+			Extern_Reader::LOG::LogSemHora("<_46>-1,0</_46>");
+			Extern_Reader::LOG::LogSemHora("<_47>-1,0</_47>");
+			Extern_Reader::LOG::LogSemHora("<_48>-1,0</_48>");
+			Extern_Reader::LOG::LogSemHora("</Mods>");
+			Extern_Reader::LOG::LogSemHora("</VehicleProperties>");
+			Extern_Reader::LOG::LogSemHora("<OpacityLevel>255</OpacityLevel>");
+			Extern_Reader::LOG::LogSemHora("<LodDistance>16960</LodDistance>");
+			Extern_Reader::LOG::LogSemHora("<IsVisible>true</IsVisible>");
+			Extern_Reader::LOG::LogSemHora("<MaxHealth>1000</MaxHealth>");
+			Extern_Reader::LOG::LogSemHora("<Health>1000</Health>");
+			Extern_Reader::LOG::LogSemHora("<HasGravity>true</HasGravity>");
+			Extern_Reader::LOG::LogSemHora("<IsOnFire>false</IsOnFire>");
+			Extern_Reader::LOG::LogSemHora("<IsInvincible>false</IsInvincible>");
+			Extern_Reader::LOG::LogSemHora("<IsBulletProof>false</IsBulletProof>");
+			Extern_Reader::LOG::LogSemHora("<IsCollisionProof>false</IsCollisionProof>");
+			Extern_Reader::LOG::LogSemHora("<IsExplosionProof>false</IsExplosionProof>");
+			Extern_Reader::LOG::LogSemHora("<IsFireProof>false</IsFireProof>");
+			Extern_Reader::LOG::LogSemHora("<IsMeleeProof>false</IsMeleeProof>");
+			Extern_Reader::LOG::LogSemHora("<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>");
+			Extern_Reader::LOG::LogSemHora("<PositionRotation>");
+			Extern_Reader::LOG::LogSemHora("<X>" + to_string(Estrutura.PosX) + "</X>");
+			Extern_Reader::LOG::LogSemHora("<Y>" + to_string(Estrutura.PosY) + "</Y>");
+			Extern_Reader::LOG::LogSemHora("<Z>" + to_string(Estrutura.PosZ) + "</Z>");
+			Extern_Reader::LOG::LogSemHora("<Pitch>" + to_string(Estrutura.PosZ) + "</Pitch>");
+			Extern_Reader::LOG::LogSemHora("<Roll>" + to_string(Estrutura.PosZ) + "</Roll>");
+			Extern_Reader::LOG::LogSemHora("<Yaw>" + to_string(Estrutura.PosZ) + "</Yaw>");
+			Extern_Reader::LOG::LogSemHora("</PositionRotation>");
+			Extern_Reader::LOG::LogSemHora("<Attachment isAttached=\"false\" />");
+			Extern_Reader::LOG::LogSemHora("</Placement>");
+		}
+
+		void AddSpawn_Ped(GTA::Spawn_Struct Estrutura)
+		{
+			Extern_Reader::LOG::arquivoTXT = XMLPath;
+			Extern_Reader::LOG::LogSemHora("<Placement>");
+			Extern_Reader::LOG::LogSemHora("<ModelHash>" + to_string(Estrutura.Hash) + "</ModelHash>");
+			Extern_Reader::LOG::LogSemHora("<Type>1</Type>");
+			Extern_Reader::LOG::LogSemHora("<Dynamic>true</Dynamic>");
+			Extern_Reader::LOG::LogSemHora("<FrozenPos>false</FrozenPos>");
+			Extern_Reader::LOG::LogSemHora("<HashName>" + Estrutura.Model + "</HashName>");
+			Extern_Reader::LOG::LogSemHora("<InitialHandle>92935</InitialHandle>");
+			Extern_Reader::LOG::LogSemHora("<PedProperties>");
+			Extern_Reader::LOG::LogSemHora("<IsStill>false</IsStill>");
+			Extern_Reader::LOG::LogSemHora("<CanRagdoll>true</CanRagdoll>");
+			Extern_Reader::LOG::LogSemHora("<HasShortHeight>false</HasShortHeight>");
+			Extern_Reader::LOG::LogSemHora("<Armour>0</Armour>");
+			Extern_Reader::LOG::LogSemHora("<CurrentWeapon>0xA2719263</CurrentWeapon>");
+			Extern_Reader::LOG::LogSemHora("<PedProps>");
+			Extern_Reader::LOG::LogSemHora("<_0>-1,-1</_0>");
+			Extern_Reader::LOG::LogSemHora("<_1>0,0</_1>");
+			Extern_Reader::LOG::LogSemHora("<_2>-1,-1</_2>");
+			Extern_Reader::LOG::LogSemHora("<_3>-1,-1</_3>");
+			Extern_Reader::LOG::LogSemHora("<_4>-1,-1</_4>");
+			Extern_Reader::LOG::LogSemHora("<_5>-1,-1</_5>");
+			Extern_Reader::LOG::LogSemHora("<_6>-1,-1</_6>");
+			Extern_Reader::LOG::LogSemHora("<_7>-1,-1</_7>");
+			Extern_Reader::LOG::LogSemHora("<_8>-1,-1</_8>");
+			Extern_Reader::LOG::LogSemHora("<_9>-1,-1</_9>");
+			Extern_Reader::LOG::LogSemHora("</PedProps>");
+			Extern_Reader::LOG::LogSemHora("<PedComps>");
+			Extern_Reader::LOG::LogSemHora("<_0>0,0</_0>");
+			Extern_Reader::LOG::LogSemHora("<_1>0,0</_1>");
+			Extern_Reader::LOG::LogSemHora("<_2>0,0</_2>");
+			Extern_Reader::LOG::LogSemHora("<_3>0,0</_3>");
+			Extern_Reader::LOG::LogSemHora("<_4>0,0</_4>");
+			Extern_Reader::LOG::LogSemHora("<_5>0,0</_5>");
+			Extern_Reader::LOG::LogSemHora("<_6>0,0</_6>");
+			Extern_Reader::LOG::LogSemHora("<_7>0,0</_7>");
+			Extern_Reader::LOG::LogSemHora("<_8>0,0</_8>");
+			Extern_Reader::LOG::LogSemHora("<_9>0,0</_9>");
+			Extern_Reader::LOG::LogSemHora("<_10>0,0</_10>");
+			Extern_Reader::LOG::LogSemHora("<_11>0,0</_11>");
+			Extern_Reader::LOG::LogSemHora("</PedComps>");
+			Extern_Reader::LOG::LogSemHora("<RelationshipGroupAltered>false</RelationshipGroupAltered>");
+			Extern_Reader::LOG::LogSemHora("<RelationshipGroup>0xfade4843</RelationshipGroup>");
+			Extern_Reader::LOG::LogSemHora("<ScenarioActive>true</ScenarioActive>");
+			Extern_Reader::LOG::LogSemHora("<ScenarioName>WORLD_HUMAN_DRUG_DEALER_HARD</ScenarioName>");
+			Extern_Reader::LOG::LogSemHora("<AnimActive>false</AnimActive>");
+			Extern_Reader::LOG::LogSemHora("</PedProperties>");
+			Extern_Reader::LOG::LogSemHora("<OpacityLevel>255</OpacityLevel>");
+			Extern_Reader::LOG::LogSemHora("<LodDistance>240</LodDistance>");
+			Extern_Reader::LOG::LogSemHora("<IsVisible>true</IsVisible>");
+			Extern_Reader::LOG::LogSemHora("<MaxHealth>200</MaxHealth>");
+			Extern_Reader::LOG::LogSemHora("<Health>200</Health>");
+			Extern_Reader::LOG::LogSemHora("<HasGravity>true</HasGravity>");
+			Extern_Reader::LOG::LogSemHora("<IsOnFire>false</IsOnFire>");
+			Extern_Reader::LOG::LogSemHora("<IsInvincible>false</IsInvincible>");
+			Extern_Reader::LOG::LogSemHora("<IsBulletProof>false</IsBulletProof>");
+			Extern_Reader::LOG::LogSemHora("<IsCollisionProof>false</IsCollisionProof>");
+			Extern_Reader::LOG::LogSemHora("<IsExplosionProof>false</IsExplosionProof>");
+			Extern_Reader::LOG::LogSemHora("<IsFireProof>false</IsFireProof>");
+			Extern_Reader::LOG::LogSemHora("<IsMeleeProof>false</IsMeleeProof>");
+			Extern_Reader::LOG::LogSemHora("<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>");
+			Extern_Reader::LOG::LogSemHora("<PositionRotation>");
+			Extern_Reader::LOG::LogSemHora("<X>" + to_string(Estrutura.PosX) + "</X>");
+			Extern_Reader::LOG::LogSemHora("<Y>" + to_string(Estrutura.PosY) + "</Y>");
+			Extern_Reader::LOG::LogSemHora("<Z>" + to_string(Estrutura.PosZ) + "</Z>");
+			Extern_Reader::LOG::LogSemHora("<Pitch>" + to_string(Estrutura.PosZ) + "</Pitch>");
+			Extern_Reader::LOG::LogSemHora("<Roll>" + to_string(Estrutura.PosZ) + "</Roll>");
+			Extern_Reader::LOG::LogSemHora("<Yaw>" + to_string(Estrutura.PosZ) + "</Yaw>");
+			Extern_Reader::LOG::LogSemHora("</PositionRotation>");
+			Extern_Reader::LOG::LogSemHora("<Attachment isAttached=\"false\" />");
+			Extern_Reader::LOG::LogSemHora("</Placement>");
+		}
+
+		void FinalizarXML()
+		{
+			Extern_Reader::LOG::arquivoTXT = XMLPath;
+			Extern_Reader::LOG::LogSemHora("</SpoonerPlacements>");
+
+		}
+	}
+
+
+	namespace Carregar
+	{
+		struct Menyoo
+		{
+			std::string Model;
+			DWORD Hash;
+			float PosX;
+			float PosY;
+			float PosZ;
+			float RotX;
+			float RotY;
+			float RotZ;
+		};
+
+		std::vector<string> Get_More_Values(std::string Arquivo, char separador = ' ')
+		{
+			/*
+			Exemplo:
+			vector<string> Aa = Menyoo::Carregar::Get_More_Values(".\\MapaMenyoo.xml");
+			for (int i = 0; i <= Extern_Reader::Simple_TXT_file::GetVectorSize(Aa); i++)
+			{
+				cout << Aa[i] << endl;
+			}
+			*/
+			std::vector<string> TempVECTOR;
+			vector<string> tokens;
+			ifstream imput(Arquivo);
+			for (string line; getline(imput, line);)
+			{
+				istringstream tokenizer{ line };
+				string token;
+				while (getline(tokenizer, token))
+				{
+					//Peds parametros
+					if (Extern_Reader::StringManager::SeContemTexto(token, "xml version")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "<SpoonerPlacements>")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Note />")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "AudioFile")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "ClearDatabase")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "ClearWorld")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "ClearMarkers")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IPLsToLoad")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IPLsToRemove")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "InteriorsToEnable")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "InteriorsToCap")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "WeatherToSet")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "TimecycleModifier")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "StartTaskSequencesOnLoad")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "ReferenceCoords")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Placement")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Type")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Dynamic")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "FrozenPos")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "FrozenPos")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "PedProperties")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsStill")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "CanRagdoll")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "HasShortHeight")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Armour")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "CurrentWeapon")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "PedProps")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_0")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_1")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_2")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_3")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_4")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_5")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_6")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_7")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_8")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_9")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "PedComps")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_10")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "_11")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "RelationshipGroupAltered")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "RelationshipGroup")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "ScenarioActive")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "ScenarioName")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "AnimActive")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "OpacityLevel")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "OpacityLevel")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "LodDistance")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsVisible")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "MaxHealth")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Health")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "HasGravity")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsOnFire")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsInvincible")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsBulletProof")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsCollisionProof")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsExplosionProof")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsFireProof")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsMeleeProof")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsOnlyDamagedByPlayer")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "PositionRotation")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "InitialHandle")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "PedProperties")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsStill")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "CanRagdoll")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "CanRagdoll")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "HasShortHeight")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Armour")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "CurrentWeapon")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "PedProps")) {} 
+
+
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "<X>"))
+					{
+						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<X>", "");
+						a = Extern_Reader::StringManager::ReplaceWord(a, "</X>", "");
+						std::string b = a;
+						b = Extern_Reader::StringManager::ReplaceWord(b, "<X>", "");
+						tokens.push_back(b);
+					}
+
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Y>"))
+					{
+						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<Y>", "");
+						a = Extern_Reader::StringManager::ReplaceWord(a, "</Y>", "");
+						std::string b = a;
+						b = Extern_Reader::StringManager::ReplaceWord(b, "<Y>", "");
+						tokens.push_back(b);
+					}
+
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Z>"))
+					{
+						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<Z>", "");
+						a = Extern_Reader::StringManager::ReplaceWord(a, "</Z>", "");
+						std::string b = a;
+						b = Extern_Reader::StringManager::ReplaceWord(b, "<Z>", "");
+						tokens.push_back(b);
+					}
+
+					//====================================================
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Pitch>"))
+					{
+						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<Pitch>", "");
+						a = Extern_Reader::StringManager::ReplaceWord(a, "</Pitch>", "");
+						std::string b = a;
+						b = Extern_Reader::StringManager::ReplaceWord(b, "<Pitch>", "");
+						tokens.push_back(b);
+					}
+
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Roll>"))
+					{
+						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<Roll>", "");
+						a = Extern_Reader::StringManager::ReplaceWord(a, "</Roll>", "");
+						std::string b = a;
+						b = Extern_Reader::StringManager::ReplaceWord(b, "<Roll>", "");
+						tokens.push_back(b);
+					}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Yaw>"))
+					{
+						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<Yaw>", "");
+						a = Extern_Reader::StringManager::ReplaceWord(a, "</Yaw>", "");
+						std::string b = a;
+						b = Extern_Reader::StringManager::ReplaceWord(b, "<Yaw>", "");
+						tokens.push_back(b);
+					}
+					//--------------------------------------------------------------
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "<ModelHash>"))
+					{
+					std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<ModelHash>", "");
+					a = Extern_Reader::StringManager::ReplaceWord(a, "</ModelHash>", "");
+					std::string b = a;
+					b = Extern_Reader::StringManager::ReplaceWord(b, "<ModelHash>", "");
+					tokens.push_back(b);
+					}
+
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "<HashName>"))
+					{
+					std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<HashName>", "");
+					a = Extern_Reader::StringManager::ReplaceWord(a, "</HashName>", "");
+					std::string b = a;
+					b = Extern_Reader::StringManager::ReplaceWord(b, "<HashName>", "");
+					tokens.push_back(b);
+					}
+
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Attachment")) {}
+
+
+					//Veh
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "VehicleProperties")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Colours")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Primary")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Secondary")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Pearl")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Rim")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "Mod")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsPrimaryColourCustom")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsSecondaryColourCustom")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "tyreSmoke")) {}
+					else if (Extern_Reader::StringManager::SeContemTexto(token, "LrInterior")) {}
+				//	else if (Extern_Reader::StringManager::SeContemTexto(token, "")) {}
+
+					else
+						tokens.push_back(token);
+				}
+			}
+			return tokens;
+
+
+		}
+	}
+}
+
+
+
 int main()
 {
 	 
-	 
+	vector<string> Aa = Menyoo::Carregar::Get_More_Values(".\\MapaMenyoo.xml");
+	for (int i = 0; i <= Extern_Reader::Simple_TXT_file::GetVectorSize(Aa); i++)
+	{
+		cout << Aa[i] << endl;
+	}
+	
 	return 0;
 }
