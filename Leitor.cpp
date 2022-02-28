@@ -142,11 +142,11 @@ namespace Extern_Reader
 					TempVECTOR.push_back(line);
 				return TempVECTOR;
 			}
-			std::vector<string> Get_More_Values(std::string Arquivo, char separador = ' ')
+			std::vector<string> Get_More_Values(char separador)
 			{
 				std::vector<string> TempVECTOR;
 				vector<string> tokens;
-				ifstream imput(Arquivo);
+				ifstream imput(TXTFilePath);
 				for (string line; getline(imput, line);)
 				{
 					istringstream tokenizer{ line };
@@ -164,6 +164,16 @@ namespace Extern_Reader
 					cout << "AddOption(" << Extern_Reader::Simple_TXT_file::String::Get_More_Values("Teste.txt")[i] << "," << Extern_Reader::Simple_TXT_file::String::Get_More_Values("Teste.txt")[i + 1] << ");" << endl;
 					i++;
 				}
+
+				Exemplo de 2 valores, separados por virgula:
+				Extern_Reader::Simple_TXT_file::TXTFilePath = ".\\T.txt";
+				std::vector<string> A = Extern_Reader::Simple_TXT_file::String::Get_More_Values(',');
+				for (int i = 0; i <= Extern_Reader::Simple_TXT_file::GetVectorSize(A); i++)
+				{
+					cout << "AddOption(" << A[i] << "," << A[i + 1] << ");" << endl;
+					i++;
+				}
+
 				* Exemplo de 3 valores::
 				for (int i = 0; i <= Extern_Reader::Simple_TXT_file::GetVectorSize(Extern_Reader::Simple_TXT_file::String::Get_More_Values("Teste.txt")); i++)
 				{
@@ -1140,6 +1150,7 @@ namespace Menyoo
 
 }
 int main()
-{
+{ 
+	system("pause");
 	return 0;
 }
