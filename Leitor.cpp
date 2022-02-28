@@ -11,7 +11,7 @@
 #include <direct.h>
 #include <cstdlib>
 using namespace std;
-//GTA e RDR2
+//GTA ou RDR2
 //#include "natives.h"
 namespace Extern_Reader
 {
