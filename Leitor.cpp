@@ -9,6 +9,7 @@
 #include <filesystem>
 #pragma comment(lib, "urlmon.lib")
 #include <direct.h>
+#include <cstdlib>
 using namespace std;
 
 //GTA e RDR2
@@ -1093,18 +1094,17 @@ namespace Menyoo
 			float RotZ;
 		};
 
-		std::vector<string> Get_More_Values(std::string Arquivo, char separador = ' ')
+		std::vector<std::string> GetValues(std::string Arquivo)
 		{
 			/*
 			Exemplo:
-			vector<string> Aa = Menyoo::Carregar::Get_More_Values(".\\MapaMenyoo.xml");
+			vector<string> A = Menyoo::Carregar::GetValues(".\\MapaMenyoo.xml");
 			for (int i = 0; i <= Extern_Reader::Simple_TXT_file::GetVectorSize(Aa); i++)
 			{
-				cout << Aa[i] << endl;
+				cout << A[i] << endl;
 			}
-			*/
-			std::vector<string> TempVECTOR;
-			vector<string> tokens;
+			*/ 
+			std::vector<std::string> tokens;
 			ifstream imput(Arquivo);
 			for (string line; getline(imput, line);)
 			{
@@ -1112,80 +1112,7 @@ namespace Menyoo
 				string token;
 				while (getline(tokenizer, token))
 				{
-					//Peds parametros
-					if (Extern_Reader::StringManager::SeContemTexto(token, "xml version")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "<SpoonerPlacements>")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Note />")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "AudioFile")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "ClearDatabase")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "ClearWorld")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "ClearMarkers")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IPLsToLoad")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IPLsToRemove")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "InteriorsToEnable")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "InteriorsToCap")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "WeatherToSet")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "TimecycleModifier")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "StartTaskSequencesOnLoad")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "ReferenceCoords")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Placement")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Type")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Dynamic")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "FrozenPos")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "FrozenPos")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "PedProperties")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsStill")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "CanRagdoll")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "HasShortHeight")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Armour")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "CurrentWeapon")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "PedProps")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_0")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_1")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_2")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_3")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_4")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_5")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_6")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_7")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_8")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_9")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "PedComps")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_10")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "_11")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "RelationshipGroupAltered")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "RelationshipGroup")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "ScenarioActive")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "ScenarioName")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "AnimActive")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "OpacityLevel")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "OpacityLevel")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "LodDistance")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsVisible")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "MaxHealth")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Health")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "HasGravity")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsOnFire")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsInvincible")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsBulletProof")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsCollisionProof")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsExplosionProof")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsFireProof")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsMeleeProof")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsOnlyDamagedByPlayer")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "PositionRotation")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "InitialHandle")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "PedProperties")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsStill")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "CanRagdoll")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "CanRagdoll")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "HasShortHeight")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Armour")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "CurrentWeapon")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "PedProps")) {} 
-
-
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "<X>"))
+					if (Extern_Reader::StringManager::SeContemTexto(token, "<X>"))
 					{
 						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<X>", "");
 						a = Extern_Reader::StringManager::ReplaceWord(a, "</X>", "");
@@ -1193,7 +1120,6 @@ namespace Menyoo
 						b = Extern_Reader::StringManager::ReplaceWord(b, "<X>", "");
 						tokens.push_back(b);
 					}
-
 					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Y>"))
 					{
 						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<Y>", "");
@@ -1202,7 +1128,6 @@ namespace Menyoo
 						b = Extern_Reader::StringManager::ReplaceWord(b, "<Y>", "");
 						tokens.push_back(b);
 					}
-
 					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Z>"))
 					{
 						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<Z>", "");
@@ -1212,7 +1137,6 @@ namespace Menyoo
 						tokens.push_back(b);
 					}
 
-					//====================================================
 					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Pitch>"))
 					{
 						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<Pitch>", "");
@@ -1241,60 +1165,75 @@ namespace Menyoo
 					//--------------------------------------------------------------
 					else if (Extern_Reader::StringManager::SeContemTexto(token, "<ModelHash>"))
 					{
-					std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<ModelHash>", "");
-					a = Extern_Reader::StringManager::ReplaceWord(a, "</ModelHash>", "");
-					std::string b = a;
-					b = Extern_Reader::StringManager::ReplaceWord(b, "<ModelHash>", "");
-					tokens.push_back(b);
+						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<ModelHash>", "");
+						a = Extern_Reader::StringManager::ReplaceWord(a, "</ModelHash>", "");
+						std::string b = a;
+						b = Extern_Reader::StringManager::ReplaceWord(b, "<ModelHash>", "");
+						tokens.push_back(b);
 					}
 
 					else if (Extern_Reader::StringManager::SeContemTexto(token, "<HashName>"))
 					{
-					std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<HashName>", "");
-					a = Extern_Reader::StringManager::ReplaceWord(a, "</HashName>", "");
-					std::string b = a;
-					b = Extern_Reader::StringManager::ReplaceWord(b, "<HashName>", "");
-					tokens.push_back(b);
+						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<HashName>", "");
+						a = Extern_Reader::StringManager::ReplaceWord(a, "</HashName>", "");
+						std::string b = a;
+						b = Extern_Reader::StringManager::ReplaceWord(b, "<HashName>", "");
+						tokens.push_back(b);
 					}
-
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Attachment")) {}
-
-
-					//Veh
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "VehicleProperties")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Colours")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Primary")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Secondary")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Pearl")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Rim")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "Mod")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsPrimaryColourCustom")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "IsSecondaryColourCustom")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "tyreSmoke")) {}
-					else if (Extern_Reader::StringManager::SeContemTexto(token, "LrInterior")) {}
-				//	else if (Extern_Reader::StringManager::SeContemTexto(token, "")) {}
-
-					else
-						tokens.push_back(token);
 				}
 			}
 			return tokens;
+		}
 
+		void SpawnXML(std::string XMLpath, std::vector<std::string> vector, GTA::Spawn_Struct Estrutura)
+		{
+			//Exemplo::
+			//GTA::Spawn_Struct A;
+			//Menyoo::Carregar::SpawnXML(".\\MapaMenyoo.xml", Menyoo::Carregar::GetValues(".\\MapaMenyoo.xml"), A);
 
+			std::vector<std::string> A = GetValues(XMLpath);
+			for (int i = 3; i <= Extern_Reader::Simple_TXT_file::GetVectorSize(A); i++)
+			{
+				if (i <= (Extern_Reader::Simple_TXT_file::GetVectorSize(A) + 3))
+				{
+					Estrutura.Hash = std::strtoul(A[i].c_str(), NULL, 16);
+					Estrutura.Model = A[i + 1];
+					Estrutura.PosX = stof(A[i + 2]);
+					Estrutura.PosY = stof(A[i + 3]);
+					Estrutura.PosZ = stof(A[i + 4]);
+					Estrutura.RotX = stof(A[i + 5]);
+					Estrutura.RotY = stof(A[i + 6]);
+					Estrutura.RotZ = stof(A[i + 7]); 
+					i++;
+					i++;
+					i++;
+					i++;
+					i++;
+					i++;
+					i++;
+					/*
+					cout << "Hash = " << Estrutura.Hash << endl <<
+					"Modelo = " << Estrutura.Model << endl <<
+					"PosX = " << Estrutura.PosX << endl <<
+					"PosY = " << Estrutura.PosY << endl <<
+					"PosZ = " << Estrutura.PosZ << endl <<
+					"RotX = " << Estrutura.RotX << endl <<
+					"RotY = " << Estrutura.RotY << endl <<
+					"RotZ = " << Estrutura.RotZ << endl <<
+					"-------------------------------" << endl;;
+					*/
+				}
+			}
 		}
 	}
+	
 }
+
+
 
 
 
 int main()
 {
-	 
-	vector<string> Aa = Menyoo::Carregar::Get_More_Values(".\\MapaMenyoo.xml");
-	for (int i = 0; i <= Extern_Reader::Simple_TXT_file::GetVectorSize(Aa); i++)
-	{
-		cout << Aa[i] << endl;
-	}
-	
 	return 0;
 }
