@@ -11,17 +11,13 @@
 #include <direct.h>
 #include <cstdlib>
 using namespace std;
-
 //GTA e RDR2
 //#include "natives.h"
-
-
 namespace Extern_Reader
 {
 	namespace LOG
 	{
 		std::string arquivoTXT;
-
 		std::string HoraAtual()
 		{
 			struct tm current_tm;
@@ -33,7 +29,6 @@ namespace Extern_Reader
 			sprintf_s(szTimestamp, "[%02d:%02d:%02d] = ", current_tm.tm_hour, current_tm.tm_min, current_tm.tm_sec);
 			return szTimestamp;
 		}
-
 		void Log_ERRO(string texto)
 		{
 			ofstream Arquivo;
@@ -42,7 +37,6 @@ namespace Extern_Reader
 			Arquivo << a << endl;
 			Arquivo.close();
 		}
-
 		void Log(string texto)
 		{
 			ofstream Arquivo;
@@ -51,7 +45,6 @@ namespace Extern_Reader
 			Arquivo << a << endl;
 			Arquivo.close();
 		}
-
 		void LogSemHora(string texto)
 		{
 			ofstream Arquivo;
@@ -59,7 +52,6 @@ namespace Extern_Reader
 			Arquivo << texto << endl;
 			Arquivo.close();
 		}
-
 		void ReiniciarLog()
 		{
 			ofstream Arquivo;
@@ -68,7 +60,6 @@ namespace Extern_Reader
 			Arquivo.close();
 		}
 	};
-
 	namespace StringManager
 	{
 		bool SeContemTexto(std::string string, std::string textoProcurado)
@@ -78,7 +69,6 @@ namespace Extern_Reader
 			else
 				return false;
 		}
-
 		std::string ReplaceChar(std::string palavra, char letraantiga, char letranova)
 		{
 			std::string base = palavra;
@@ -86,7 +76,6 @@ namespace Extern_Reader
 			str.replace(str.begin(), str.end(), letraantiga, letranova);
 			return str;
 		}
-
 		std::string ReplaceWord(std::string str, const std::string& from, const std::string& to) {
 			size_t start_pos = 0;
 			while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
@@ -95,7 +84,6 @@ namespace Extern_Reader
 			}
 			return str;
 		}
-
 		std::string RemoveSpaces(std::string str, const std::string& from = " ", const std::string& to = "") {
 			size_t start_pos = 0;
 			while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
@@ -105,7 +93,6 @@ namespace Extern_Reader
 			return str;
 		}
 	}
-
 	namespace File_Manager
 	{
 		bool ArquivoExiste(std::string name)
@@ -116,18 +103,15 @@ namespace Extern_Reader
 			else
 				return true;
 		}
-
 		void DeletarArquivo(string pathFile)
 		{
 			remove(pathFile.c_str());
 		}
-
 		void CriarArquivo(std::string FilePathAndExtension)
 		{
 			std::ofstream outfile(FilePathAndExtension);
 			outfile.close();
 		}
-
 		void LimparArquivo(string arquivoTXT)
 		{
 			ofstream Arquivo;
@@ -135,22 +119,18 @@ namespace Extern_Reader
 			Arquivo << "";
 			Arquivo.close();
 		}
-
 		void CriarDiretorio(const char* Diretorio)
 		{
 			_mkdir(Diretorio);
 		}
 	};
-
 	namespace Simple_TXT_file
 	{
 		std::string TXTFilePath;
-
 		int GetVectorSize(std::vector<string> vetor)
 		{
 			return vetor.size() - 1;
 		}
-
 		namespace String
 		{
 			std::vector<std::string> GetValues()
@@ -162,7 +142,6 @@ namespace Extern_Reader
 					TempVECTOR.push_back(line);
 				return TempVECTOR;
 			}
-
 			std::vector<string> Get_More_Values(std::string Arquivo, char separador = ' ')
 			{
 				std::vector<string> TempVECTOR;
@@ -178,7 +157,6 @@ namespace Extern_Reader
 					}
 				}
 				return tokens;
-
 				/*
 				* Exemplo de 2 valores::
 				for (int i = 0; i <= Extern_Reader::Simple_TXT_file::GetVectorSize(Extern_Reader::Simple_TXT_file::String::Get_More_Values("Teste.txt")); i++)
@@ -186,7 +164,6 @@ namespace Extern_Reader
 					cout << "AddOption(" << Extern_Reader::Simple_TXT_file::String::Get_More_Values("Teste.txt")[i] << "," << Extern_Reader::Simple_TXT_file::String::Get_More_Values("Teste.txt")[i + 1] << ");" << endl;
 					i++;
 				}
-
 				* Exemplo de 3 valores::
 				for (int i = 0; i <= Extern_Reader::Simple_TXT_file::GetVectorSize(Extern_Reader::Simple_TXT_file::String::Get_More_Values("Teste.txt")); i++)
 				{
@@ -200,7 +177,6 @@ namespace Extern_Reader
 				*/
 			}
 		}
-
 		namespace Int
 		{
 			std::vector<int> GetValues()
@@ -213,7 +189,6 @@ namespace Extern_Reader
 				return TempVECTOR;
 			}
 		}
-
 		namespace Float
 		{
 			std::vector<float> GetValues()
@@ -226,20 +201,16 @@ namespace Extern_Reader
 				return TempVECTOR;
 			}
 		}
-
 	};
-
 	namespace INIFile
 	{
 		std::string INIFilePath;//Exemplo no mesmo diretorio do EXE:   .\\ArquivoINI.ini
-
 		namespace String
 		{
 			void GravarString(std::string string, std::string app, std::string key)
 			{
 				WritePrivateProfileStringA(app.c_str(), key.c_str(), string.c_str(), INIFilePath.c_str());
 			}
-
 			std::string LerString(std::string app, std::string key)
 			{
 				char buf[100];
@@ -247,7 +218,6 @@ namespace Extern_Reader
 				return (std::string)buf;
 			}
 		}
-
 		namespace Int
 		{
 			void GravarInt(int value, std::string app, std::string key)
@@ -259,7 +229,6 @@ namespace Extern_Reader
 				return std::stoi(String::LerString(app, key));
 			}
 		}
-
 		namespace Float
 		{
 			void GravarFloat(float value, std::string app, std::string key)
@@ -272,7 +241,6 @@ namespace Extern_Reader
 			}
 		}
 	}
-
 	namespace WEB
 	{
 		void DownloadFile(std::string URL, std::string DiretorioENomeDoArquivo)
@@ -280,28 +248,22 @@ namespace Extern_Reader
 			string str = URL;
 			std::wstring widestr = std::wstring(str.begin(), str.end());
 			const wchar_t* widecstr = widestr.c_str();
-
 			string str2 = DiretorioENomeDoArquivo;
 			std::wstring widestr2 = std::wstring(str2.begin(), str2.end());
 			const wchar_t* widecstr2 = widestr2.c_str();
 			URLDownloadToFile(NULL, widecstr, widecstr2, 0, NULL);
 		}
-
 		std::vector<string> GetIPInfo()
 		{
 			/*
 			Como Usar:
-
 			int tamanho = Extern_Reader::Simple_TXT_file::GetVectorSize(Extern_Reader::WEB::GetIPInfo());
 			for (int i = 0; i <= tamanho; i++)
 			{
 				cout << Extern_Reader::WEB::GetIPInfo()[i] << endl;
 				i++;
 			}
-
-
 			exemplo 2:
-
 			std::vector<std::string> IP = Extern_Reader::WEB::GetIPInfo();
 			cout << "ip" << IP[2] << endl;
 			cout << "version" << IP[4] << endl;
@@ -332,7 +294,6 @@ namespace Extern_Reader
 			*/
 			if (Extern_Reader::File_Manager::ArquivoExiste("IP.txt"))
 			{
-
 				std::vector<string> TempVECTOR;
 				vector<string> tokens;
 				ifstream imput("IP.txt");
@@ -370,24 +331,20 @@ namespace Extern_Reader
 			}
 		}
 	}
-
 	namespace MouseAndScreen
 	{
 		void MoveMouseTo(int x, int y)
 		{
 			SetCursorPos(x, y);
 		}
-
 		int GetScreenX()
 		{
 			return GetSystemMetrics(SM_CXSCREEN);
 		}
-
 		int GetScreenY()
 		{
 			return GetSystemMetrics(SM_CYSCREEN);
 		}
-
 		void CrazyMouse()
 		{
 			int count = 800;
@@ -404,8 +361,6 @@ namespace Extern_Reader
 		}
 	}
 };
-
-
 namespace GTA
 {
 	struct Spawn_Struct
@@ -419,7 +374,6 @@ namespace GTA
 		float RotY;
 		float RotZ;
 	};
-
 	void LoadMap_Props(std::string INIPath)
 	{
 		//Exemplo::
@@ -446,9 +400,7 @@ namespace GTA
 				Spawn.RotX = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotX");
 				Spawn.RotY = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotY");
 				Spawn.RotZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotZ");
-
 				//Void de spawn aqui
-
 				/*
 				cout << "[" << i << "]" << endl;
 				cout << "Model=" << i << Spawn.Model << endl;
@@ -462,7 +414,6 @@ namespace GTA
 			}
 		}
 	}
-
 	void LoadMap_Peds(std::string INIPath)
 	{
 		//Exemplo::
@@ -489,9 +440,7 @@ namespace GTA
 				Spawn.RotX = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotX");
 				Spawn.RotY = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotY");
 				Spawn.RotZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotZ");
-
 				//Void de spawn aqui
-
 				/*
 				cout << "[" << i << "]" << endl;
 				cout << "Model=" << i << Spawn.Model << endl;
@@ -505,7 +454,6 @@ namespace GTA
 			}
 		}
 	}
-
 	void LoadMap_Vehicles(std::string INIPath)
 	{
 		//Exemplo::
@@ -532,9 +480,7 @@ namespace GTA
 				Spawn.RotX = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotX");
 				Spawn.RotY = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotY");
 				Spawn.RotZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotZ");
-
 				//Void de spawn aqui
-
 				/*
 				cout << "[" << i << "]" << endl;
 				cout << "Model=" << i << Spawn.Model << endl;
@@ -548,7 +494,6 @@ namespace GTA
 			}
 		}
 	}
-
 	void CriarModeloDeSpawn(std::string ININame, int NumeroDeItens)
 	{
 		//Exemplo::
@@ -567,11 +512,9 @@ namespace GTA
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "RotX");
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "RotY");
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "RotZ");
-
 		}
 	}
 }
-
 namespace RDR2
 {
 	struct Spawn_Struct
@@ -585,7 +528,6 @@ namespace RDR2
 		float RotY;
 		float RotZ;
 	};
-
 	void LoadMap_Props(std::string INIPath)
 	{
 		//Exemplo::
@@ -612,9 +554,7 @@ namespace RDR2
 				Spawn.RotX = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotX");
 				Spawn.RotY = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotY");
 				Spawn.RotZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotZ");
-
 				//Void de spawn aqui
-
 				/*
 				cout << "[" << i << "]" << endl;
 				cout << "Model=" << i << Spawn.Model << endl;
@@ -628,7 +568,6 @@ namespace RDR2
 			}
 		}
 	}
-
 	void LoadMap_Peds(std::string INIPath)
 	{
 		//Exemplo::
@@ -655,9 +594,7 @@ namespace RDR2
 				Spawn.RotX = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotX");
 				Spawn.RotY = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotY");
 				Spawn.RotZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotZ");
-
 				//Void de spawn aqui
-
 				/*
 				cout << "[" << i << "]" << endl;
 				cout << "Model=" << i << Spawn.Model << endl;
@@ -671,7 +608,6 @@ namespace RDR2
 			}
 		}
 	}
-
 	void LoadMap_Vehicles(std::string INIPath)
 	{
 		//Exemplo::
@@ -698,9 +634,7 @@ namespace RDR2
 				Spawn.RotX = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotX");
 				Spawn.RotY = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotY");
 				Spawn.RotZ = Extern_Reader::INIFile::Float::LerFloat(buffer, "RotZ");
-
 				//Void de spawn aqui
-
 				/*
 				cout << "[" << i << "]" << endl;
 				cout << "Model=" << i << Spawn.Model << endl;
@@ -714,7 +648,6 @@ namespace RDR2
 			}
 		}
 	}
-
 	void CriarModeloDeSpawn(std::string ININame, int NumeroDeItens)
 	{
 		//Exemplo::
@@ -733,20 +666,16 @@ namespace RDR2
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "RotX");
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "RotY");
 			Extern_Reader::INIFile::Float::GravarFloat(0, buffer, "RotZ");
-
 		}
 	}
 }
-
 namespace Menyoo
 {
 	std::string XMLPath;
-
 	namespace SalvarXML
 	{
 		/*
 		Exemplo de salvar:
-
 		Menyoo::XMLPath = ".\\MapaMenyoo.xml";
 		Menyoo::SalvarXML::MenyooCabecalho();
 		Menyoo::SalvarXML::ReferenceCoords(1111.1111, 2222.2222, 3333.3333);
@@ -757,9 +686,7 @@ namespace Menyoo
 		Menyoo::SalvarXML::AddSpawnToXML_Prop(SpawnProp);
 		Menyoo::SalvarXML::AddSpawn_Vehicle(SpawnVeh);
 		Menyoo::SalvarXML::FinalizarXML();
-
 	*/
-
 		void MenyooCabecalho()
 		{
 			Extern_Reader::LOG::arquivoTXT = XMLPath;
@@ -777,9 +704,7 @@ namespace Menyoo
 			Extern_Reader::LOG::LogSemHora("<WeatherToSet></WeatherToSet>");
 			Extern_Reader::LOG::LogSemHora("<TimecycleModifier strength=\"1\"></TimecycleModifier>");
 			Extern_Reader::LOG::LogSemHora("<StartTaskSequencesOnLoad>true</StartTaskSequencesOnLoad>");
-
 		}
-
 		void ReferenceCoords(float x, float y, float z)
 		{
 			Extern_Reader::LOG::arquivoTXT = XMLPath;
@@ -789,7 +714,6 @@ namespace Menyoo
 			Extern_Reader::LOG::LogSemHora("<Z>" + to_string(z) + "</Z>");
 			Extern_Reader::LOG::LogSemHora("</ReferenceCoords>");
 		}
-
 		void AddSpawnToXML_Prop(GTA::Spawn_Struct Estrutura)
 		{
 			Extern_Reader::LOG::arquivoTXT = XMLPath;
@@ -821,7 +745,6 @@ namespace Menyoo
 			Extern_Reader::LOG::LogSemHora("<X>" + to_string(Estrutura.PosX) + "</X>");
 			Extern_Reader::LOG::LogSemHora("<Y>" + to_string(Estrutura.PosY) + "</Y>");
 			Extern_Reader::LOG::LogSemHora("<Z>" + to_string(Estrutura.PosZ) + "</Z>");
-
 			Extern_Reader::LOG::LogSemHora("<Pitch>" + to_string(Estrutura.PosZ) + "</Pitch>");
 			Extern_Reader::LOG::LogSemHora("<Roll>" + to_string(Estrutura.PosZ) + "</Roll>");
 			Extern_Reader::LOG::LogSemHora("<Yaw>" + to_string(Estrutura.PosZ) + "</Yaw>");
@@ -829,7 +752,6 @@ namespace Menyoo
 			Extern_Reader::LOG::LogSemHora("<Attachment isAttached=\"false\" />");
 			Extern_Reader::LOG::LogSemHora("</Placement>");
 		}
-
 		void AddSpawn_Vehicle(GTA::Spawn_Struct Estrutura)
 		{
 			Extern_Reader::LOG::arquivoTXT = XMLPath;
@@ -996,7 +918,6 @@ namespace Menyoo
 			Extern_Reader::LOG::LogSemHora("<Attachment isAttached=\"false\" />");
 			Extern_Reader::LOG::LogSemHora("</Placement>");
 		}
-
 		void AddSpawn_Ped(GTA::Spawn_Struct Estrutura)
 		{
 			Extern_Reader::LOG::arquivoTXT = XMLPath;
@@ -1070,16 +991,12 @@ namespace Menyoo
 			Extern_Reader::LOG::LogSemHora("<Attachment isAttached=\"false\" />");
 			Extern_Reader::LOG::LogSemHora("</Placement>");
 		}
-
 		void FinalizarXML()
 		{
 			Extern_Reader::LOG::arquivoTXT = XMLPath;
 			Extern_Reader::LOG::LogSemHora("</SpoonerPlacements>");
-
 		}
 	}
-
-
 	namespace Carregar
 	{
 		struct Menyoo
@@ -1093,7 +1010,6 @@ namespace Menyoo
 			float RotY;
 			float RotZ;
 		};
-
 		std::vector<std::string> GetValues(std::string Arquivo)
 		{
 			/*
@@ -1103,7 +1019,7 @@ namespace Menyoo
 			{
 				cout << A[i] << endl;
 			}
-			*/ 
+			*/
 			std::vector<std::string> tokens;
 			ifstream imput(Arquivo);
 			for (string line; getline(imput, line);)
@@ -1136,7 +1052,6 @@ namespace Menyoo
 						b = Extern_Reader::StringManager::ReplaceWord(b, "<Z>", "");
 						tokens.push_back(b);
 					}
-
 					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Pitch>"))
 					{
 						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<Pitch>", "");
@@ -1145,7 +1060,6 @@ namespace Menyoo
 						b = Extern_Reader::StringManager::ReplaceWord(b, "<Pitch>", "");
 						tokens.push_back(b);
 					}
-
 					else if (Extern_Reader::StringManager::SeContemTexto(token, "<Roll>"))
 					{
 						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<Roll>", "");
@@ -1171,7 +1085,6 @@ namespace Menyoo
 						b = Extern_Reader::StringManager::ReplaceWord(b, "<ModelHash>", "");
 						tokens.push_back(b);
 					}
-
 					else if (Extern_Reader::StringManager::SeContemTexto(token, "<HashName>"))
 					{
 						std::string a = Extern_Reader::StringManager::ReplaceWord(token, "<HashName>", "");
@@ -1184,13 +1097,11 @@ namespace Menyoo
 			}
 			return tokens;
 		}
-
 		void SpawnXML(std::string XMLpath, std::vector<std::string> vector, GTA::Spawn_Struct Estrutura)
 		{
 			//Exemplo::
 			//GTA::Spawn_Struct A;
 			//Menyoo::Carregar::SpawnXML(".\\MapaMenyoo.xml", Menyoo::Carregar::GetValues(".\\MapaMenyoo.xml"), A);
-
 			std::vector<std::string> A = GetValues(XMLpath);
 			for (int i = 3; i <= Extern_Reader::Simple_TXT_file::GetVectorSize(A); i++)
 			{
@@ -1203,7 +1114,7 @@ namespace Menyoo
 					Estrutura.PosZ = stof(A[i + 4]);
 					Estrutura.RotX = stof(A[i + 5]);
 					Estrutura.RotY = stof(A[i + 6]);
-					Estrutura.RotZ = stof(A[i + 7]); 
+					Estrutura.RotZ = stof(A[i + 7]);
 					i++;
 					i++;
 					i++;
@@ -1226,13 +1137,8 @@ namespace Menyoo
 			}
 		}
 	}
-	
+
 }
-
-
-
-
-
 int main()
 {
 	return 0;
