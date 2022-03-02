@@ -7,6 +7,7 @@
 #include <chrono>   
 #include <sstream>  
 #include <filesystem>
+#include <algorithm> 
 #pragma comment(lib, "urlmon.lib")
 #include <direct.h>
 #include <cstdlib>
@@ -1149,8 +1150,89 @@ namespace Menyoo
 	}
 
 }
+
+namespace Cripto
+{
+	namespace XOR
+	{
+		std::string Encriptografar(std::string nString)
+		{
+			//Exemplo:		Cripto::XOR::Encriptografar("Eduardo Bresolin espert em C")
+			const int KEY = 3;
+			int strLen = (nString.length());
+			char* cString = (char*)(nString.c_str());
+
+			for (int i = 0; i < strLen; i++)
+			{
+				*(cString + i) = (*(cString + i) ^ KEY);
+			}
+			return cString;
+		}
+
+		string Descriptografar(std::string nString)
+		{
+			//Exemplo:		Cripto::XOR::Descriptografar("Fgvbqgl#Aqfplojm#fpsfqw#fn#@")
+			const int KEY = 3;
+			int strLen = (nString.length());
+			char* cString = (char*)(nString.c_str());
+
+			for (int i = 0; i < strLen; i++)
+			{
+				*(cString + i) = (*(cString + i) ^ KEY);
+			}
+			return cString;
+		}
+	}
+
+
+
+	namespace Ceasar
+	{
+		string Encriptografar(string text)
+		{
+			//Exemplo		Cripto::Ceasar::Encriptografar("Eduardo Bresolin espert em C") 
+			string s = text;
+			string t;
+			std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+			for (int i = 0;i < s.size();i++)
+				t += (s[i] - 'A' + 3) % 26 + 'A';
+			return t;
+		}
+
+		string Descriptografar(string text, bool PrimeiraMaiuscula = true)
+		{
+			//Exemplo		Cripto::Ceasar::Descriptografar("HGXDUGR=EUHVROLQ=HVSHUW=HP=F") 
+			string s = text;
+			string t;
+			for (int i = 0;i < s.size();i++)
+			{
+				if (s[i] == '=')
+					t += ' ';
+				else
+					t += (s[i] - 'A' - 3 + 26) % 26 + 'A';
+			}
+			if (PrimeiraMaiuscula)
+				for (int i = 1; i <= t.size(); i++)
+					t[i] = tolower(t[i]);
+			return t;
+		}
+	}
+}
+
+
+ 
+
 int main()
 { 
 	system("pause");
 	return 0;
 }
+
+
+
+
+
+
+
+
+
