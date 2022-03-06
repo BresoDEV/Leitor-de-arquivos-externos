@@ -12,10 +12,48 @@
 #include <direct.h>
 #include <cstdlib>
 using namespace std;
-//GTA ou RDR2
-//#include "natives.h"
+
 namespace Extern_Reader
 {
+	namespace Conversoes
+	{
+		namespace INT
+		{
+			float paraFLOAT(int A)
+			{
+				return (float)A;
+			}
+
+			std::string paraString(int A)
+			{
+				return to_string(A);
+			}
+		}
+		namespace FLOAT
+		{
+			int paraINT(float A)
+			{
+				return (int)A;
+			}
+
+			std::string paraString(float A)
+			{
+				return to_string(A);
+			}
+		}
+		namespace STRING
+		{
+			int paraINT(std::string A)
+			{
+				return atoi(A.c_str());
+			}
+
+			float paraFLOAT(std::string A)
+			{
+				return stof(A);
+			}
+		}
+	}
 	namespace LOG
 	{
 		std::string arquivoTXT;
@@ -132,13 +170,14 @@ namespace Extern_Reader
 		{
 			return vetor.size() - 1;
 		}
-		
+
 		namespace String
 		{
 			void LimparPilha(std::vector<std::string> vetor)
 			{
 				vetor.clear();
 			}
+
 			std::vector<std::string> PegarValores()
 			{
 				std::vector<std::string> TempVECTOR;
@@ -267,15 +306,20 @@ namespace Extern_Reader
 	{
 		void BaixarArquivo(std::string URL, std::string DiretorioENomeDoArquivo)
 		{
-			string str = URL;
-			std::wstring widestr = std::wstring(str.begin(), str.end());
-			const wchar_t* widecstr = widestr.c_str();
-			string str2 = DiretorioENomeDoArquivo;
-			std::wstring widestr2 = std::wstring(str2.begin(), str2.end());
-			const wchar_t* widecstr2 = widestr2.c_str();
-			URLDownloadToFile(NULL, widecstr, widecstr2, 0, NULL);
+			if (Extern_Reader::Arquivos::ArquivoExiste(DiretorioENomeDoArquivo) == false)
+			{
+				string str = URL;
+				std::wstring widestr = std::wstring(str.begin(), str.end());
+				const wchar_t* widecstr = widestr.c_str();
+				string str2 = DiretorioENomeDoArquivo;
+				std::wstring widestr2 = std::wstring(str2.begin(), str2.end());
+				const wchar_t* widecstr2 = widestr2.c_str();
+				URLDownloadToFile(NULL, widecstr, widecstr2, 0, NULL);
+			}
 		}
-		std::vector<string> Obter_IP_Info()
+
+
+		std::vector<std::string> Obter_IP_Info()
 		{
 			/*
 			Como Usar:
@@ -285,6 +329,8 @@ namespace Extern_Reader
 				cout << Extern_Reader::WEB::Obter_IP_Info()[i] << endl;
 				i++;
 			}
+
+
 			exemplo 2:
 			std::vector<std::string> IP = Extern_Reader::WEB::Obter_IP_Info();
 			cout << "ip" << IP[2] << endl;
@@ -314,6 +360,7 @@ namespace Extern_Reader
 			cout << "asn" << IP[50] << endl;
 			cout << "org" << IP[52] << endl;
 			*/
+		inicio:
 			if (Extern_Reader::Arquivos::ArquivoExiste("IP.txt"))
 			{
 				std::vector<string> TempVECTOR;
@@ -350,6 +397,7 @@ namespace Extern_Reader
 			else
 			{
 				Extern_Reader::WEB::BaixarArquivo("https://ipapi.co/json", "IP.txt");
+				goto inicio;
 			}
 		}
 	}
@@ -379,6 +427,124 @@ namespace Extern_Reader
 				movey = (angle * sin(angle) * 2) + GetSystemMetrics(SM_CYSCREEN) / 2;
 				SetCursorPos(movex, movey);
 				Sleep(1);
+			}
+		}
+	}
+	namespace JSON
+	{
+		std::string JSONFilePath;
+
+		int TamanhoDoVector(std::vector<string> vetor)
+		{
+			return vetor.size() - 1;
+		}
+
+		namespace String
+		{
+			std::vector<std::string> BuscarKey(std::string Sessao)
+			{
+				/*
+				Exemplo:
+
+				Extern_Reader::JSON::JSONFilePath = ".\\Jason.txt";
+				for (int i = 0; i <= Extern_Reader::JSON::TamanhoDoVector(Extern_Reader::JSON::String::BuscarKey("squadName")); i++)
+				{
+					if(Extern_Reader::JSON::String::BuscarKey("squadName")[i] == ""){}
+					else
+						cout << Extern_Reader::JSON::String::BuscarKey("squadName")[i] << endl;
+				}
+
+
+			*/
+				std::vector<std::string> TempVECTOR;
+				ifstream imput(JSONFilePath);
+				for (string line; getline(imput, line);)
+				{
+					string B = "\"" + Sessao + "\":";
+
+					if (line.find(B) != std::string::npos)
+					{
+						string A = Extern_Reader::StringManager::SubstituirPalavra(line, B, "");
+						string C = Extern_Reader::StringManager::SubstituirPalavra(A, "\"", "");
+						string D = Extern_Reader::StringManager::SubstituirPalavra(C, "    ", "");
+						string E = Extern_Reader::StringManager::SubstituirPalavra(D, ",", "");
+						string F = Extern_Reader::StringManager::SubstituirPalavra(E, "   ", "");
+						string G = Extern_Reader::StringManager::SubstituirPalavra(F, "  ", "");
+						TempVECTOR.push_back(G);
+					}
+				}
+				return TempVECTOR;
+			}
+
+		}
+
+		namespace Int
+		{
+			std::vector<int> BuscarKey_INT(std::string Sessao)
+			{
+				/*
+				Exemplo:
+
+				Extern_Reader::JSON::JSONFilePath = ".\\Jason.txt";
+				for (int i = 0; i <= Extern_Reader::JSON::TamanhoDoVector(Extern_Reader::JSON::String::BuscarKey("formed")); i++)
+				{
+					cout << Extern_Reader::JSON::Int::BuscarKey_INT("formed")[i] << endl;
+				}
+			*/
+				std::vector<int> TempVECTOR;
+				ifstream imput(JSONFilePath);
+				for (string line; getline(imput, line);)
+				{
+					string B = "\"" + Sessao + "\":";
+
+					if (line.find(B) != std::string::npos)
+					{
+						string A = Extern_Reader::StringManager::SubstituirPalavra(line, B, "");
+						string C = Extern_Reader::StringManager::SubstituirPalavra(A, "\"", "");
+						string D = Extern_Reader::StringManager::SubstituirPalavra(C, "    ", "");
+						string E = Extern_Reader::StringManager::SubstituirPalavra(D, ",", "");
+						string F = Extern_Reader::StringManager::SubstituirPalavra(E, "   ", "");
+						string G = Extern_Reader::StringManager::SubstituirPalavra(F, "  ", "");
+						int final = atoi(G.c_str());
+						TempVECTOR.push_back(final);
+					}
+				}
+				return TempVECTOR;
+			}
+		}
+
+		namespace Float
+		{
+			std::vector<float> BuscarKey_Float(std::string Sessao)
+			{
+				/*
+				Exemplo:
+
+				Extern_Reader::JSON::JSONFilePath = ".\\Jason.txt";
+				for (int i = 0; i <= Extern_Reader::JSON::TamanhoDoVector(Extern_Reader::JSON::String::BuscarKey("secretBase")); i++)
+				{
+						cout << Extern_Reader::JSON::Float::BuscarKey_Float("secretBase")[i] << endl;
+				}
+			*/
+				std::vector<float> TempVECTOR;
+				ifstream imput(JSONFilePath);
+				for (string line; getline(imput, line);)
+				{
+					string B = "\"" + Sessao + "\":";
+
+					if (line.find(B) != std::string::npos)
+					{
+						string A = Extern_Reader::StringManager::SubstituirPalavra(line, B, "");
+						string C = Extern_Reader::StringManager::SubstituirPalavra(A, "\"", "");
+						string D = Extern_Reader::StringManager::SubstituirPalavra(C, "    ", "");
+						string E = Extern_Reader::StringManager::SubstituirPalavra(D, ",", "");
+						string F = Extern_Reader::StringManager::SubstituirPalavra(E, "   ", "");
+						string G = Extern_Reader::StringManager::SubstituirPalavra(F, "  ", "");
+						float final = stof(G);
+						TempVECTOR.push_back(final);
+					}
+				}
+				return TempVECTOR;
 			}
 		}
 	}
@@ -1227,11 +1393,25 @@ namespace Criptografia
 			return t;
 		}
 	}
+	namespace Hash
+	{
+		//Irreversivel, nao tem como converter um hash pra string
+		std::string Hash(string A)
+		{
+			return to_string(std::hash<std::string>{}(A));
+		}
+		 
+	}
 }
+
+
  
+
+
+
+ 
+
 int main()
-{
-	 
-	system("pause");
+{ 
 	return 0;
 }
