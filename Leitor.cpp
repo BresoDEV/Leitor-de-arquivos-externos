@@ -1434,12 +1434,90 @@ namespace Criptografia
 		}
 		 
 	}
+	namespace Rot13
+	{
+		std::string Criptografar(std::string s) {
+			string rotated{};
+			for (const char& c : s)
+			{
+				if (isalpha(c))
+					if (isupper(c)) rotated += char((c - 'A' + 13) % 26 + 'A');
+					else
+						rotated += char((c - 'a' + 13) % 26 + 'a');
+				else rotated += c;
+			}
+			return rotated;
+		}
+		std::string Descriptografar(std::string n) {
+			std::string s = "";
+			int l = n.length();
+			for (int i = 0;i < l;i++)
+			{
+				if (n[i] == ' ') {
+					s += n[i];
+					continue;
+				}
+				if (char(tolower(n[i])) >= 'n' && char(tolower(n[i])) <= 'z')
+				{
+					char a = 'z', b = 'a';
+					int k = (int)a - (int)n[i];
+					n[i] = char((int)b + (13 - k - 1));
+				}
+				else
+					n[i] = char((int)n[i] + 13);
+				s = s + n[i];
+			}
+			return s;
+		}
+	}
+	namespace XOR2
+	{
+		string Cript(string s)
+		{
+			string rotated{};
+			for (const char& c : s)
+			{
+				rotated += 3 ^ c;
+			} return rotated;
+		}
+		string Decript(string s)
+		{
+			string rotated{};
+			for (const char& c : s)
+			{
+				rotated += 3 ^ c;
+			} return rotated;
+		}
+	}
+	namespace ReverseInt
+	{
+		int Reverse_INTs(int n)
+		{
+			int reverse = 0;
+			while (n != 0)
+			{
+				reverse = reverse * 10;
+				reverse = reverse + n % 10;
+				n = n / 10;
+			}
+			return reverse;
+		}
+	}
+	namespace ReverseString
+	{
+		string Reverse(string a)
+		{
+			reverse(a.begin(), a.end());
+			return a;
+		}
+	}
 }
 
 
-
+ 
 
 int main()
-{   
+{     
+	 
 	return 0;
 }
