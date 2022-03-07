@@ -429,6 +429,38 @@ namespace Extern_Reader
 				Sleep(1);
 			}
 		}
+		int GetResolucao_X()
+		{
+			RECT desktop;
+			const HWND hDesktop = GetDesktopWindow();
+			GetWindowRect(hDesktop, &desktop);
+			return desktop.right;
+		}
+		int GetResolucao_Y()
+		{
+			RECT desktop;
+			const HWND hDesktop = GetDesktopWindow();
+			GetWindowRect(hDesktop, &desktop);
+			return desktop.bottom;
+		}
+		int Get_X_Centro_da_Tela()
+		{
+			RECT desktop;
+			const HWND hDesktop = GetDesktopWindow();
+			GetWindowRect(hDesktop, &desktop);
+			return desktop.right / 2;
+		}
+		int Get_Y_Centro_da_Tela()
+		{
+			RECT desktop;
+			const HWND hDesktop = GetDesktopWindow();
+			GetWindowRect(hDesktop, &desktop);
+			return desktop.bottom / 2;
+		}
+		void MoverMouse_Centro_Da_Tela()
+		{
+			MoverMouse(Get_X_Centro_da_Tela(), Get_Y_Centro_da_Tela());
+		}
 	}
 	namespace JSON
 	{
@@ -1405,13 +1437,9 @@ namespace Criptografia
 }
 
 
- 
 
-
-
- 
 
 int main()
-{ 
+{   
 	return 0;
 }
