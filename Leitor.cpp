@@ -14,6 +14,9 @@
 #include <string>
 #include <cstring>
 
+#include <wininet.h>
+#pragma comment(lib,"Wininet.lib")
+
 #pragma comment(lib, "urlmon.lib")
 #include <direct.h>
 #include <cstdlib>
@@ -310,6 +313,14 @@ namespace Extern_Reader
 	}
 	namespace WEB
 	{
+		bool CheckConexao()
+		{
+			if (InternetCheckConnection(L"http://www.google.com", FLAG_ICC_FORCE_CONNECTION, 0))
+				return true;
+			else
+				return false;
+		}
+
 		void BaixarArquivo(std::string URL, std::string DiretorioENomeDoArquivo)
 		{
 			if (Extern_Reader::Arquivos::ArquivoExiste(DiretorioENomeDoArquivo) == false)
@@ -323,7 +334,6 @@ namespace Extern_Reader
 				URLDownloadToFile(NULL, widecstr, widecstr2, 0, NULL);
 			}
 		}
-
 
 		std::vector<std::string> Obter_IP_Info()
 		{
@@ -1541,7 +1551,7 @@ namespace Auth
 	//cout << "no";
 	//
 	string GetKEY(string inipath, string sessao, string key)
-	{ 
+	{
 		char buf[100];
 		GetPrivateProfileStringA(sessao.c_str(), key.c_str(), "NULL", buf, 100, inipath.c_str());
 		return (std::string)buf;
@@ -1602,22 +1612,13 @@ namespace Auth
 	}
 }
 
- 
-
-
-
-
 
 
 int main()
 {
-	 
-	if (Auth::Auth(Auth::GetKEY(".\\KEY.ini", "MODS", "Key")))
-	{
-		cout << "ok";
-	}
-	else
-		cout << "no";
+
+	
+
 }
 
 
