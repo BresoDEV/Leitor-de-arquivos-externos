@@ -8,6 +8,12 @@
 #include <sstream>  
 #include <filesystem>
 #include <algorithm> 
+#include <random>
+#include <urlmon.h>
+#include <cstdio>
+#include <string>
+#include <cstring>
+
 #pragma comment(lib, "urlmon.lib")
 #include <direct.h>
 #include <cstdlib>
@@ -460,6 +466,18 @@ namespace Extern_Reader
 		void MoverMouse_Centro_Da_Tela()
 		{
 			MoverMouse(Get_X_Centro_da_Tela(), Get_Y_Centro_da_Tela());
+		}
+		int GetMouse_X()
+		{
+			POINT p;
+			GetCursorPos(&p);
+			return p.x;
+		}
+		int GetMouse_Y()
+		{
+			POINT p;
+			GetCursorPos(&p);
+			return p.y;
 		}
 	}
 	namespace JSON
@@ -1432,7 +1450,7 @@ namespace Criptografia
 		{
 			return to_string(std::hash<std::string>{}(A));
 		}
-		 
+
 	}
 	namespace Rot13
 	{
@@ -1513,11 +1531,240 @@ namespace Criptografia
 	}
 }
 
+namespace Auth
+{
+	//	if (Auth::Auth(Auth::GetKEY(".\\KEY.ini", "MODS", "Key")))
+	//{
+		//	cout << "ok";
+		//}
+	//else
+	//cout << "no";
+	//
+	string GetKEY(string inipath, string sessao, string key)
+	{ 
+		char buf[100];
+		GetPrivateProfileStringA(sessao.c_str(), key.c_str(), "NULL", buf, 100, inipath.c_str());
+		return (std::string)buf;
+	}
+	//Como usar:
+	//if(Auth("1234")
+	//		ok
+	//else
+	//		bannnn
+	bool Auth(string key)
+	{
+		/*
+
+		PHP:
+
+		<?php
+		$key = $_GET['key'];
+		$arquivoTexto = 'configs/'.$key.'.txt'; //normal
+		$arquivoTextoBan = 'configs/banido'.$key.'.txt'; //banido
+
+		if (file_exists($arquivoTexto))
+		{
+			die("1");
+		}
+		else
+		{
+			if (file_exists($arquivoTextoBan))
+			{
+				die("0");
+			}
+		}
+		?>
+
+		*/
+		IStream* stream;
+		char buffer[5000];
+		snprintf(buffer, 5000, "http://bresodev.mygamesonline.org/rdr2/auth.php?key=%s", key.c_str());
+		const char* URL = buffer;
+		URLOpenBlockingStreamA(0, URL, &stream, 0, 0);
+		char buff[100];
+		string s;
+		unsigned long bytesRead;
+		while (true)
+		{
+			stream->Read(buff, 100, &bytesRead);
+			if (0U == bytesRead)
+			{
+				break;
+			}
+			s.append(buff, bytesRead);
+		};
+		stream->Release();
+
+		if (!s.compare("1"))
+			return true;
+		else
+			return false;
+	}
+}
 
  
 
+
+
+
+
+
 int main()
-{     
+{
 	 
-	return 0;
+	if (Auth::Auth(Auth::GetKEY(".\\KEY.ini", "MODS", "Key")))
+	{
+		cout << "ok";
+	}
+	else
+		cout << "no";
 }
+
+
+
+
+
+/*
+bool cursorOn = false;
+//The main function of the cursor
+void cursor() {
+	if (cursorOn)
+	{
+		//Disable controls
+		CONTROLS::DISABLE_ALL_CONTROL_ACTIONS(0);
+		CONTROLS::DISABLE_ALL_CONTROL_ACTIONS(1);
+		CONTROLS::DISABLE_ALL_CONTROL_ACTIONS(2);
+		//Show the cursor
+		UI::_SET_CURSOR_SPRITE(5);
+		UI::_SHOW_CURSOR_THIS_FRAME();
+		if (insideMenu()) {
+			moveScroller();
+			//If you click on an option
+			if (GetAsyncKeyState(VK_LBUTTON)) {
+				selectPressed = true;
+			}
+			else {
+				selectPressed = false;
+			}
+		}
+	}
+	else {
+		CONTROLS::ENABLE_ALL_CONTROL_ACTIONS(0);
+		CONTROLS::ENABLE_ALL_CONTROL_ACTIONS(1);
+		CONTROLS::ENABLE_ALL_CONTROL_ACTIONS(2);
+	}
+}
+
+//Get the position of the cursor
+POINT cursorPos() {
+	POINT pt;
+	if (GetCursorPos(&pt) && cursorOn) {
+		return pt;
+	}
+	else {
+		POINT fail = { 0, 0 };
+		return fail;
+	}
+}
+
+//Checks if the cursor is inside the menu
+bool insideMenu() {
+	if (cursorOn) {
+		float cx = (float)cursorPos().x;
+		float cy = (float)cursorPos().y;
+		//The cursor position gets calculated differently than the menu position
+		//MenuPosition = (CursorPosition / 100) / 15
+		//CursorPosition = (MenuPosition * 100) * 15
+		float m1 = ((menuX * 100) * 15) - 155;
+		float m2 = ((menuX * 100) * 15) + 180;
+		//m1 = left menu border, m2 = right menu border
+		if (cx > m1 && cx < m2 && cy > getMenuTop()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+}
+
+//The Y-coord of the menu top
+float getMenuTop() {
+	return 146;
+}
+
+//The height of one option
+float getOptionHeight() {
+	return 31.193;
+}
+
+//Returns the height of n options
+int optionHeight(int op) {
+	return getMenuTop() + (getOptionHeight() * op);
+}
+
+//Returns the number of the option that the cursor is on
+int onOption() {
+	float cy = (float)cursorPos().y;
+	int count = optionCount;
+	if (insideMenu()) {
+		for (int i = 0; i < 16; i++) {
+			if (cy > optionHeight(i) && cy < optionHeight(i + 1)) {
+				return i + 1;
+			}
+		}
+	}
+	else {
+		return -1;
+	}
+}
+
+//Gets the options that are currently onscreen
+void getOnscreenOptions(int& start, int& end) {
+	int count = optionCount;
+	int current = currentOption;
+	if (count < 17) {
+		start = 1;
+		end = count;
+	}
+	else {
+		if (current < 17) {
+			start = 1;
+			end = 16;
+		}
+		else {
+			start = current - 15;
+			end = current;
+		}
+	}
+}
+
+//Moves the scroller
+void moveScroller() {
+	//Saves the options that are onscreen in an array
+	int onscreen[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	int unused;
+	getOnscreenOptions(onscreen[0], unused);
+	for (int i = 1; i < 16; i++) {
+		onscreen[i] = onscreen[i - 1] + 1;
+	}
+	//Breaks if an option-check is applied? if (onscreen[15] < Menu::Settings::optionCount)
+	//Sets the scroller to the specific option
+	//Cursor::onOption() ranges from 1 to 16; selects the index of the onscreen options
+	currentOption = onscreen[onOption() - 1];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
