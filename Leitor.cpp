@@ -492,6 +492,37 @@ namespace Extern_Reader
 	}
 	namespace JSON
 	{
+		/*
+		
+		{
+  "squadName": "Super hero squad",
+  "homeTown": "Metro City",
+  "formed": 2016,
+  "secretBase": 100.876,
+  "active": true,
+  "members": [
+    {
+      "name": "Molecule Man",
+      "age": 29,
+      "secretIdentity": "Dan Jukes",
+      "powers": [
+        "Radiation resistance",
+        "Turning tiny",
+        "Radiation blast"
+      ]
+    },
+	{
+      "name": "Breso",
+      "age": 29,
+      "secretIdentity": "Dan Jukes",
+      "powers": [
+        "Radiation resistance",
+        "Turning tiny",
+        "Radiation blast"
+      ]
+    },
+}
+*/
 		std::string JSONFilePath;
 
 		int TamanhoDoVector(std::vector<string> vetor)
@@ -1617,7 +1648,7 @@ namespace Auth
 int main()
 {
 
-	
+
 
 }
 
