@@ -195,6 +195,24 @@ namespace Extern_Reader
 				for (string line; getline(imput, line);)
 					TempVECTOR.push_back(line);
 				return TempVECTOR;
+				/*
+				int Ponteiro;
+	int sizeSpawnTXT;
+	std::vector<std::string> ListaProps;
+
+	Extern_Reader::ArquivoTXT::TXTFilePath = ".\\BresoMenu\\Props\\ListaDeProps.txt";
+	ListaProps = Extern_Reader::ArquivoTXT::String::PegarValores();
+	sizeSpawnTXT = Extern_Reader::ArquivoTXT::TamanhoDoVector(ListaProps);
+
+
+	Ponteiro = i;
+	addOption(ListaProps[i].c_str(), []
+		{
+			Criar_Objeto(ListaProps[Ponteiro].c_str());
+		}
+	);
+	*/
+
 			}
 			std::vector<string> PegarMaisValores(char separador)
 			{
@@ -493,7 +511,7 @@ namespace Extern_Reader
 	namespace JSON
 	{
 		/*
-		
+
 		{
   "squadName": "Super hero squad",
   "homeTown": "Metro City",
@@ -501,26 +519,26 @@ namespace Extern_Reader
   "secretBase": 100.876,
   "active": true,
   "members": [
-    {
-      "name": "Molecule Man",
-      "age": 29,
-      "secretIdentity": "Dan Jukes",
-      "powers": [
-        "Radiation resistance",
-        "Turning tiny",
-        "Radiation blast"
-      ]
-    },
 	{
-      "name": "Breso",
-      "age": 29,
-      "secretIdentity": "Dan Jukes",
-      "powers": [
-        "Radiation resistance",
-        "Turning tiny",
-        "Radiation blast"
-      ]
-    },
+	  "name": "Molecule Man",
+	  "age": 29,
+	  "secretIdentity": "Dan Jukes",
+	  "powers": [
+		"Radiation resistance",
+		"Turning tiny",
+		"Radiation blast"
+	  ]
+	},
+	{
+	  "name": "Breso",
+	  "age": 29,
+	  "secretIdentity": "Dan Jukes",
+	  "powers": [
+		"Radiation resistance",
+		"Turning tiny",
+		"Radiation blast"
+	  ]
+	},
 }
 */
 		std::string JSONFilePath;
@@ -1647,7 +1665,7 @@ namespace Auth
 
 int main()
 {
-
+	
 
 
 }
