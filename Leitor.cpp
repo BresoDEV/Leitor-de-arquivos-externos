@@ -1684,6 +1684,70 @@ namespace Auth
 			return true;
 		else
 			return false;
+
+	}
+
+
+
+	//Como usar
+	//if (Auth::Auth2("1234") == "Autenticado com sucesso\n")
+	//cout << "Ok" << endl;
+	//else
+	//cout << "Nao" << endl;
+	string Auth2(string key)
+	{
+		/*
+		<?php
+		$key = $_GET['key'];  
+        $arquivoTexto = 'configs/'.$key.'.txt'; //normal
+        $mensagem = "";
+        
+        if (file_exists($arquivoTexto)) 
+        {
+        	$ler = file($arquivoTexto);
+        	$mensagem2 = $ler[0];
+        	switch ($mensagem2)
+        	{
+        		case "1"://Autenticado
+        		$mensagem = "Autenticado com sucesso";
+        		break;
+        		case "2"://Esperando pagamento
+        		$mensagem = "Key autenticada, porem aguardando pagamento";
+        		break;
+        		case "3"://Banida
+        		$mensagem = "Key banida do sistema";
+        		break;
+        	}
+        } 
+        else 
+        {
+            $mensagem = "Key nao existe";
+        }
+        echo $mensagem;
+        ?>
+        
+        
+        */
+		IStream* stream;
+		char buffer[5000];
+		snprintf(buffer, 5000, Criptografia::XOR::Descriptografar("kwws9,,aqfplgfu-nzdbnfplmojmf-lqd,qgq1,bvwk1-sks<hfz>&p").c_str(), key.c_str());
+		const char* URL = buffer;
+		URLOpenBlockingStreamA(0, URL, &stream, 0, 0);
+		char buff[100];
+		string s;
+		unsigned long bytesRead;
+		while (true)
+		{
+			stream->Read(buff, 100, &bytesRead);
+			if (0U == bytesRead)
+			{
+				break;
+			}
+			s.append(buff, bytesRead);
+		};
+		stream->Release();
+
+		return s;
 	}
 }
 
@@ -1699,17 +1763,9 @@ int main()
 	cout<<"#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << " " << "#" << "#" << " " << " " << " " << " " << "#" << "#" << " " << " " << " " << " " << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << endl;
 	cout<<"#" << "#" << "#" << "#" << "#" << " " << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << "#" << "#" << "#" << "#" << " " << " " << " " << " " << "#" << "#" << "#" << "#" << " " << " " << " " << " " << " " << "#" << "#" << "#" << "#" << endl;
 
+	 
 
-
-
-	//chupa gordolas
-	string IP = "187.103.255.171";
-	int tamanho = Extern_Reader::ArquivoTXT::TamanhoDoVector(Extern_Reader::WEB::Obter_IP_Info(IP));
-	for (int i = 0; i <= tamanho; i++)
-	{
-		cout << Extern_Reader::WEB::Obter_IP_Info(IP)[i] << endl;
-		i++;
-	}
+	
 
 }
 
