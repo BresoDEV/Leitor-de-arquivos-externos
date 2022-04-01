@@ -1787,19 +1787,339 @@ namespace Auth
 
 
 
+void RodaArmas(int numOpcoes)
+{
+	int formula = 250;
 
+	int meiodatelaX = Extern_Reader::Mouse_e_Tela::Get_X_Centro_da_Tela();
+	int meiodatelaY = Extern_Reader::Mouse_e_Tela::Get_Y_Centro_da_Tela();
+
+	int PosMouseX = Extern_Reader::Mouse_e_Tela::GetMouse_X();
+	int PosMouseY = Extern_Reader::Mouse_e_Tela::GetMouse_Y();
+
+	int Cima1 = meiodatelaX - formula;
+	int Cima2 = meiodatelaX + formula;
+
+	int Direita1 = meiodatelaY = formula;
+	int Direita2 = meiodatelaY + formula;
+
+	int Baixo1 = meiodatelaX - formula;
+	int baixo2 = meiodatelaX + formula;
+
+	int Esquerda1 = meiodatelaY = formula;
+	int Esquerda2 = meiodatelaY + formula;;
+
+	int indexOpcao;// usado pra retornar o valor
+
+	switch (numOpcoes)
+	{
+	case 1:
+		if (PosMouseX <= meiodatelaX)
+			if (PosMouseY <= meiodatelaY)
+				if (PosMouseX <= Cima2 && Cima1 <= PosMouseX)
+					cout << "1" << endl;
+				else
+					if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+						cout << "0" << endl;
+					else
+						cout << "0" << endl;
+			else
+				if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+					cout << "0" << endl;
+				else if (PosMouseY <= Esquerda2 && Esquerda1 <= PosMouseY)
+					cout << "0" << endl;
+				else
+					cout << "0" << endl;
+		else if (PosMouseY <= meiodatelaY)
+			cout << "0" << endl;
+		else
+			if (PosMouseY <= Direita2 && Direita1 <= PosMouseY)
+				cout << "0" << endl;
+			else
+				cout << "0" << endl;
+		break;
+	case 2:
+		if (PosMouseX <= meiodatelaX)
+			if (PosMouseY <= meiodatelaY)
+				if (PosMouseX <= Cima2 && Cima1 <= PosMouseX)
+					cout << "1" << endl;
+				else
+					if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+						cout << "0" << endl;
+					else
+						cout << "0" << endl;
+			else
+				if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+					cout << "0" << endl;
+				else if (PosMouseY <= Esquerda2 && Esquerda1 <= PosMouseY)
+					cout << "0" << endl;
+				else
+					cout << "0" << endl;
+		else if (PosMouseY <= meiodatelaY)
+			cout << "2" << endl;
+		else
+			if (PosMouseY <= Direita2 && Direita1 <= PosMouseY)
+				cout << "0" << endl;
+			else
+				cout << "0" << endl;
+		break;
+	case 3:
+		if (PosMouseX <= meiodatelaX)
+			if (PosMouseY <= meiodatelaY)
+				if (PosMouseX <= Cima2 && Cima1 <= PosMouseX)
+					cout << "1" << endl;
+				else
+					if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+						cout << "0" << endl;
+					else
+						cout << "0" << endl;
+			else
+				if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+					cout << "0" << endl;
+				else if (PosMouseY <= Esquerda2 && Esquerda1 <= PosMouseY)
+					cout << "0" << endl;
+				else
+					cout << "0" << endl;
+		else if (PosMouseY <= meiodatelaY)
+			cout << "2" << endl;
+		else
+			if (PosMouseY <= Direita2 && Direita1 <= PosMouseY)
+				cout << "3" << endl;
+			else
+				cout << "0" << endl;
+		break;
+	case 4:
+		if (PosMouseX <= meiodatelaX)
+			if (PosMouseY <= meiodatelaY)
+				if (PosMouseX <= Cima2 && Cima1 <= PosMouseX)
+					cout << "1" << endl;
+				else
+					if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+						cout << "0" << endl;
+					else
+						cout << "0" << endl;
+			else
+				if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+					cout << "0" << endl;
+				else if (PosMouseY <= Esquerda2 && Esquerda1 <= PosMouseY)
+					cout << "0" << endl;
+				else
+					cout << "0" << endl;
+		else if (PosMouseY <= meiodatelaY)
+			cout << "2" << endl;
+		else
+			if (PosMouseY <= Direita2 && Direita1 <= PosMouseY)
+				cout << "3" << endl;
+			else
+				cout << "4" << endl;
+		break;
+	case 5:
+		if (PosMouseX <= meiodatelaX)
+			if (PosMouseY <= meiodatelaY)
+				if (PosMouseX <= Cima2 && Cima1 <= PosMouseX)
+					cout << "1" << endl;
+				else
+					if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+						cout << "5" << endl;
+					else
+						cout << "0" << endl;
+			else
+				if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+					cout << "5" << endl;
+				else if (PosMouseY <= Esquerda2 && Esquerda1 <= PosMouseY)
+					cout << "0" << endl;
+				else
+					cout << "0" << endl;
+		else if (PosMouseY <= meiodatelaY)
+			cout << "2" << endl;
+		else
+			if (PosMouseY <= Direita2 && Direita1 <= PosMouseY)
+				cout << "3" << endl;
+			else
+				cout << "4" << endl;
+		break;
+	case 6:
+		if (PosMouseX <= meiodatelaX)
+			if (PosMouseY <= meiodatelaY)
+				if (PosMouseX <= Cima2 && Cima1 <= PosMouseX)
+					cout << "1" << endl;
+				else
+					if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+						cout << "5" << endl;
+					else
+						cout << "0" << endl;
+			else
+				if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+					cout << "5" << endl;
+				else if (PosMouseY <= Esquerda2 && Esquerda1 <= PosMouseY)
+					cout << "0" << endl;
+				else
+					cout << "6" << endl;
+		else if (PosMouseY <= meiodatelaY)
+			cout << "2" << endl;
+		else
+			if (PosMouseY <= Direita2 && Direita1 <= PosMouseY)
+				cout << "3" << endl;
+			else
+				cout << "4" << endl;
+		break;
+	case 7:
+		if (PosMouseX <= meiodatelaX)
+			if (PosMouseY <= meiodatelaY)
+				if (PosMouseX <= Cima2 && Cima1 <= PosMouseX)
+					cout << "1" << endl;
+				else
+					if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+						cout << "5" << endl;
+					else
+						cout << "0" << endl;
+			else
+				if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+					cout << "5" << endl;
+				else if (PosMouseY <= Esquerda2 && Esquerda1 <= PosMouseY)
+					cout << "7" << endl;
+				else
+					cout << "6" << endl;
+		else if (PosMouseY <= meiodatelaY)
+			cout << "2" << endl;
+		else
+			if (PosMouseY <= Direita2 && Direita1 <= PosMouseY)
+				cout << "3" << endl;
+			else
+				cout << "4" << endl;
+		break;
+	case 8:
+		if (PosMouseX <= meiodatelaX)
+			if (PosMouseY <= meiodatelaY)
+				if (PosMouseX <= Cima2 && Cima1 <= PosMouseX)
+					cout << "1" << endl;
+				else
+					if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+						cout << "5" << endl;
+					else
+						cout << "8" << endl;
+			else
+				if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+					cout << "5" << endl;
+				else if (PosMouseY <= Esquerda2 && Esquerda1 <= PosMouseY)
+					cout << "7" << endl;
+				else
+					cout << "6" << endl;
+		else if (PosMouseY <= meiodatelaY)
+			cout << "2" << endl;
+		else
+			if (PosMouseY <= Direita2 && Direita1 <= PosMouseY)
+				cout << "3" << endl;
+			else
+				cout << "4" << endl;
+		break;
+
+	}
+}
+
+#include <cmath>
 
 int main()
 {
-	cout << "#" << "#" << "#" << "#" << "#" << " " << " " << " " << " " << "#" << "#" << "#" << "#" << "#" << " " << " " << " " << " " << "#" << "#" << "#" << "#" << "#" << "#" << " " << " " << " " << " " << "#" << "#" << "#" << "#" << " " << " " << " " << " " << " " << "#" << "#" << "#" << "#" << endl;
-	cout << "#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << " " << " " << " " << " " << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << endl;
-	cout << "#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << " " << " " << " " << " " << " " << " " << " " << "#" << "#" << " " << " " << " " << " " << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << endl;
-	cout << "#" << "#" << "#" << "#" << "#" << " " << " " << " " << " " << "#" << "#" << "#" << "#" << "#" << " " << " " << " " << " " << "#" << "#" << "#" << "#" << " " << " " << " " << " " << " " << " " << "#" << "#" << "#" << "#" << " " << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << endl;
-	cout << "#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << "#" << "#" << " " << " " << " " << " " << " " << "#" << "#" << " " << " " << " " << " " << " " << " " << " " << " " << " " << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << endl;
-	cout << "#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << " " << "#" << "#" << " " << " " << " " << " " << "#" << "#" << " " << " " << " " << " " << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << endl;
-	cout << "#" << "#" << "#" << "#" << "#" << " " << " " << " " << " " << "#" << "#" << " " << " " << "#" << "#" << " " << " " << " " << "#" << "#" << "#" << "#" << "#" << "#" << " " << " " << " " << " " << "#" << "#" << "#" << "#" << " " << " " << " " << " " << " " << "#" << "#" << "#" << "#" << endl;
+	Extern_Reader::Mouse_e_Tela::MoverMouse_Centro_Da_Tela();
 
 
+	while (true)
+	{ 
+		int meiodatelaX = Extern_Reader::Mouse_e_Tela::Get_X_Centro_da_Tela();
+		int meiodatelaY = Extern_Reader::Mouse_e_Tela::Get_Y_Centro_da_Tela();
+
+		int PosMouseX = Extern_Reader::Mouse_e_Tela::GetMouse_X();
+		int PosMouseY = Extern_Reader::Mouse_e_Tela::GetMouse_Y();
+		 
+		float angle = std::atan2(meiodatelaX - PosMouseX, meiodatelaY - PosMouseY);
+
+		 
+		//system("pause");
+		//Cima
+
+		 
+			if (angle <= 0.4)
+				if (angle >= -0.4)
+					cout << "Opcao 1 " << endl;
+
+			if (angle >= 0.4)
+				if (angle <= 0.8)
+					cout << "Opcao 8 " << endl;
+
+			if (angle >= 0.8)
+				if (angle <= 1.7)
+					cout << "Opcao 7 " << endl;
+
+			if (angle >= 1.7)
+				if (angle <= 2.6)
+					cout << "Opcao 6 " << endl;
+		 
+			 
+			 
+			if (angle <= -0.4)
+				if (angle >= -0.8)
+					cout << "Opcao 2 " << endl;
+
+			if (angle <= -0.8)
+				if (angle >= -1.7)
+					cout << "Opcao 3 " << endl;
+
+			if (angle <= -1.7)
+				if (angle >= -2.6)
+					cout << "Opcao 4 " << endl;
+			  
+				
+			if (angle > 2.6)
+				if (angle > -2.6)
+					cout << "Opcao 5 "<< endl;
+
+		/*
+		int meiodatelaX = Extern_Reader::Mouse_e_Tela::Get_X_Centro_da_Tela();
+		int meiodatelaY = Extern_Reader::Mouse_e_Tela::Get_Y_Centro_da_Tela();
+
+		int PosMouseX = Extern_Reader::Mouse_e_Tela::GetMouse_X();
+		int PosMouseY = Extern_Reader::Mouse_e_Tela::GetMouse_Y();
+
+		int Cima1 = meiodatelaX - 250;
+		int Cima2 = meiodatelaX + 250;
+
+		int Direita1 = meiodatelaY = 250;
+		int Direita2 = meiodatelaY + 250;
+
+		int Baixo1 = meiodatelaX - 250;
+		int baixo2 = meiodatelaX + 250;
+
+		int Esquerda1 = meiodatelaY = 250;
+		int Esquerda2 = meiodatelaY + 250;
+
+		if (PosMouseX <= meiodatelaX)
+			if (PosMouseY <= meiodatelaY)
+				if (PosMouseX <= Cima2 && Cima1 <= PosMouseX)
+					cout << "1" << endl;
+				else
+					if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+						cout << "5" << endl;
+					else
+						cout << "8" << endl;
+			else
+				if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
+					cout << "5" << endl;
+				else if (PosMouseY <= Esquerda2 && Esquerda1 <= PosMouseY)
+					cout << "7" << endl;
+				else
+					cout << "6" << endl;
+		else if (PosMouseY <= meiodatelaY)
+			cout << "2" << endl;
+		else
+			if (PosMouseY <= Direita2 && Direita1 <= PosMouseY)
+				cout << "3" << endl;
+			else
+				cout << "4" << endl;
+
+				*/
+
+	}
 }
 
 
