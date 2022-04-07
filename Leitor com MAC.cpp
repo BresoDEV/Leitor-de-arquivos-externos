@@ -25,6 +25,7 @@
 
 #include<iostream>
 #include<stdio.h>
+#include <cmath>
 #include<fstream>
 #include<string>
 #include <vector>
@@ -714,6 +715,143 @@ namespace Extern_Reader
 					}
 				}
 				return TempVECTOR;
+			}
+		}
+	}
+
+	namespace DataHora
+	{
+		namespace INT
+		{
+			int Ano()
+			{
+				std::time_t t = std::time(0);
+				std::tm* now = std::localtime(&t);
+				return (now->tm_year + 1900);
+			}
+
+			int Mes()
+			{
+				std::time_t t = std::time(0);
+				std::tm* now = std::localtime(&t);
+				return (now->tm_mon + 1);
+			}
+
+			int Dia()
+			{
+				std::time_t t = std::time(0);
+				std::tm* now = std::localtime(&t);
+				return (now->tm_mday);
+			}
+
+			int Hora()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				return current_tm.tm_hour;
+			}
+
+			int Minutos()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				return current_tm.tm_min;
+			}
+
+			int Segundos()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				return current_tm.tm_sec;
+			}
+
+		}
+
+		namespace STRING
+		{
+			string Hora()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", current_tm.tm_hour);
+				return szTimestamp;
+			}
+
+			string Minutos()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", current_tm.tm_min);
+				return szTimestamp;
+			}
+
+			string Segundos()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", current_tm.tm_sec);
+				return szTimestamp;
+			}
+
+			string HorarioCompleto()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d:%02d:%02d", current_tm.tm_hour, current_tm.tm_min, current_tm.tm_sec);
+				return szTimestamp;
+			}
+
+			string Ano()
+			{
+				std::time_t t = std::time(0);
+				std::tm* now = std::localtime(&t);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", (now->tm_year + 1900));
+				return szTimestamp;
+			}
+
+			string Mes()
+			{
+				std::time_t t = std::time(0);
+				std::tm* now = std::localtime(&t);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", (now->tm_mon + 1));
+				return szTimestamp;
+			}
+
+			string Dia()
+			{
+				std::time_t t = std::time(0);
+				std::tm* now = std::localtime(&t);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", (now->tm_mday));
+				return szTimestamp;
+
 			}
 		}
 	}
@@ -2017,114 +2155,326 @@ void RodaArmas(int numOpcoes)
 	}
 }
 
-#include <cmath>
-
-int main()
+void RodaDeArmasAngulo()
 {
-	Extern_Reader::Mouse_e_Tela::MoverMouse_Centro_Da_Tela();
+	RECT desktop;
+	const HWND hDesktop = GetDesktopWindow();
+	GetWindowRect(hDesktop, &desktop);
+	SetCursorPos(desktop.right / 2, desktop.bottom / 2);
 
+
+	POINT p;
+	GetCursorPos(&p);
 
 	while (true)
-	{ 
-		int meiodatelaX = Extern_Reader::Mouse_e_Tela::Get_X_Centro_da_Tela();
-		int meiodatelaY = Extern_Reader::Mouse_e_Tela::Get_Y_Centro_da_Tela();
+	{
+		int meiodatelaX = desktop.right / 2;
+		int meiodatelaY = desktop.bottom / 2;
 
-		int PosMouseX = Extern_Reader::Mouse_e_Tela::GetMouse_X();
-		int PosMouseY = Extern_Reader::Mouse_e_Tela::GetMouse_Y();
-		 
+		int PosMouseX = p.x;
+		int PosMouseY = p.y;
+
 		float angle = std::atan2(meiodatelaX - PosMouseX, meiodatelaY - PosMouseY);
 
-		 
-		//system("pause");
-		//Cima
 
-		 
-			if (angle <= 0.4)
-				if (angle >= -0.4)
-					cout << "Opcao 1 " << endl;
+		if (angle <= 0.4)
+			if (angle >= -0.4)
+				cout << "Opcao 1 " << endl;
 
-			if (angle >= 0.4)
-				if (angle <= 0.8)
-					cout << "Opcao 8 " << endl;
+		if (angle >= 0.4)
+			if (angle <= 0.8)
+				cout << "Opcao 8 " << endl;
 
-			if (angle >= 0.8)
-				if (angle <= 1.7)
-					cout << "Opcao 7 " << endl;
+		if (angle >= 0.8)
+			if (angle <= 1.7)
+				cout << "Opcao 7 " << endl;
 
-			if (angle >= 1.7)
-				if (angle <= 2.6)
-					cout << "Opcao 6 " << endl;
-		 
-			 
-			 
-			if (angle <= -0.4)
-				if (angle >= -0.8)
-					cout << "Opcao 2 " << endl;
+		if (angle >= 1.7)
+			if (angle <= 2.6)
+				cout << "Opcao 6 " << endl;
 
-			if (angle <= -0.8)
-				if (angle >= -1.7)
-					cout << "Opcao 3 " << endl;
 
-			if (angle <= -1.7)
-				if (angle >= -2.6)
-					cout << "Opcao 4 " << endl;
-			  
-				
-			if (angle > 2.6)
-				if (angle > -2.6)
-					cout << "Opcao 5 "<< endl;
 
-		/*
-		int meiodatelaX = Extern_Reader::Mouse_e_Tela::Get_X_Centro_da_Tela();
-		int meiodatelaY = Extern_Reader::Mouse_e_Tela::Get_Y_Centro_da_Tela();
+		if (angle <= -0.4)
+			if (angle >= -0.8)
+				cout << "Opcao 2 " << endl;
 
-		int PosMouseX = Extern_Reader::Mouse_e_Tela::GetMouse_X();
-		int PosMouseY = Extern_Reader::Mouse_e_Tela::GetMouse_Y();
+		if (angle <= -0.8)
+			if (angle >= -1.7)
+				cout << "Opcao 3 " << endl;
 
-		int Cima1 = meiodatelaX - 250;
-		int Cima2 = meiodatelaX + 250;
+		if (angle <= -1.7)
+			if (angle >= -2.6)
+				cout << "Opcao 4 " << endl;
 
-		int Direita1 = meiodatelaY = 250;
-		int Direita2 = meiodatelaY + 250;
 
-		int Baixo1 = meiodatelaX - 250;
-		int baixo2 = meiodatelaX + 250;
+		if (angle > 2.6)
+			if (angle > -2.6)
+				cout << "Opcao 5 " << endl;
 
-		int Esquerda1 = meiodatelaY = 250;
-		int Esquerda2 = meiodatelaY + 250;
 
-		if (PosMouseX <= meiodatelaX)
-			if (PosMouseY <= meiodatelaY)
-				if (PosMouseX <= Cima2 && Cima1 <= PosMouseX)
-					cout << "1" << endl;
-				else
-					if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
-						cout << "5" << endl;
-					else
-						cout << "8" << endl;
-			else
-				if (PosMouseX <= baixo2 && Baixo1 <= PosMouseX)
-					cout << "5" << endl;
-				else if (PosMouseY <= Esquerda2 && Esquerda1 <= PosMouseY)
-					cout << "7" << endl;
-				else
-					cout << "6" << endl;
-		else if (PosMouseY <= meiodatelaY)
-			cout << "2" << endl;
-		else
-			if (PosMouseY <= Direita2 && Direita1 <= PosMouseY)
-				cout << "3" << endl;
-			else
-				cout << "4" << endl;
-
-				*/
 
 	}
 }
 
 
 
+namespace MenuCircular
+{
+	/*
+	Como usar
+	
+	Ao clicar no submenuOption
+		CentralizarMouse();
+	
+	No loop do menu:
+	DrawMenu(8);
+	int OpcaoIndex = QualOpcaoTa();
+	if(CheckApertou())
+		{
+		switch (OpcaoIndex)
+			{
+			case 1: // funcao da opcao 1
 
+				break;
+			case 2: // funcao da opcao 2
+
+				break;
+			case 3: // funcao da opcao 3
+
+				break;
+			case 4: // funcao da opcao 4
+
+				break;
+			case 5: // funcao da opcao 5
+
+				break;
+			case 6: // funcao da opcao 6
+
+				break;
+			case 7: // funcao da opcao 7
+
+				break;
+			case 8: // funcao da opcao 8
+
+				break;
+			}
+		}
+	
+	*/
+	void CentralizarMouse()//chama 1 vez, quando abre o menu, pra centralizar o mouse. NAO PODE SER EM LOOP ISSO
+	{
+		RECT TelaPC;
+		const HWND hTelaPC = GetDesktopWindow();
+		GetWindowRect(hTelaPC, &TelaPC);
+		SetCursorPos(TelaPC.right / 2, TelaPC.bottom / 2);
+	}
+
+	int QualOpcaoTa()
+	{
+		RECT TelaPC;
+		const HWND hTelaPC = GetDesktopWindow();
+		GetWindowRect(hTelaPC, &TelaPC);
+		POINT ponteiro;
+		GetCursorPos(&ponteiro);
+
+		int meiodatelaX = TelaPC.right / 2;
+		int meiodatelaY = TelaPC.bottom / 2;
+
+		int PosMouseX = ponteiro.x;
+		int PosMouseY = ponteiro.y;
+
+		float AngulodoMouse = std::atan2(meiodatelaX - PosMouseX, meiodatelaY - PosMouseY);
+
+		if (AngulodoMouse <= 0.4)
+			if (AngulodoMouse >= -0.4)
+				return 1;
+		if (AngulodoMouse >= 0.4)
+			if (AngulodoMouse <= 0.8)
+				return 8;
+		if (AngulodoMouse >= 0.8)
+			if (AngulodoMouse <= 1.7)
+				return 7;
+		if (AngulodoMouse >= 1.7)
+			if (AngulodoMouse <= 2.6)
+				return 6;
+		if (AngulodoMouse <= -0.4)
+			if (AngulodoMouse >= -0.8)
+				return 2;
+		if (AngulodoMouse <= -0.8)
+			if (AngulodoMouse >= -1.7)
+				return 3;
+		if (AngulodoMouse <= -1.7)
+			if (AngulodoMouse >= -3.6)//antes era -2.6, mas ta bugando. Assim com -3.6 funciona de boas
+				return 4;
+		if (AngulodoMouse > 2.6)
+			if (AngulodoMouse > -2.6)
+				return 5;
+	}
+
+	void DrawMenu(int NumeroDeOpcoes, float tamBoxX = 0.100, float = 0.100)
+	{   
+		switch (NumeroDeOpcoes)
+		{
+		case 1:
+			//GRAPHICS::DRAW_RECT(0.500, 0.300, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//1 
+			break;
+		case 2:
+			//GRAPHICS::DRAW_RECT(0.500, 0.300, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//1 
+			//GRAPHICS::DRAW_RECT(0.500, 0.600 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//5 
+			break;
+		case 3:
+			//GRAPHICS::DRAW_RECT(0.500, 0.300, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//1
+			//GRAPHICS::DRAW_RECT(0.550, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//4 
+			//GRAPHICS::DRAW_RECT(0.450, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//6 
+			break;
+		case 4:
+			//GRAPHICS::DRAW_RECT(0.500, 0.300, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//1
+			//GRAPHICS::DRAW_RECT(0.600, 0.500, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//3 
+			//GRAPHICS::DRAW_RECT(0.500, 0.600 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//5
+			//GRAPHICS::DRAW_RECT(0.400, 0.500 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//7 
+			break;
+		case 5:
+
+			break;
+		case 6:
+			//GRAPHICS::DRAW_RECT(0.550, 0.450 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//2
+		//GRAPHICS::DRAW_RECT(0.600, 0.500, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//3 
+		//GRAPHICS::DRAW_RECT(0.550, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//4 
+			//GRAPHICS::DRAW_RECT(0.450, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//6 
+		//GRAPHICS::DRAW_RECT(0.400, 0.500 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//7  
+		//GRAPHICS::DRAW_RECT(0.450, 0.450 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//8 
+			break;
+		case 7:
+
+			break;
+		case 8:
+			//GRAPHICS::DRAW_RECT(0.500, 0.300, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//1
+		//GRAPHICS::DRAW_RECT(0.550, 0.450 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//2
+		//GRAPHICS::DRAW_RECT(0.600, 0.500, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//3 
+		//GRAPHICS::DRAW_RECT(0.550, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//4 
+		//GRAPHICS::DRAW_RECT(0.500, 0.600 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//5 
+		//GRAPHICS::DRAW_RECT(0.450, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//6 
+		//GRAPHICS::DRAW_RECT(0.400, 0.500 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//7  
+		//GRAPHICS::DRAW_RECT(0.450, 0.450 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//8 
+			break;
+		}
+	}
+
+	bool CheckApertou()
+	{
+		if (GetAsyncKeyState(VK_LBUTTON))
+			return true;
+		else
+			return false;
+		 
+	}
+}
+
+ 
+int Delay = 1000;	//Velocidade da transicao
+int ponteiro = 0;	//nao mexe
+int Index = 0;		//Nao mexe
+vector<string> Diretorio = { "Diretorio 1", "Diretorio 2", "Diretorio 3", "Diretorio 4", "Diretorio 5" };
+vector<string> Textura = { "Textura 1", "Textura 2", "Textura 3", "Textura 4", "Textura 5" };
+
+
+void TexturaCarrosel()
+{
+	int tamanho = Diretorio.size() - 1;
+	if(ponteiro <= Delay)
+	{
+		//Aqui usa o nativo da textura, Diretorio[Index] e Textura[Index] 
+		ponteiro++;
+		if (ponteiro == Delay)
+		{
+			ponteiro = 0;
+			if (Index <= (tamanho - 1))
+				Index++;
+			else
+				Index = 0;
+		}
+	}
+
+}
+ 
+
+int main()
+{ 
+	while (true)
+	{
+		TexturaCarrosel();
+	}
+}
+
+
+
+/*
+void RodaDeArmasAngulo()
+{
+	Extern_Reader::Mouse_e_Tela::MoverMouse_Centro_Da_Tela();
+
+	RECT desktop;
+	const HWND hDesktop = GetDesktopWindow();
+	GetWindowRect(hDesktop, &desktop);
+	SetCursorPos(desktop.right / 2, desktop.bottom / 2);
+
+
+	while (true)
+	{
+		int meiodatelaX = Extern_Reader::Mouse_e_Tela::Get_X_Centro_da_Tela();
+		int meiodatelaY = Extern_Reader::Mouse_e_Tela::Get_Y_Centro_da_Tela();
+
+		int PosMouseX = Extern_Reader::Mouse_e_Tela::GetMouse_X();
+		int PosMouseY = Extern_Reader::Mouse_e_Tela::GetMouse_Y();
+
+		float angle = std::atan2(meiodatelaX - PosMouseX, meiodatelaY - PosMouseY);
+
+
+		//system("pause");
+		//Cima
+
+
+		if (angle <= 0.4)
+			if (angle >= -0.4)
+				cout << "Opcao 1 " << endl;
+
+		if (angle >= 0.4)
+			if (angle <= 0.8)
+				cout << "Opcao 8 " << endl;
+
+		if (angle >= 0.8)
+			if (angle <= 1.7)
+				cout << "Opcao 7 " << endl;
+
+		if (angle >= 1.7)
+			if (angle <= 2.6)
+				cout << "Opcao 6 " << endl;
+
+
+
+		if (angle <= -0.4)
+			if (angle >= -0.8)
+				cout << "Opcao 2 " << endl;
+
+		if (angle <= -0.8)
+			if (angle >= -1.7)
+				cout << "Opcao 3 " << endl;
+
+		if (angle <= -1.7)
+			if (angle >= -2.6)
+				cout << "Opcao 4 " << endl;
+
+
+		if (angle > 2.6)
+			if (angle > -2.6)
+				cout << "Opcao 5 " << endl;
+
+
+
+	}
+}
+*/
 
 
 
