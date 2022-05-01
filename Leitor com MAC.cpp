@@ -491,8 +491,8 @@ namespace Extern_Reader
 			{
 				pAdapterInfo = pAdapterInfo->Next; pAdapterInfo = pAdapterInfo->Next;
 			}
-			sprintf(mac_addr, "%02X:%02X:%02X:%02X:%02X:%02X", pAdapterInfo->Address[0], pAdapterInfo->Address[1], pAdapterInfo->Address[2], pAdapterInfo->Address[3], pAdapterInfo->Address[4], pAdapterInfo->Address[5]); printf("%s", mac_addr);
-			printf("\n");
+			sprintf(mac_addr, "%02X:%02X:%02X:%02X:%02X:%02X", pAdapterInfo->Address[0], pAdapterInfo->Address[1], pAdapterInfo->Address[2], pAdapterInfo->Address[3], pAdapterInfo->Address[4], pAdapterInfo->Address[5]);;
+			//printf("\n");
 			return mac_addr;
 		}
 	}
@@ -1921,6 +1921,8 @@ namespace Auth
 
 		return s;
 	}
+
+
 }
 
 
@@ -2219,407 +2221,239 @@ void RodaDeArmasAngulo()
 
 
 
-namespace MenuCircular
+ 
+
+
+bool auted[6] = { false,false,false, false, false, false };
+bool bemVindo = false;
+
+
+
+ 
+string GET_HASH_KEY(string s)
 {
-	/*
-	Como usar
-	
-	Ao clicar no submenuOption
-		CentralizarMouse();
-	
-	No loop do menu:
-	DrawMenu(8);
-	int OpcaoIndex = QualOpcaoTa();
-	if(CheckApertou())
+	string rotated{};
+	for (const char& c : s)
+	{
+		rotated += 3 ^ c;
+	} return rotated;
+}
+
+
+
+void auth()//monitor button
+{
+	if (auted[0])
+	{
+
+	}
+	else
+	{
+		if (InternetCheckConnection(L"http://www.google.com", FLAG_ICC_FORCE_CONNECTION, 0))
 		{
-		switch (OpcaoIndex)
+			PIP_ADAPTER_INFO AdapterInfo;
+			DWORD dwBufLen = sizeof(IP_ADAPTER_INFO);
+			char* mac_addr = (char*)malloc(18);
+			AdapterInfo = (IP_ADAPTER_INFO*)malloc(sizeof(IP_ADAPTER_INFO));
+			GetAdaptersInfo(AdapterInfo, &dwBufLen);
+			AdapterInfo = (IP_ADAPTER_INFO*)malloc(dwBufLen);
+			GetAdaptersInfo(AdapterInfo, &dwBufLen);
+			PIP_ADAPTER_INFO pAdapterInfo = AdapterInfo;
+			pAdapterInfo = pAdapterInfo->Next;
+			sprintf(mac_addr, "%02X%02X%02X%02X%02X%02X", pAdapterInfo->Address[0], pAdapterInfo->Address[1], pAdapterInfo->Address[2], pAdapterInfo->Address[3], pAdapterInfo->Address[4], pAdapterInfo->Address[5]);;
+			//printf("\n"); 
+
+			IStream* stream;
+			char buffer[5000];
+			snprintf(buffer, 5000, GET_HASH_KEY("kwws9,,aqfplgfu-nzdbnfplmojmf-lqd,qgq1,bvwk-sks<hfz>&p%nb`>&p").c_str(), "1234", mac_addr);
+			const char* URL = buffer;
+			URLOpenBlockingStreamA(0, URL, &stream, 0, 0);
+			char buff[100];
+			string s;
+			unsigned long bytesRead;
+			while (true)
 			{
-			case 1: // funcao da opcao 1
+				stream->Read(buff, 100, &bytesRead);
+				if (0U == bytesRead)
+				{
+					break;
+				}
+				s.append(buff, bytesRead);
+			};
+			stream->Release();
 
-				break;
-			case 2: // funcao da opcao 2
 
-				break;
-			case 3: // funcao da opcao 3
+			string oi = s; 
+			if (oi == GET_HASH_KEY("Bvwfmwj`bgl#`ln#pv`fppl"))//"Autenticado com sucesso"
+			{
+				auted[0] = true;
+				bemVindo = true;
+			}
+			else if (oi == GET_HASH_KEY("Hfz#bvwfmwj`bgb/#slqfn#bdvbqgbmgl#sbdbnfmwl"))//"Key autenticada, porem aguardando pagamento"
+			{
+				auted[1] = true;
+				bemVindo = true;
 
-				break;
-			case 4: // funcao da opcao 4
+			}
+			else if (oi == GET_HASH_KEY("Hfz#ib#pfmgl#vwjojybgb"))//"Key ja sendo utilizada"
+			{
+				auted[3] = true;
+				bemVindo = true;
 
-				break;
-			case 5: // funcao da opcao 5
+			}
+			else if (oi == GET_HASH_KEY("Hfz#abmjgb#gl#pjpwfnb"))//"Key banida do sistema"
+			{
+				auted[4] = true;
+				bemVindo = true;
 
-				break;
-			case 6: // funcao da opcao 6
+			}
+			else if (oi == GET_HASH_KEY("Hfz#mbl#f{jpwf"))//"Key nao existe"
+			{
+				auted[5] = true;
+				bemVindo = true;
 
-				break;
-			case 7: // funcao da opcao 7
+			} 
+		}
+		else
+		{
+			auted[2] = true;
+			//return "Sem internet";// << endl;
+			bemVindo = true;
+		}
+	}
+}
 
-				break;
-			case 8: // funcao da opcao 8
 
+
+
+void AuthMod()
+{
+	const char* SiteAuth = "http://rdr2mapeditor.mygamesonline.org/auth.php?key=%s&IP=%s";
+	const char* SiteAuth2 = "http://rdr2mapeditor.mygamesonline.org/auth2.php?key=%s&IP=%s";
+	int myIP_[] = { 0x01, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD };
+	int myIP_1[] = { 0x01, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD };
+	int myIP_2[] = { 0xAE, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD };
+	int myIP_3[] = { 0x03, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD };
+	int myIP_4[] = { 0x04, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD };
+	int  RDR2ss[] = { 0x64, 0x6f, 0x74, 0x63, 0x65, 0x74 };
+	int  myIP_ss4d[] = { 0x04, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD };
+	int  arrassyssd[] = { 0x64, 0x6f, 0x74, 0x63, 0x65, 0x74 };
+	float a = 0.0f;
+	float b = 0.0f;
+	int  RDR2Zero[] = { 0x01, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD }; 
+	int myIP_2s[] = { 0xAE, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD };
+	int myIP_3dd[] = { 0x03, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD }; 
+	int  myIP_10[] = { 0x01, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD };
+	int  myIP_ss4[] = { 0x04, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD };
+	int  arrassyss[] = { 0x64, 0x6f, 0x74, 0x63, 0x65, 0x74 };
+	int  Eduardo[] = { 0x01, 0x1B3E, 0xAA, 0xDC, 0x10, 0xDD };
+
+}
+ 
+void BemVindo() // loop
+{
+	auth();//tira isso do loop. Coloquei aqui apenas pra chamar a funcao
+	if (bemVindo)
+	{
+		if (auted[0])
+		{
+			cout << GET_HASH_KEY("Bvwfmwj`bgl#`ln#pv`fppl").c_str();// "Autenticado com Sucesso";// << endl;
+		}
+		else if (auted[1])
+		{
+			cout << GET_HASH_KEY("Hfz#bvwfmwj`bgb/#slqfn#bdvbqgbmgl#sbdbnfmwl").c_str();//"Key autenticada, porem aguardando pagamento";// << endl;
+		}
+		else if (auted[2])
+		{
+			cout << GET_HASH_KEY("Pfn#jmwfqmfw").c_str();// << endl;"Sem internet";// << endl;
+		}
+		else if (auted[3])
+		{
+			cout << GET_HASH_KEY("Hfz#ib#pfmgl#vpbgb").c_str();//<< endl;"Key ja sendo usada";//<< endl;
+		}
+		else if (auted[4])
+		{
+			cout << GET_HASH_KEY("Hfz#Abmjgb").c_str();//<< endl;"Key Banida";//<< endl;
+		}
+		else if (auted[5])
+		{
+			cout << GET_HASH_KEY("Key nao existe").c_str();// << endl;"Key nao existe";// << endl;
+		}
+	}
+}
+
+
+
+string GetSiteValue(string Key, string IndexDaOpcao)
+{
+	if (InternetCheckConnection(L"http://www.google.com", FLAG_ICC_FORCE_CONNECTION, 0))
+	{
+		 
+		IStream* stream;
+		char buffer[5000];
+		snprintf(buffer, 5000, "http://bresodev.mygamesonline.org/rdr2/lerBool.php?key=%s&index=%s", Key.c_str(), IndexDaOpcao.c_str());
+		const char* URL = buffer;
+		URLOpenBlockingStreamA(0, URL, &stream, 0, 0);
+		char buff[100];
+		string s;
+		unsigned long bytesRead;
+		while (true)
+		{
+			stream->Read(buff, 100, &bytesRead);
+			if (0U == bytesRead)
+			{
 				break;
 			}
-		}
-	
-	*/
-	void CentralizarMouse()//chama 1 vez, quando abre o menu, pra centralizar o mouse. NAO PODE SER EM LOOP ISSO
-	{
-		RECT TelaPC;
-		const HWND hTelaPC = GetDesktopWindow();
-		GetWindowRect(hTelaPC, &TelaPC);
-		SetCursorPos(TelaPC.right / 2, TelaPC.bottom / 2);
+			s.append(buff, bytesRead);
+		};
+		stream->Release();
+
+
+		return s;
+
 	}
-
-	int QualOpcaoTa()
+	else
 	{
-		RECT TelaPC;
-		const HWND hTelaPC = GetDesktopWindow();
-		GetWindowRect(hTelaPC, &TelaPC);
-		POINT ponteiro;
-		GetCursorPos(&ponteiro);
-
-		int meiodatelaX = TelaPC.right / 2;
-		int meiodatelaY = TelaPC.bottom / 2;
-
-		int PosMouseX = ponteiro.x;
-		int PosMouseY = ponteiro.y;
-
-		float AngulodoMouse = std::atan2(meiodatelaX - PosMouseX, meiodatelaY - PosMouseY);
-
-		if (AngulodoMouse <= 0.4)
-			if (AngulodoMouse >= -0.4)
-				return 1;
-		if (AngulodoMouse >= 0.4)
-			if (AngulodoMouse <= 0.8)
-				return 8;
-		if (AngulodoMouse >= 0.8)
-			if (AngulodoMouse <= 1.7)
-				return 7;
-		if (AngulodoMouse >= 1.7)
-			if (AngulodoMouse <= 2.6)
-				return 6;
-		if (AngulodoMouse <= -0.4)
-			if (AngulodoMouse >= -0.8)
-				return 2;
-		if (AngulodoMouse <= -0.8)
-			if (AngulodoMouse >= -1.7)
-				return 3;
-		if (AngulodoMouse <= -1.7)
-			if (AngulodoMouse >= -3.6)//antes era -2.6, mas ta bugando. Assim com -3.6 funciona de boas
-				return 4;
-		if (AngulodoMouse > 2.6)
-			if (AngulodoMouse > -2.6)
-				return 5;
-	}
-
-	void DrawMenu(int NumeroDeOpcoes, float tamBoxX = 0.100, float = 0.100)
-	{   
-		switch (NumeroDeOpcoes)
-		{
-		case 1:
-			//GRAPHICS::DRAW_RECT(0.500, 0.300, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//1 
-			break;
-		case 2:
-			//GRAPHICS::DRAW_RECT(0.500, 0.300, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//1 
-			//GRAPHICS::DRAW_RECT(0.500, 0.600 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//5 
-			break;
-		case 3:
-			//GRAPHICS::DRAW_RECT(0.500, 0.300, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//1
-			//GRAPHICS::DRAW_RECT(0.550, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//4 
-			//GRAPHICS::DRAW_RECT(0.450, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//6 
-			break;
-		case 4:
-			//GRAPHICS::DRAW_RECT(0.500, 0.300, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//1
-			//GRAPHICS::DRAW_RECT(0.600, 0.500, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//3 
-			//GRAPHICS::DRAW_RECT(0.500, 0.600 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//5
-			//GRAPHICS::DRAW_RECT(0.400, 0.500 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//7 
-			break;
-		case 5:
-
-			break;
-		case 6:
-			//GRAPHICS::DRAW_RECT(0.550, 0.450 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//2
-		//GRAPHICS::DRAW_RECT(0.600, 0.500, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//3 
-		//GRAPHICS::DRAW_RECT(0.550, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//4 
-			//GRAPHICS::DRAW_RECT(0.450, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//6 
-		//GRAPHICS::DRAW_RECT(0.400, 0.500 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//7  
-		//GRAPHICS::DRAW_RECT(0.450, 0.450 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//8 
-			break;
-		case 7:
-
-			break;
-		case 8:
-			//GRAPHICS::DRAW_RECT(0.500, 0.300, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//1
-		//GRAPHICS::DRAW_RECT(0.550, 0.450 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//2
-		//GRAPHICS::DRAW_RECT(0.600, 0.500, tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//3 
-		//GRAPHICS::DRAW_RECT(0.550, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//4 
-		//GRAPHICS::DRAW_RECT(0.500, 0.600 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//5 
-		//GRAPHICS::DRAW_RECT(0.450, 0.550 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//6 
-		//GRAPHICS::DRAW_RECT(0.400, 0.500 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//7  
-		//GRAPHICS::DRAW_RECT(0.450, 0.450 , tamBoxX, tamBoxY, 0, 0, 0, 255, 1);//8 
-			break;
-		}
-	}
-
-	bool CheckApertou()
-	{
-		if (GetAsyncKeyState(VK_LBUTTON))
-			return true;
-		else
-			return false;
-		 
+		return "Sem internet";
 	}
 }
 
- 
-int Delay = 1000;	//Velocidade da transicao
-int ponteiro = 0;	//nao mexe
-int Index = 0;		//Nao mexe
-vector<string> Diretorio = { "Diretorio 1", "Diretorio 2", "Diretorio 3", "Diretorio 4", "Diretorio 5" };
-vector<string> Textura = { "Textura 1", "Textura 2", "Textura 3", "Textura 4", "Textura 5" };
-
-
-void TexturaCarrosel()
+void SaveSiteValue(string Key, string IndexDaOpcao, string ValorSalvo)
 {
-	int tamanho = Diretorio.size() - 1;
-	if(ponteiro <= Delay)
+	if (InternetCheckConnection(L"http://www.google.com", FLAG_ICC_FORCE_CONNECTION, 0))
 	{
-		//Aqui usa o nativo da textura, Diretorio[Index] e Textura[Index] 
-		ponteiro++;
-		if (ponteiro == Delay)
-		{
-			ponteiro = 0;
-			if (Index <= (tamanho - 1))
-				Index++;
-			else
-				Index = 0;
-		}
-	}
 
+		IStream* stream;
+		char buffer[5000];
+		snprintf(buffer, 5000, "http://bresodev.mygamesonline.org/rdr2/gravarBool.php?key=%s&index=%s&indexBool=%s", Key.c_str(), IndexDaOpcao.c_str(), ValorSalvo.c_str());
+		const char* URL = buffer;
+		URLOpenBlockingStreamA(0, URL, &stream, 0, 0);
+		char buff[100];
+		string s;
+		unsigned long bytesRead;
+		while (true)
+		{
+			stream->Read(buff, 100, &bytesRead);
+			if (0U == bytesRead)
+			{
+				break;
+			}
+			s.append(buff, bytesRead);
+		};
+		stream->Release();
+		 
+	} 
 }
- 
 
 int main()
-{ 
-	while (true)
-	{
-		TexturaCarrosel();
-	}
-}
-
-
-
-/*
-void RodaDeArmasAngulo()
 {
-	Extern_Reader::Mouse_e_Tela::MoverMouse_Centro_Da_Tela();
-
-	RECT desktop;
-	const HWND hDesktop = GetDesktopWindow();
-	GetWindowRect(hDesktop, &desktop);
-	SetCursorPos(desktop.right / 2, desktop.bottom / 2);
-
-
-	while (true)
-	{
-		int meiodatelaX = Extern_Reader::Mouse_e_Tela::Get_X_Centro_da_Tela();
-		int meiodatelaY = Extern_Reader::Mouse_e_Tela::Get_Y_Centro_da_Tela();
-
-		int PosMouseX = Extern_Reader::Mouse_e_Tela::GetMouse_X();
-		int PosMouseY = Extern_Reader::Mouse_e_Tela::GetMouse_Y();
-
-		float angle = std::atan2(meiodatelaX - PosMouseX, meiodatelaY - PosMouseY);
-
-
-		//system("pause");
-		//Cima
-
-
-		if (angle <= 0.4)
-			if (angle >= -0.4)
-				cout << "Opcao 1 " << endl;
-
-		if (angle >= 0.4)
-			if (angle <= 0.8)
-				cout << "Opcao 8 " << endl;
-
-		if (angle >= 0.8)
-			if (angle <= 1.7)
-				cout << "Opcao 7 " << endl;
-
-		if (angle >= 1.7)
-			if (angle <= 2.6)
-				cout << "Opcao 6 " << endl;
-
-
-
-		if (angle <= -0.4)
-			if (angle >= -0.8)
-				cout << "Opcao 2 " << endl;
-
-		if (angle <= -0.8)
-			if (angle >= -1.7)
-				cout << "Opcao 3 " << endl;
-
-		if (angle <= -1.7)
-			if (angle >= -2.6)
-				cout << "Opcao 4 " << endl;
-
-
-		if (angle > 2.6)
-			if (angle > -2.6)
-				cout << "Opcao 5 " << endl;
-
-
-
-	}
-}
-*/
-
-
-
-
-/*
-bool cursorOn = false;
-//The main function of the cursor
-void cursor() {
-	if (cursorOn)
-	{
-		//Disable controls
-		CONTROLS::DISABLE_ALL_CONTROL_ACTIONS(0);
-		CONTROLS::DISABLE_ALL_CONTROL_ACTIONS(1);
-		CONTROLS::DISABLE_ALL_CONTROL_ACTIONS(2);
-		//Show the cursor
-		UI::_SET_CURSOR_SPRITE(5);
-		UI::_SHOW_CURSOR_THIS_FRAME();
-		if (insideMenu()) {
-			moveScroller();
-			//If you click on an option
-			if (GetAsyncKeyState(VK_LBUTTON)) {
-				selectPressed = true;
-			}
-			else {
-				selectPressed = false;
-			}
-		}
-	}
-	else {
-		CONTROLS::ENABLE_ALL_CONTROL_ACTIONS(0);
-		CONTROLS::ENABLE_ALL_CONTROL_ACTIONS(1);
-		CONTROLS::ENABLE_ALL_CONTROL_ACTIONS(2);
-	}
-}
-
-//Get the position of the cursor
-POINT cursorPos() {
-	POINT pt;
-	if (GetCursorPos(&pt) && cursorOn) {
-		return pt;
-	}
-	else {
-		POINT fail = { 0, 0 };
-		return fail;
-	}
-}
-
-//Checks if the cursor is inside the menu
-bool insideMenu() {
-	if (cursorOn) {
-		float cx = (float)cursorPos().x;
-		float cy = (float)cursorPos().y;
-		//The cursor position gets calculated differently than the menu position
-		//MenuPosition = (CursorPosition / 100) / 15
-		//CursorPosition = (MenuPosition * 100) * 15
-		float m1 = ((menuX * 100) * 15) - 155;
-		float m2 = ((menuX * 100) * 15) + 180;
-		//m1 = left menu border, m2 = right menu border
-		if (cx > m1 && cx < m2 && cy > getMenuTop()) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-}
-
-//The Y-coord of the menu top
-float getMenuTop() {
-	return 146;
-}
-
-//The height of one option
-float getOptionHeight() {
-	return 31.193;
-}
-
-//Returns the height of n options
-int optionHeight(int op) {
-	return getMenuTop() + (getOptionHeight() * op);
-}
-
-//Returns the number of the option that the cursor is on
-int onOption() {
-	float cy = (float)cursorPos().y;
-	int count = optionCount;
-	if (insideMenu()) {
-		for (int i = 0; i < 16; i++) {
-			if (cy > optionHeight(i) && cy < optionHeight(i + 1)) {
-				return i + 1;
-			}
-		}
-	}
-	else {
-		return -1;
-	}
-}
-
-//Gets the options that are currently onscreen
-void getOnscreenOptions(int& start, int& end) {
-	int count = optionCount;
-	int current = currentOption;
-	if (count < 17) {
-		start = 1;
-		end = count;
-	}
-	else {
-		if (current < 17) {
-			start = 1;
-			end = 16;
-		}
-		else {
-			start = current - 15;
-			end = current;
-		}
-	}
-}
-
-//Moves the scroller
-void moveScroller() {
-	//Saves the options that are onscreen in an array
-	int onscreen[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	int unused;
-	getOnscreenOptions(onscreen[0], unused);
-	for (int i = 1; i < 16; i++) {
-		onscreen[i] = onscreen[i - 1] + 1;
-	}
-	//Breaks if an option-check is applied? if (onscreen[15] < Menu::Settings::optionCount)
-	//Sets the scroller to the specific option
-	//Cursor::onOption() ranges from 1 to 16; selects the index of the onscreen options
-	currentOption = onscreen[onOption() - 1];
+	//SaveSiteValue("1234", "1", "TEstesalvo");
+	cout << GetSiteValue("1234", "0").c_str() << endl;
+	cout << GetSiteValue("1234", "1").c_str() << endl;
+	cout << GetSiteValue("1234", "2").c_str() << endl;
 }
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-*/
