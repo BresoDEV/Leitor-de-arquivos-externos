@@ -206,6 +206,86 @@ namespace Extern_Reader
 		{
 			_mkdir(Diretorio);
 		}
+		vector<string> ListarArquivosPasta(string directoryName, bool remover_Extensao_do_Nome = false, string extensao_com_ponto = ".txt")
+		{
+			//Como usar:
+			//vector<string> listFiles;
+			//listFiles = ListarArquivosPasta("C:\\Users\\eduar\\Documents\\ParasitaPlugin\\Weapons\\*.ini");
+			//int a = listFiles.size();
+			//int cont = 0;
+			//while (cont != a)
+			//{
+			//	cout << listFiles[cont] << endl;
+			//	cont++;
+			//}
+
+			//Sem a extensao no final
+			//vector<string> listFiles;
+			//listFiles = ListarArquivosPasta("C:\\Users\\eduar\\Documents\\ParasitaPlugin\\Weapons\\*.ini", true, ".txt");
+			//int a = listFiles.size();
+			//int cont = 0;
+			//while (cont != a)
+			//{
+			//	cout << listFiles[cont] << endl;
+			//	cont++;
+			//}
+
+			WIN32_FIND_DATA FindFileData;
+			wchar_t* FileName;
+			wchar_t wchar[260];
+			int index = 0;
+			while (index < directoryName.size())
+			{
+				wchar[index] = (wchar_t)directoryName[index];
+				++index;
+			}
+			wchar[index] = 0;
+			FileName = wchar;
+			HANDLE hFind = FindFirstFile(FileName, &FindFileData);
+			vector<string> listFileNames;
+			string str = "";
+			int index2 = 0;
+			while (FindFileData.cFileName[index2] != 0)
+			{
+				str += (char)FindFileData.cFileName[index2];
+				++index2;
+			}
+			if (remover_Extensao_do_Nome)
+			{
+				string vazio = "";
+				size_t start_pos = 0;
+				while ((start_pos = str.find(extensao_com_ponto, start_pos)) != std::string::npos) {
+					str.replace(start_pos, extensao_com_ponto.length(), vazio);
+					start_pos += vazio.length();
+				}
+				listFileNames.push_back(str);
+			}
+			else
+				listFileNames.push_back(str);
+			while (FindNextFile(hFind, &FindFileData))
+			{
+				string str = "";
+				int index3 = 0;
+				while (FindFileData.cFileName[index3] != 0)
+				{
+					str += (char)FindFileData.cFileName[index3];
+					++index3;
+				}
+				if (remover_Extensao_do_Nome)
+				{
+					string vazio = "";
+					size_t start_pos = 0;
+					while ((start_pos = str.find(extensao_com_ponto, start_pos)) != std::string::npos) {
+						str.replace(start_pos, extensao_com_ponto.length(), vazio);
+						start_pos += vazio.length();
+					}
+					listFileNames.push_back(str);
+				}
+				else
+					listFileNames.push_back(str);
+			}
+			return listFileNames;
+		}
 	};
 	namespace ArquivoTXT
 	{
@@ -823,7 +903,6 @@ namespace Extern_Reader
 			}
 		}
 	}
-
 	namespace DataHora
 	{
 		namespace INT
@@ -960,6 +1039,7 @@ namespace Extern_Reader
 			}
 		}
 	}
+	
 };
 namespace GTA
 {
@@ -2577,13 +2657,104 @@ void SaveLog(string Key, string Log)
 
 
 
+vector<string> ListarArquivosPasta(string directoryName, bool remover_Extensao_do_Nome = false, string extensao_com_ponto = ".txt")
+{
+	//Como usar:
+	//vector<string> listFiles;
+	//listFiles = ListarArquivosPasta("C:\\Users\\eduar\\Documents\\ParasitaPlugin\\Weapons\\*.ini");
+	//int a = listFiles.size();
+	//int cont = 0;
+	//while (cont != a)
+	//{
+	//	cout << listFiles[cont] << endl;
+	//	cont++;
+	//}
+
+	//Sem a extensao no final
+	//vector<string> listFiles;
+	//listFiles = ListarArquivosPasta("C:\\Users\\eduar\\Documents\\ParasitaPlugin\\Weapons\\*.ini", true, ".txt");
+	//int a = listFiles.size();
+	//int cont = 0;
+	//while (cont != a)
+	//{
+	//	cout << listFiles[cont] << endl;
+	//	cont++;
+	//}
+
+	WIN32_FIND_DATA FindFileData;
+	wchar_t* FileName;
+	wchar_t wchar[260];
+	int index = 0;
+	while (index < directoryName.size())
+	{
+		wchar[index] = (wchar_t)directoryName[index];
+		++index;
+	}
+	wchar[index] = 0;
+	FileName = wchar;
+	HANDLE hFind = FindFirstFile(FileName, &FindFileData);
+	vector<string> listFileNames;
+	string str = "";
+	int index2 = 0;
+	while (FindFileData.cFileName[index2] != 0)
+	{
+		str += (char)FindFileData.cFileName[index2];
+		++index2;
+	}
+	if (remover_Extensao_do_Nome)
+	{
+		string vazio = "";
+		size_t start_pos = 0;
+		while ((start_pos = str.find(extensao_com_ponto, start_pos)) != std::string::npos) {
+			str.replace(start_pos, extensao_com_ponto.length(), vazio);
+			start_pos += vazio.length();
+		}
+		listFileNames.push_back(str);
+	}
+	else
+	 listFileNames.push_back(str);
+	while (FindNextFile(hFind, &FindFileData))
+	{
+		string str = "";
+		int index3 = 0;
+		while (FindFileData.cFileName[index3] != 0)
+		{
+			str += (char)FindFileData.cFileName[index3];
+			++index3;
+		}
+		if (remover_Extensao_do_Nome)
+		{
+			string vazio = "";
+			size_t start_pos = 0;
+			while ((start_pos = str.find(extensao_com_ponto, start_pos)) != std::string::npos) {
+				str.replace(start_pos, extensao_com_ponto.length(), vazio);
+				start_pos += vazio.length();
+			}
+			listFileNames.push_back(str);
+		}
+		else
+			listFileNames.push_back(str);
+	}
+	return listFileNames;
+}
+
 
 
 int main(int argc, TCHAR* argv[])
-{ 
-	cout << PegarInfosIP( "187.103.255.171")[city]<< endl;  
-}
+{
+	vector<string> listFiles;
+	listFiles = ListarArquivosPasta("C:\\Users\\eduar\\Documents\\ParasitaPlugin\\Weapons\\*.ini", false, ".ini");
+	int a = listFiles.size();
+	int cont = 0;
+	while (cont != a)
+	{
+		cout << listFiles[cont] << endl;
+		cont++;
+	}
 
+
+
+}
 
 
 
