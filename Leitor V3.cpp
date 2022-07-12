@@ -39,6 +39,7 @@
 #include <cstdio>
 #include <string>
 #include <cstring>
+#include <ctime>
 
 #include <wininet.h>
 #pragma comment(lib,"Wininet.lib")
