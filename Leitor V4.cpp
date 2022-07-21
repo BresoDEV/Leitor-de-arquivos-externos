@@ -39,6 +39,8 @@
 #include <cstdio>
 #include <string>
 #include <cstring>
+#include <stdio.h>      
+#include <time.h> 
 
 #include <wininet.h>
 #pragma comment(lib,"Wininet.lib")
@@ -617,6 +619,46 @@ namespace Extern_Reader
 			//printf("\n");
 			return mac_addr;
 		}
+
+
+		vector<string> PegarInfoWeb_ListaSimples(const char* Link_Lista)
+		{
+			//Como usar:
+			//
+			//const char* Link = "https://pastebin.com/raw/pCyTdmHF";
+			//vector<string> valores = PegarInfoWeb_ListaSimples(Link);
+			//for (int i = 0; i <= (valores.size() - 1); i++)
+			//	cout << valores[i] << endl;
+			//
+			IStream* stream;
+			const char* URL = Link_Lista;
+			URLOpenBlockingStreamA(0, URL, &stream, 0, 0);
+			char buff[100];
+			string s;
+			unsigned long bytesRead;
+			while (true)
+			{
+				stream->Read(buff, 100, &bytesRead);
+				if (0U == bytesRead)
+				{
+					break;
+				}
+				s.append(buff, bytesRead);
+			};
+			stream->Release();
+			string oi = s; //tudo misturado
+			string delimiter = "\n";
+			vector<string> words;
+
+			size_t pos;
+			while ((pos = oi.find(delimiter)) != string::npos) {
+				words.push_back(oi.substr(0, pos));
+				oi.erase(0, pos + delimiter.length());
+			}
+
+			return words;
+
+		}
 	}
 	namespace Mouse_e_Tela
 	{
@@ -846,22 +888,22 @@ namespace Extern_Reader
 		{
 			int Ano()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				return (now->tm_year + 1900);
 			}
 
 			int Mes()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				return (now->tm_mon + 1);
 			}
 
 			int Dia()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				return (now->tm_mday);
 			}
 
@@ -949,8 +991,8 @@ namespace Extern_Reader
 
 			string Ano()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				char szTimestamp[30];
 				sprintf_s(szTimestamp, "%02d", (now->tm_year + 1900));
 				return szTimestamp;
@@ -958,8 +1000,8 @@ namespace Extern_Reader
 
 			string Mes()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				char szTimestamp[30];
 				sprintf_s(szTimestamp, "%02d", (now->tm_mon + 1));
 				return szTimestamp;
@@ -967,8 +1009,8 @@ namespace Extern_Reader
 
 			string Dia()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				char szTimestamp[30];
 				sprintf_s(szTimestamp, "%02d", (now->tm_mday));
 				return szTimestamp;
@@ -2193,9 +2235,9 @@ void Cabecalho()
 
 
 
-void RedM_Save(int ID, DWORD Modelo, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, const char* Scenario = "", int traje = 0)
+void RedM_Save(int ID, int Modelo, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, const char* Scenario = "", int traje = 0)
 {
-	Extern_Reader::LOG::arquivoTXT = "MapaRedM.lua";
+	Extern_Reader::LOG::arquivoTXT = ".\\MapaRedM.lua";
 	switch (ID)
 	{
 	case 1:
@@ -2901,33 +2943,44 @@ vector<string> ListVector(string arquivo, int index, int itensLinha, char Separa
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
 int main(int argc, TCHAR* argv[])
 {
-	 
+	const char* Link = "https://pastebin.com/raw/pCyTdmHF";
+	vector<string> valores = Extern_Reader::WEB::PegarInfoWeb_ListaSimples(Link);// , Index, Numero_De_Itens_por_Linha);
+	for (int i = 0; i <= (valores.size() - 1); i++)
+	{
+		cout << valores[i] << endl;
+		cout << i << endl;
 
+	}
+	
+	system("pause");
 
+	
 
-
-	vector<string> a = ListVector(".\\Teste.txt", 4, 4);
-
-
-
-
-
-
-
-
-
-
-
-
-
-	for (int i = 0; i <= (a.size() - 1); i++)
-		cout << a[i] << endl;
 
 
 }
-
 
 
 
