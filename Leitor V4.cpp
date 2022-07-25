@@ -179,6 +179,40 @@ namespace Extern_Reader
 	}
 	namespace Arquivos
 	{
+		vector<string> ListarArquivos_Pasta(string folder)
+{
+    //Como usar:
+    //vector<string> AAA = ListarArquivos_Pasta(Documentos() + "ParasitaPlugin\\CreativeMode\\Vehicles\\*.*");
+    //
+    //for (int i = 1; i <= (AAA.size() - 1); i++)//I começa com 1, pq o primeiro valor é nullo
+    //    cout << AAA[i] << endl;
+    //
+    WIN32_FIND_DATA FindFileData;
+    wchar_t wchar___[260];
+    int index___ = 0;
+    while (index___ < folder.size())
+    {
+        wchar___[index___] = (wchar_t)folder[index___];
+        ++index___;
+    }
+    wchar___[index___] = 0;  
+    wchar_t* FileName = wchar___;
+    HANDLE hFind = FindFirstFile(FileName, &FindFileData); 
+    vector<string> listFileNames; 
+    while (FindNextFile(hFind, &FindFileData))
+    {
+        string str__ = "";
+        int index__ = 0;
+        while (FindFileData.cFileName[index__] != 0)
+        {
+            str__ += (char)FindFileData.cFileName[index__];
+            ++index__;
+        } 
+        listFileNames.push_back(str__);
+    } 
+    return listFileNames;
+}
+		
 		bool ArquivoExiste(std::string name)
 		{
 			ifstream file(name);
