@@ -510,96 +510,116 @@ namespace Extern_Reader
 
 		}
 
-		std::vector<string> PegarInfosIP(string IP)
+		namespace GeoLoc
 		{
-			//Como usar
-			//cout << PegarInfosIP( "187.103.255.171")[city]<< endl; 
-			//Outro metodo
-			//string IP = "187.103.255.171";
-			//cout << "status: " + Extern_Reader::WEB::PegarInfosIP(IP)[0] << endl;
-			//cout << "country: " + Extern_Reader::WEB::PegarInfosIP(IP)[1] << endl;
-			//cout << "countryCode: " + Extern_Reader::WEB::PegarInfosIP(IP)[2] << endl;
-			//cout << "region: " + Extern_Reader::WEB::PegarInfosIP(IP)[3] << endl;
-			//cout << "regionName: " + Extern_Reader::WEB::PegarInfosIP(IP)[4] << endl;
-			//cout << "city: " + Extern_Reader::WEB::PegarInfosIP(IP)[5] << endl;
-			//cout << "lat: " + Extern_Reader::WEB::PegarInfosIP(IP)[6] << endl;
-			//cout << "lon: " + Extern_Reader::WEB::PegarInfosIP(IP)[7] << endl;
-			//cout << "timezone: " + Extern_Reader::WEB::PegarInfosIP(IP)[8] << endl;
-			//cout << "isp: " + Extern_Reader::WEB::PegarInfosIP(IP)[9] << endl;
-			//cout << "org: " + Extern_Reader::WEB::PegarInfosIP(IP)[10] << endl;
-			//cout << "as: " + Extern_Reader::WEB::PegarInfosIP(IP)[11] << endl;
-			//cout << "query: " + Extern_Reader::WEB::PegarInfosIP(IP)[12] << endl;
-			IStream* stream;
-			char buffer[5000];
-			snprintf(buffer, 5000, "http://ip-api.com/php/%s", IP.c_str());
-			const char* URL = buffer;
-			URLOpenBlockingStreamA(0, URL, &stream, 0, 0);
-			char buff[100];
-			string s;
-			unsigned long bytesRead;
-			while (true)
+			/*
+			Como usar:
+
+			//Formato de info unica
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::status) << endl;
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::country) << endl;
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::countryCode) << endl;
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::region) << endl;
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::regionName) << endl;
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::city) << endl;
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::zip) << endl;
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::lat) << endl;
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::lon) << endl;
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::timezone) << endl;
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::isp) << endl;
+			cout << GeoLoc::BuscarInfos("187.103.255.171", GeoLoc::org) << endl;
+
+
+
+			//Formato de Lista Completa
+			vector<string> Valores;
+			for (int i = 0; i <= 11; i++)
+				Valores.push_back(GeoLoc::BuscarInfos("187.103.255.171", i));
+
+			for (int i = 0; i <= 11; i++)
+				cout << Valores[i] << endl;
+
+				*/
+			enum ID_info
 			{
-				stream->Read(buff, 100, &bytesRead);
-				if (0U == bytesRead)
-				{
-					break;
-				}
-				s.append(buff, bytesRead);
+				status, country, countryCode, region, regionName, city, zip, lat, lon, timezone, isp, org
 			};
-			stream->Release();
-			string oi = s;
-			vector<string> abacadabra;
-			string virgula = ",";
-			string apagar = "a:14:{s:6:\"status\";s:7:\"";
-			size_t start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), "");
-			apagar = "\";s:7:\"country\";s:6:\"";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = "\";s:11:\"countryCode\";s:2:\"";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = "\";s:6:\"region\";s:2:\"";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = "\";s:10:\"regionName\";s:17:\"";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = "\";s:4:\"city\";s:13:\"";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = "\";s:3:\"zip\";s:0:\"\";s:3:\"lat\";d:";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = ";s:3:\"lon\";d:";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = ";s:8:\"timezone\";s:17:\"";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = "\";s:3:\"isp\";s:15:\"";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = "\";s:3:\"org\";s:15:\"";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = "\";s:2:\"as\";s:23:\"";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = "\";s:5:\"query\";s:15:\"";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			apagar = "\";}";
-			start_pos = oi.find(apagar);
-			oi.replace(start_pos, apagar.length(), ",");
-			string text = oi;
-			string space_delimiter = ",";
-			size_t pos = 0;
-			while ((pos = text.find(space_delimiter)) != string::npos) {
-				abacadabra.push_back(text.substr(0, pos));
-				text.erase(0, pos + space_delimiter.length());
+
+			string BuscarInfos(const char* IP, int Qual_valor_retorna = status)
+			{
+				IStream* textoCompleto;
+				//Junta o IP com o link original
+				char chartemporario[5000];
+				snprintf(chartemporario, 5000, "http://ip-api.com/php/%s", IP);
+				const char* URL = chartemporario;
+				//====================================================
+				URLOpenBlockingStreamA(0, URL, &textoCompleto, 0, 0);
+				char buff[100];
+				string TextoLido_sem_formatacao;
+				unsigned long bitesLeitura;
+				while (true)
+				{
+					textoCompleto->Read(buff, 100, &bitesLeitura);
+					if (0U == bitesLeitura)//Le o arquivo ate o final
+						break;
+					TextoLido_sem_formatacao.append(buff, bitesLeitura);
+				}
+				textoCompleto->Release();
+				//Vector que vai armazenar os dados por item
+				vector<string> Formatado{};
+				string Virgula = ",";
+				string Vazio = "";
+				vector<string> Substituicao = { "\""
+				,"a:14:{s:6:,status,;s:7:,"
+				,",;s:7:,country,;s:6:",";s:11:,countryCode,;s:2:,",",;s:6:,region,;s:2:"
+				,";s:10:,regionName,;s:17:," ,";s:4:,city,;s:13:," ,";s:3:,zip,;s:0:,,;s:3:,lat,;d:"
+				,";s:3:,lon,;d:"/*virgula*/ , ";s:8:,timezone,;s:17:" , ";s:3:,isp,;s:15:,"
+				, ";s:3:,org,;s:15:," , ";s:2:,as,;s:23:," , ";s:5:,query,;s:15:," , ",;}"
+				};
+
+				size_t inicio = 0;
+				while ((inicio = TextoLido_sem_formatacao.find(Substituicao[0], inicio)) != std::string::npos)
+				{
+					TextoLido_sem_formatacao.replace(inicio, Substituicao[0].length(), Virgula);
+					inicio += Virgula.length();
+				}
+
+				for (int i = 0; i <= (Substituicao.size() - 1); i++)
+				{
+					if (i == 8)
+						break;
+					size_t inicio = 0;
+					while ((inicio = TextoLido_sem_formatacao.find(Substituicao[i], inicio)) != std::string::npos)
+					{
+						TextoLido_sem_formatacao.replace(inicio, Substituicao[i].length(), Vazio);
+						inicio += Vazio.length();
+					}
+				}
+				inicio = 0;
+				while ((inicio = TextoLido_sem_formatacao.find(Substituicao[8], inicio)) != std::string::npos)
+				{
+					TextoLido_sem_formatacao.replace(inicio, Substituicao[8].length(), Virgula);
+					inicio += Virgula.length();
+				}
+
+				for (int i = 9; i <= (Substituicao.size() - 1); i++)
+				{
+					size_t inicio = 0;
+					while ((inicio = TextoLido_sem_formatacao.find(Substituicao[i], inicio)) != std::string::npos)
+					{
+						TextoLido_sem_formatacao.replace(inicio, Substituicao[i].length(), Vazio);
+						inicio += Vazio.length();
+					}
+				}
+
+				size_t posicaoString = 0;
+				while ((posicaoString = TextoLido_sem_formatacao.find(Virgula)) != string::npos) {
+					Formatado.push_back(TextoLido_sem_formatacao.substr(0, posicaoString));
+					TextoLido_sem_formatacao.erase(0, posicaoString + Virgula.length());
+				}
+				return Formatado[Qual_valor_retorna];
+
 			}
-			return abacadabra;
 		}
 		bool CheckConexao()
 		{
@@ -3228,11 +3248,22 @@ namespace RedM_FiveM
 
 
 
+
+
+
+
+
+
+
+
+
 int main(int argc, TCHAR* argv[])
 {
-	vector<string> Lista = Buscar_Lista_Mais_Itens("https://pastebin.com/raw/f9Ki3Jfc", 6, 2);
-	for (int i = 0; i <= (Lista.size() - 1); i++)
-		cout << Lista[i] << endl;
+ 
+	
+
+
+
 }
 
 /*
@@ -3272,5 +3303,5 @@ Inicio:
 	if (a == 3)
 	{
 	}
-	
+
 	*/
