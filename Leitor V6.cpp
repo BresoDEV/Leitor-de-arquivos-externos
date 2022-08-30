@@ -132,6 +132,22 @@ namespace Extern_Reader
 	};
 	namespace StringManager
 	{
+		vector<string> SepararString_Vector(string str, string separador = ","){
+    vector<string>result;
+    while(str.size()){
+        int index = str.find(separador);
+        if(index!=string::npos){
+            result.push_back(str.substr(0,index));
+            str = str.substr(index+separador.size());
+            if(str.size()==0)result.push_back(str);
+        }else{
+            result.push_back(str);
+            str = "";
+        }
+    }
+    return result;
+}
+		
 		bool SeContemTexto(std::string string, std::string textoProcurado)
 		{
 			if (string.find(textoProcurado) != std::string::npos)
