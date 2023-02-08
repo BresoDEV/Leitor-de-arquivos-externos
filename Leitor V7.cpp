@@ -404,7 +404,7 @@ namespace Extern_Reader
 		}
 
 		bool ParametroExiste(string Sessao, string parametro)
-		{ 
+		{
 			char buf[100];
 			int a = GetPrivateProfileStringA(Sessao.c_str(), parametro.c_str(), 0, buf, 100, INIFilePath.c_str());
 			if (a == 0)
@@ -414,7 +414,7 @@ namespace Extern_Reader
 		}
 
 		bool ParametroVAZIO(string Sessao, string parametro)
-		{ 
+		{
 			char buf[100];
 			if (ParametroExiste(Sessao, parametro))
 			{
@@ -428,7 +428,7 @@ namespace Extern_Reader
 
 
 		bool SessaoExiste(string Sessao)
-		{ 
+		{
 			std::vector<std::string> TempVECTOR;
 			ifstream imput(INIFilePath);
 			string textolido;
@@ -1057,20 +1057,20 @@ namespace Extern_Reader
 		{
 			int Ano()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				return (now->tm_year + 1900);
 			}
 			int Mes()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				return (now->tm_mon + 1);
 			}
 			int Dia()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				return (now->tm_mday);
 			}
 			int Hora()
@@ -1149,24 +1149,24 @@ namespace Extern_Reader
 			}
 			string Ano()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				char szTimestamp[30];
 				sprintf_s(szTimestamp, "%02d", (now->tm_year + 1900));
 				return szTimestamp;
 			}
 			string Mes()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				char szTimestamp[30];
 				sprintf_s(szTimestamp, "%02d", (now->tm_mon + 1));
 				return szTimestamp;
 			}
 			string Dia()
 			{
-				std::time_t t = std::time(0);
-				std::tm* now = std::localtime(&t);
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
 				char szTimestamp[30];
 				sprintf_s(szTimestamp, "%02d", (now->tm_mday));
 				return szTimestamp;
@@ -3850,7 +3850,7 @@ vector<string> Buscar_Lista(const char* Link_Lista)
 
 
 
- 
+
 
 
 
@@ -3859,7 +3859,7 @@ vector<string> Buscar_Lista(const char* Link_Lista)
 
 int main(int argc, TCHAR* argv[])
 {
-	 
+
 	system("pause");
 
 }
