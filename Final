@@ -1,0 +1,1416 @@
+//  ______        _                        _____                    _
+// |  ____|      | |                      |  __ \                  | |
+// | |__   __  __| |_   ___  _ __  _ __   | |__) |  ___   __ _   __| |  ___  _ __
+// |  __|  \ \/ /| __| / _ \| '__|| '_ \  |  _  /  / _ \ / _` | / _` | / _ \| '__|
+// | |____  >  < | |_ |  __/| |   | | | | | | \ \ |  __/| (_| || (_| ||  __/| |
+// |______|/_/\_\ \__| \___||_|   |_| |_| |_|  \_\ \___| \__,_| \__,_| \___||_|
+// 
+//
+//    _     _
+//   (c).-.(c)
+//    / ._. \
+//  __\( Y )/__
+// (_.-/'-'\-._)
+//    || A ||
+//  _.' `-' '._
+// (.-./`-'\.-.)
+//  `-'     `-'
+//  ____                           _____   ______ __      __
+// |  _ \                         |  __ \ |  ____|\ \    / /
+// | |_) | _ __   ___  ___   ___  | |  | || |__    \ \  / /
+// |  _ < | '__| / _ \/ __| / _ \ | |  | ||  __|    \ \/ /
+// | |_) || |   |  __/\__ \| (_) || |__| || |____    \  /
+// |____/ |_|    \___||___/ \___/ |_____/ |______|    \/
+#include<iostream>
+#include<stdio.h>
+#include <cmath>
+#include<fstream>
+#include<string>
+#include <vector>
+#include <windows.h>  
+#include <chrono>   
+#include <sstream>  
+#include <filesystem>
+#include <algorithm> 
+#include <random>
+#include <urlmon.h>
+#include <cstdio>
+#include <string>
+#include <cstring>
+#include <wininet.h>
+#pragma comment(lib,"Wininet.lib")
+#pragma comment(lib, "urlmon.lib")
+#include <direct.h>
+#include <cstdlib>
+#include <Iphlpapi.h>
+#include <Assert.h>
+#pragma comment(lib, "iphlpapi.lib")
+#pragma warning(disable:4996)//Desabilita os erros de SNPRINTF 
+#include <tchar.h> 
+#include <shlobj_core.h> 
+
+using namespace std;
+
+namespace Breso
+{
+	namespace Listas
+	{
+		vector<string> LerTXT_Separador(string arquivo, char separador = ',')
+		{
+			std::ifstream file(arquivo);
+			std::string line;
+			std::vector<std::string> values;
+			while (std::getline(file, line)) {
+				std::istringstream iss(line);
+				std::string value;
+				while (std::getline(iss, value, separador)) {
+					values.push_back(value);
+				}
+			}
+			return values;
+		}
+		vector<string> LerTXT(string arquivo)
+		{
+			std::ifstream file(arquivo);
+			std::string line;
+			std::vector<std::string> lines;
+			while (std::getline(file, line)) {
+				lines.push_back(line);
+			}
+			return lines;
+		}
+		vector<string> LerTXT_Colunas(string filename, int index, char separador = ',') {
+			//Index nao começa do 0.
+			//Se quiser pegar o primeiro valor, usa-se 1, segundo 2, e assim por diante
+			ifstream file(filename);
+			vector<string> values;
+			string line, value;
+			int i = 0;
+			while (getline(file, line)) {
+				stringstream ss(line);
+				i = 0;
+				while (getline(ss, value, separador)) {
+					i++;
+					if (i == index) {
+						values.push_back(value);
+						break;
+					}
+				}
+			}
+			file.close();
+			return values;
+		}
+		vector<string> ListaWEB(const char* Link_Lista, char separador = ',')
+		{
+			/*
+			Como usar:
+			vector<string> Lista_HASH = ListaWEB("https://pastebin.com/raw/WwvvCpGG");
+			for (int i = 0; i <= (Lista_HASH.size() - 2); i++)
+			{
+				cout << Lista_HASH[i] << endl;;
+			}
+			*/
+			IStream* stream;
+			const char* URL = Link_Lista;
+			URLOpenBlockingStreamA(0, URL, &stream, 0, 0);
+			char buff[100];
+			string s;
+			unsigned long bytesRead;
+			while (true) {
+				stream->Read(buff, 100, &bytesRead);
+				if (0U == bytesRead) {
+					break;
+				}
+				s.append(buff, bytesRead);
+			};
+			stream->Release();
+			string str = s;//tudo misturado em uma unica linha, com tags html se tiver
+
+			str.erase(std::remove(str.begin(), str.end(), '\r'), str.end());
+			str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
+			str.erase(std::remove(str.begin(), str.end(), '<br>'), str.end());
+			std::vector<std::string> vec;
+			std::stringstream ss(str);
+			std::string token;
+			while (std::getline(ss, token, separador))
+			{
+				vec.push_back(token);
+			}
+			return vec;
+		}
+		std::vector<std::vector<std::string>> ListaWEB_Colunas(const char* Link_Lista, int ItensPorLinha, char separador = ',')
+		{
+			/*
+			Como usar:
+			vector<vector<string>>  Listaqeb = ListaWEB_Colunas("https://pastebin.com/raw/hzfCJ37F", 3, ',');
+			// Exibe os itens das colunas
+			for (int i = 0; i < Listaqeb.size(); i++)
+			{
+					std::cout << Listaqeb[i][1] << endl;//No lugar do 1, vai o index do item na linha, iniciando no ZERO
+
+			}
+			*/
+			IStream* stream;
+			const char* URL = Link_Lista;
+			URLOpenBlockingStreamA(0, URL, &stream, 0, 0);
+			char buff[100];
+			string s;
+			unsigned long bytesRead;
+			while (true) {
+				stream->Read(buff, 100, &bytesRead);
+				if (0U == bytesRead) {
+					break;
+				}
+				s.append(buff, bytesRead);
+			};
+			stream->Release();
+			string str = s;//tudo misturado em uma unica linha, com tags html se tiver
+
+			str.erase(std::remove(str.begin(), str.end(), '\r'), str.end());
+			str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
+			str.erase(std::remove(str.begin(), str.end(), '<br>'), str.end());
+
+			std::vector<std::string> vec;
+			std::stringstream ss1(str);
+			std::string token;
+			while (std::getline(ss1, token, separador))
+			{
+				vec.push_back(token);
+			}
+
+			int numColunas = (vec.size() - 1) / ItensPorLinha;
+
+			std::vector<std::vector<std::string>> colunas(numColunas, std::vector<std::string>(ItensPorLinha));
+			std::stringstream ss(str);
+			std::string item;
+			int coluna_atual = 0;
+			int item_atual = 0;
+			while (std::getline(ss, item, separador)) {
+				colunas[coluna_atual][item_atual] = item;
+				item_atual++;
+				if (item_atual == ItensPorLinha) {
+					coluna_atual++;
+					item_atual = 0;
+					if (coluna_atual == numColunas) {
+						break;
+					}
+				}
+			}
+			return colunas;
+		}
+
+	}
+	namespace String
+	{
+		string RemoverCaractere(string palavra, char caractere)
+		{
+			string entrada = palavra;
+			for (int i = 0; i < entrada.size(); i++) {
+				if (entrada[i] == caractere) {
+					entrada.erase(i, 1);
+					i--;
+				}
+			}
+			return entrada;
+		}
+		std::string SubstituirCaractere(std::string palavra, char letraantiga, char letranova)
+		{
+			std::string base = palavra;
+			std::string str = base;
+			str.replace(str.begin(), str.end(), letraantiga, letranova);
+			return str;
+		}
+		std::string SubstituirPalavra(std::string str, const std::string& from, const std::string& to) {
+			size_t start_pos = 0;
+			while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
+				str.replace(start_pos, from.length(), to);
+				start_pos += to.length();
+			}
+			return str;
+		}
+		std::string RemoverEspacos(std::string str, const std::string& from = " ", const std::string& to = "") {
+			size_t start_pos = 0;
+			while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
+				str.replace(start_pos, from.length(), to);
+				start_pos += to.length();
+			}
+			return str;
+		}
+		bool SeContemTexto(std::string string, std::string textoProcurado)
+		{
+			if (string.find(textoProcurado) != std::string::npos)
+				return true;
+			else
+				return false;
+		}
+		std::string RemoverPalavra(const std::string& str, const std::string& word) {
+			//Remove somente se a palavra for passada por completo.
+			//Nao remove parte da palavra
+			//Exemplo: 
+			//RemoverPalavra("Eduardo Bresolin", "Bresolin") -> Exibe só Eduardo
+			//RemoverPalavra("Eduardo Bresolin", "Bres") -> Exibe Eduardo Bresolin (nao remove nada)
+			std::istringstream iss(str);
+			std::ostringstream oss;
+			std::string current_word;
+			while (iss >> current_word) {
+				if (current_word != word) {
+					oss << current_word << " ";
+				}
+			}
+			return oss.str();
+		}
+		std::string InverterPalavra(const std::string& str) {
+			std::istringstream iss(str);
+			std::ostringstream oss;
+			std::string current_word;
+			while (iss >> current_word) {
+				std::reverse(current_word.begin(), current_word.end());
+				oss << current_word << " ";
+			}
+			return oss.str();
+		}
+	}
+	namespace Cripto
+	{
+		namespace Cripto1
+		{
+			string Criptografar(string mensagem, string chave) {
+				string alfabeto = "abcdefghijklmnopqrstuvwxyz";
+				string criptografada = "";
+				for (char c : Breso::String::InverterPalavra(mensagem)) {
+					size_t posicao = alfabeto.find(c);
+					if (posicao != string::npos) {
+						criptografada += chave[posicao];
+					}
+					else {
+						criptografada += c;
+					}
+				} return criptografada;
+			}
+			string Descriptografar(string mensagem, string chave) {
+				string alfabeto = "abcdefghijklmnopqrstuvwxyz";
+				string descriptografada = ""; for (char c : Breso::String::InverterPalavra(mensagem)) {
+					size_t posicao = chave.find(c);
+					if (posicao != string::npos) {
+						descriptografada += alfabeto[posicao];
+					}
+					else {
+						descriptografada += c;
+					}
+				} return descriptografada;
+			}
+		}
+		namespace XOR
+		{
+			std::string Encriptografar(std::string nString)
+			{
+				//Exemplo:		Criptografia::XOR::Encriptografar("Eduardo Bresolin espert em C")
+				const int KEY = 3;
+				int strLen = (nString.length());
+				char* cString = (char*)(nString.c_str());
+				for (int i = 0; i < strLen; i++)
+				{
+					*(cString + i) = (*(cString + i) ^ KEY);
+				}
+				return cString;
+			}
+			string Descriptografar(std::string nString)
+			{
+				//Exemplo:		Criptografia::XOR::Descriptografar("Fgvbqgl#Aqfplojm#fpsfqw#fn#@")
+				const int KEY = 3;
+				int strLen = (nString.length());
+				char* cString = (char*)(nString.c_str());
+				for (int i = 0; i < strLen; i++)
+				{
+					*(cString + i) = (*(cString + i) ^ KEY);
+				}
+				return cString;
+			}
+		}
+		namespace Ceasar
+		{
+			string Encriptografar(string text)
+			{
+				//Exemplo		Criptografia::Ceasar::Encriptografar("Eduardo Bresolin espert em C") 
+				string s = text;
+				string t;
+				std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+				for (int i = 0; i < s.size(); i++)
+					t += (s[i] - 'A' + 3) % 26 + 'A';
+				return t;
+			}
+			string Descriptografar(string text, bool PrimeiraMaiuscula = true)
+			{
+				//Exemplo		Criptografia::Ceasar::Descriptografar("HGXDUGR=EUHVROLQ=HVSHUW=HP=F") 
+				string s = text;
+				string t;
+				for (int i = 0; i < s.size(); i++)
+				{
+					if (s[i] == '=')
+						t += ' ';
+					else
+						t += (s[i] - 'A' - 3 + 26) % 26 + 'A';
+				}
+				if (PrimeiraMaiuscula)
+					for (int i = 1; i <= t.size(); i++)
+						t[i] = tolower(t[i]);
+				return t;
+			}
+		}
+		namespace Hash
+		{
+			//Irreversivel, nao tem como converter um hash pra string
+			std::string Hash(string A)
+			{
+				return to_string(std::hash<std::string>{}(A));
+			}
+		}
+		namespace Rot13
+		{
+			std::string Criptografar(std::string s) {
+				string rotated{};
+				for (const char& c : s)
+				{
+					if (isalpha(c))
+						if (isupper(c)) rotated += char((c - 'A' + 13) % 26 + 'A');
+						else
+							rotated += char((c - 'a' + 13) % 26 + 'a');
+					else rotated += c;
+				}
+				return rotated;
+			}
+			std::string Descriptografar(std::string n) {
+				std::string s = "";
+				int l = n.length();
+				for (int i = 0; i < l; i++)
+				{
+					if (n[i] == ' ') {
+						s += n[i];
+						continue;
+					}
+					if (char(tolower(n[i])) >= 'n' && char(tolower(n[i])) <= 'z')
+					{
+						char a = 'z', b = 'a';
+						int k = (int)a - (int)n[i];
+						n[i] = char((int)b + (13 - k - 1));
+					}
+					else
+						n[i] = char((int)n[i] + 13);
+					s = s + n[i];
+				}
+				return s;
+			}
+		}
+		namespace XOR2
+		{
+			string Cript(string s)
+			{
+				string rotated{};
+				for (const char& c : s)
+				{
+					rotated += 3 ^ c;
+				} return rotated;
+			}
+			string Decript(string s)
+			{
+				string rotated{};
+				for (const char& c : s)
+				{
+					rotated += 3 ^ c;
+				} return rotated;
+			}
+		}
+		namespace ReverseInt
+		{
+			int Reverse_INTs(int n)
+			{
+				int reverse = 0;
+				while (n != 0)
+				{
+					reverse = reverse * 10;
+					reverse = reverse + n % 10;
+					n = n / 10;
+				}
+				return reverse;
+			}
+		}
+		namespace ReverseString
+		{
+			string Reverse(string a)
+			{
+				reverse(a.begin(), a.end());
+				return a;
+			}
+		}
+	}
+	namespace LOG
+	{
+		std::string arquivoHTML;
+		std::string HoraAtual()
+		{
+			struct tm current_tm;
+			char chLogBuff[5000];
+			char chParameters[5000];
+			time_t current_time = time(NULL);
+			localtime_s(&current_tm, &current_time);
+			char szTimestamp[30];
+			sprintf_s(szTimestamp, "[%02d:%02d:%02d] = ", current_tm.tm_hour, current_tm.tm_min, current_tm.tm_sec);
+			return szTimestamp;
+		}
+		void Log_ERRO(string texto, bool hora = true)
+		{
+			ofstream Arquivo;
+			Arquivo.open(arquivoHTML, std::ios_base::app);
+			string a;
+			if (hora)
+				a = "<b><font color='red'>" + HoraAtual() + "ERRO: " + texto + "</font></b></i><br>";
+			else
+				a = "<b><font color='red'>ERRO: " + texto + "</font></b></i><br>";
+			Arquivo << a << endl;
+			Arquivo.close();
+		}
+		void Log_Sucesso(string texto, bool hora = true)
+		{
+			ofstream Arquivo;
+			Arquivo.open(arquivoHTML, std::ios_base::app);
+			string a;
+			if (hora)
+				a = "<b><font color='green'>" + HoraAtual() + "SUCESSO: " + texto + "</font></b></i><br>";
+			else
+				a = "<b><font color='green'>SUCESSO: " + texto + "</font></b></i><br>";
+			Arquivo << a << endl;
+			Arquivo.close();
+		}
+		void Log(string texto, bool hora = true)
+		{
+			ofstream Arquivo;
+			Arquivo.open(arquivoHTML, std::ios_base::app);
+			string a;
+			if (hora)
+				a = "<b><font color='black'>" + HoraAtual() + texto + "</font></b></i><br>";
+			else
+				a = "<b><font color='black'>" + texto + "</font></b></i><br>";
+			Arquivo << a << endl;
+			Arquivo.close();
+		}
+		void LogAlerta(string texto, bool hora = true)
+		{
+			ofstream Arquivo;
+			Arquivo.open(arquivoHTML, std::ios_base::app);
+			string a;
+			if (hora)
+				a = "<b><font color='orange'>" + HoraAtual() + texto + "</font><br></b></i>";
+			else
+				a = "<b><font color='orange'>" + texto + "</font><br></b></i>";
+			Arquivo << a << endl;
+			Arquivo.close();
+		}
+		void ReiniciarLog()
+		{
+			ofstream Arquivo;
+			Arquivo.open(arquivoHTML);
+			Arquivo << "<br><br><b><h3>Log de Atividades:</b></h3><body bgcolor='#ADD8E6'><table width='100%' border='1' bordercolor='#80B0C0'><td>";
+			Arquivo.close();
+		}
+	};
+	namespace Arquivos
+	{
+		bool ArquivoExiste(std::string name)
+		{
+			ifstream file(name);
+			if (!file)
+				return false;
+			else
+			{
+				file.close();
+				return true;
+			}
+		}
+		void DeletarArquivo(string pathFile)
+		{
+			remove(pathFile.c_str());
+		}
+		void CriarArquivo(std::string FilePathAndExtension)
+		{
+			std::ofstream outfile(FilePathAndExtension);
+			outfile.close();
+		}
+		void LimparArquivo(string arquivoTXT)
+		{
+			ofstream Arquivo;
+			Arquivo.open(arquivoTXT);
+			Arquivo << "";
+			Arquivo.close();
+		}
+		void CriarDiretorio(const char* Diretorio)
+		{
+			mkdir(Diretorio);
+		}
+		bool PastaExiste(const char* caminho_da_pasta) {
+			struct stat info_pasta;
+			if (stat(caminho_da_pasta, &info_pasta) == 0 && (info_pasta.st_mode & S_IFDIR))
+				return true;
+			else
+				return false;
+		}
+	}
+	namespace INI
+	{
+		std::string INIFilePath;//Exemplo no mesmo diretorio do EXE:   .\\ArquivoINI.ini
+		namespace String
+		{
+			void GravarString(std::string string, std::string app, std::string key)
+			{
+				WritePrivateProfileStringA(app.c_str(), key.c_str(), string.c_str(), INIFilePath.c_str());
+			}
+			std::string LerString(std::string app, std::string key)
+			{
+				char buf[100];
+				GetPrivateProfileStringA(app.c_str(), key.c_str(), "NULL", buf, 100, INIFilePath.c_str());
+				return (std::string)buf;
+			}
+		}
+		namespace Int
+		{
+			void GravarInt(int value, std::string app, std::string key)
+			{
+				String::GravarString(std::to_string(value), app, key);
+			}
+			int LerInt(std::string app, std::string key)
+			{
+				return std::stoi(String::LerString(app, key));
+			}
+		}
+		namespace Float
+		{
+			void GravarFloat(float value, std::string app, std::string key)
+			{
+				String::GravarString(std::to_string(value), app, key);
+			}
+			float LerFloat(std::string app, std::string key)
+			{
+				return std::stof(String::LerString(app, key));
+			}
+		}
+
+		void ExcluirSessaoToda(string Sessao)
+		{
+			//Exemplo:
+			// 	   ExcluirSessaoToda("oi");
+			//[oi] <-- exclue tudo oque tem dentro dessa chave
+			//texto=abc   
+			WritePrivateProfileStringA(Sessao.c_str(), NULL, "", INIFilePath.c_str());
+		}
+		void ExcluirParametro(string Sessao, string parametro)
+		{
+			//Exemplo:
+			// 	   ExcluirParemtro("oi", "texto");
+			//[oi]
+			//texto=abc  <-- exclue esse so 
+			WritePrivateProfileStringA(Sessao.c_str(), parametro.c_str(), NULL, INIFilePath.c_str());
+		}
+		bool ParametroExiste(string Sessao, string parametro)
+		{
+			char buf[100];
+			int a = GetPrivateProfileStringA(Sessao.c_str(), parametro.c_str(), 0, buf, 100, INIFilePath.c_str());
+			if (a == 0)
+				return false;
+			else
+				return true;
+		}
+		bool ParametroVAZIO(string Sessao, string parametro)
+		{
+			char buf[100];
+			if (ParametroExiste(Sessao, parametro))
+			{
+				GetPrivateProfileStringA(Sessao.c_str(), parametro.c_str(), "", buf, 100, INIFilePath.c_str());
+				if (buf == "") return true;
+				else return false;
+			}
+			else return true;
+		}
+		bool SessaoExiste(string Sessao)
+		{
+			std::vector<std::string> TempVECTOR;
+			ifstream imput(INIFilePath);
+			string textolido;
+			for (string line; getline(imput, line);)
+				TempVECTOR.push_back(line);
+			for (int i = 0; i <= (TempVECTOR.size() - 1); i++)
+			{
+				if (TempVECTOR[i] == "[" + Sessao + "]")
+					return true;
+			}
+			return false;
+		}
+	}
+	namespace WEB
+	{
+		bool CheckConexao()
+		{
+			return InternetCheckConnection(L"http://www.google.com", FLAG_ICC_FORCE_CONNECTION, 0);
+		}
+		void BaixarArquivo(std::string URL, std::string DiretorioENomeDoArquivo)
+		{
+			if (Breso::Arquivos::ArquivoExiste(DiretorioENomeDoArquivo) == false)
+			{
+				string str = URL;
+				std::wstring widestr = std::wstring(str.begin(), str.end());
+				const wchar_t* widecstr = widestr.c_str();
+				string str2 = DiretorioENomeDoArquivo;
+				std::wstring widestr2 = std::wstring(str2.begin(), str2.end());
+				const wchar_t* widecstr2 = widestr2.c_str();
+				URLDownloadToFile(NULL, widecstr, widecstr2, 0, NULL);
+			}
+		}
+		void BaixarArquivo_2(string link, string pathSaida)
+		{
+			int len;
+			int slength = (int)link.length() + 1;
+			len = MultiByteToWideChar(CP_ACP, 0, link.c_str(), slength, 0, 0);
+			wchar_t* buf = new wchar_t[len];
+			MultiByteToWideChar(CP_ACP, 0, link.c_str(), slength, buf, len);
+			std::wstring r(buf);
+			delete[] buf;
+			string aaa = pathSaida;
+			ifstream myfile(aaa);
+			if (myfile)
+			{
+				myfile.close();
+				remove(aaa.c_str());
+			}
+			LPCWSTR result = r.c_str();
+			slength = (int)pathSaida.length() + 1;
+			len = MultiByteToWideChar(CP_ACP, 0, pathSaida.c_str(), slength, 0, 0);
+			wchar_t* buf2 = new wchar_t[len];
+			MultiByteToWideChar(CP_ACP, 0, pathSaida.c_str(), slength, buf2, len);
+			std::wstring r2(buf2);
+			delete[] buf2;
+			LPCTSTR Url = result;
+			LPCTSTR	File = r2.c_str();
+			URLDownloadToFile(0, Url, File, 0, 0);
+			while (myfile) {}
+		}
+		string Ler_MAC(int QualMac)
+		{
+			//Como usar
+			//char* pMac = WEB::Ler_MAC(1);
+			//char* pMac2 = WEB::Ler_MAC(2); 
+			PIP_ADAPTER_INFO AdapterInfo;
+			DWORD dwBufLen = sizeof(IP_ADAPTER_INFO);
+			char* mac_addr = (char*)malloc(18);
+			AdapterInfo = (IP_ADAPTER_INFO*)malloc(sizeof(IP_ADAPTER_INFO));
+			GetAdaptersInfo(AdapterInfo, &dwBufLen);
+			AdapterInfo = (IP_ADAPTER_INFO*)malloc(dwBufLen);
+			GetAdaptersInfo(AdapterInfo, &dwBufLen);
+			PIP_ADAPTER_INFO pAdapterInfo = AdapterInfo;
+			if (QualMac == 1)
+				pAdapterInfo = pAdapterInfo->Next;
+			if (QualMac == 2)
+			{
+				pAdapterInfo = pAdapterInfo->Next; pAdapterInfo = pAdapterInfo->Next;
+			}
+			sprintf(mac_addr, "%02X:%02X:%02X:%02X:%02X:%02X", pAdapterInfo->Address[0], pAdapterInfo->Address[1], pAdapterInfo->Address[2], pAdapterInfo->Address[3], pAdapterInfo->Address[4], pAdapterInfo->Address[5]);;
+			//printf("\n");
+			free(AdapterInfo);
+			return mac_addr;
+		}
+	}
+	namespace MOUSE_TELA
+	{
+		void Clicar_Mouse()
+		{
+			INPUT input = { 0 };
+			input.type = INPUT_MOUSE;
+			input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+			SendInput(1, &input, sizeof(INPUT));
+			Sleep(500);
+			input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+			SendInput(1, &input, sizeof(INPUT));
+		}
+		bool Ver_se_Clicou_Mouse()
+		{
+			return GetAsyncKeyState(VK_LBUTTON) & 0x8000;
+		}
+		void MoverMouse(int x, int y)
+		{
+			SetCursorPos(x, y);
+		}
+		int Tela_X()
+		{
+			return GetSystemMetrics(SM_CXSCREEN);
+		}
+		int Tela_Y()
+		{
+			return GetSystemMetrics(SM_CYSCREEN);
+		}
+		void MouseLouco()
+		{
+			int count = 800;
+			int movex, movey;
+			float angle = 0.0f;
+			SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+			for (int i = 0; i <= count; i++) {
+				angle = .3 * i;
+				movex = (angle * cos(angle) * 2) + GetSystemMetrics(SM_CXSCREEN) / static_cast<float>(2);
+				movey = (angle * sin(angle) * 2) + GetSystemMetrics(SM_CYSCREEN) / 2;
+				SetCursorPos(movex, movey);
+				Sleep(1);
+			}
+		}
+		int GetResolucao_X()
+		{
+			RECT desktop;
+			const HWND hDesktop = GetDesktopWindow();
+			GetWindowRect(hDesktop, &desktop);
+			return desktop.right;
+		}
+		int GetResolucao_Y()
+		{
+			RECT desktop;
+			const HWND hDesktop = GetDesktopWindow();
+			GetWindowRect(hDesktop, &desktop);
+			return desktop.bottom;
+		}
+		int Get_X_Centro_da_Tela()
+		{
+			RECT desktop;
+			const HWND hDesktop = GetDesktopWindow();
+			GetWindowRect(hDesktop, &desktop);
+			return desktop.right / 2;
+		}
+		int Get_Y_Centro_da_Tela()
+		{
+			RECT desktop;
+			const HWND hDesktop = GetDesktopWindow();
+			GetWindowRect(hDesktop, &desktop);
+			return desktop.bottom / 2;
+		}
+		void MoverMouse_Centro_Da_Tela()
+		{
+			MoverMouse(Get_X_Centro_da_Tela(), Get_Y_Centro_da_Tela());
+		}
+		int GetMouse_X()
+		{
+			POINT p;
+			GetCursorPos(&p);
+			return p.x;
+		}
+		int GetMouse_Y()
+		{
+			POINT p;
+			GetCursorPos(&p);
+			return p.y;
+		}
+	}
+	namespace DataHora
+	{
+		namespace INT
+		{
+			int Ano()
+			{
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
+				return (now->tm_year + 1900);
+			}
+			int Mes()
+			{
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
+				return (now->tm_mon + 1);
+			}
+			int Dia()
+			{
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
+				return (now->tm_mday);
+			}
+			int Hora()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				return current_tm.tm_hour;
+			}
+			int Minutos()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				return current_tm.tm_min;
+			}
+			int Segundos()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				return current_tm.tm_sec;
+			}
+		}
+		namespace STRING
+		{
+			string Hora()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", current_tm.tm_hour);
+				return szTimestamp;
+			}
+			string Minutos()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", current_tm.tm_min);
+				return szTimestamp;
+			}
+			string Segundos()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", current_tm.tm_sec);
+				return szTimestamp;
+			}
+			string HorarioCompleto()
+			{
+				struct tm current_tm;
+				char chLogBuff[5000];
+				char chParameters[5000];
+				time_t current_time = time(NULL);
+				localtime_s(&current_tm, &current_time);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d:%02d:%02d", current_tm.tm_hour, current_tm.tm_min, current_tm.tm_sec);
+				return szTimestamp;
+			}
+			string Ano()
+			{
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", (now->tm_year + 1900));
+				return szTimestamp;
+			}
+			string Mes()
+			{
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", (now->tm_mon + 1));
+				return szTimestamp;
+			}
+			string Dia()
+			{
+				time_t t = time(0);
+				std::tm* now = localtime(&t);
+				char szTimestamp[30];
+				sprintf_s(szTimestamp, "%02d", (now->tm_mday));
+				return szTimestamp;
+			}
+		}
+	}
+	namespace PastasPC
+	{
+		std::string AppData()
+		{
+			PWSTR appdata = NULL;
+			if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, NULL, &appdata) == S_OK) {
+				char dest[MAX_PATH];
+				wcstombs(dest, appdata, MAX_PATH);
+				return dest;
+			}
+		}
+		std::string Documentos()
+		{
+			static char env[256];
+			const DWORD ret = GetEnvironmentVariableA("USERPROFILE", env, 256);
+			std::string path = "\\Documents\\";
+			std::string pastaDOc = env + path;
+			return pastaDOc;
+		}
+		std::string Imagens()
+		{
+			static char env[256];
+			const DWORD ret = GetEnvironmentVariableA("USERPROFILE", env, 256);
+			std::string path = "\\Pictures\\";
+			std::string pastaDOc = env + path;
+			return pastaDOc;
+		}
+		std::string Downloads()
+		{
+			static char env[256];
+			const DWORD ret = GetEnvironmentVariableA("USERPROFILE", env, 256);
+			std::string path = "\\Downloads\\";
+			std::string pastaDOc = env + path;
+			return pastaDOc;
+		}
+		std::string Videos()
+		{
+			static char env[256];
+			const DWORD ret = GetEnvironmentVariableA("USERPROFILE", env, 256);
+			std::string path = "\\Videos\\";
+			std::string pastaDOc = env + path;
+			return pastaDOc;
+		}
+	}
+	namespace Conversoes
+	{
+		namespace ConstChar
+		{
+			string toString(const char* palavra)
+			{
+				string s(palavra);
+				return s;
+			}
+
+			char* toChar(const char* palavra)
+			{
+				char* oi = strdup(palavra);
+				return oi;
+			}
+
+			int toInt(const char* palavra)
+			{
+				stringstream valor;
+				valor << palavra;
+				int a;
+				valor >> a;
+				return a;
+			}
+
+			float toFloat(const char* palavra)
+			{
+				string fs(palavra);
+				return stof(fs);
+			}
+
+		}
+
+		namespace Int
+		{
+
+
+			string toString(int valor)
+			{
+				return std::to_string(valor);
+			}
+		}
+
+		namespace __INT64
+		{
+			bool toBool(__int64 valor)
+			{
+				bool vOut = valor != 0;
+				return vOut;
+			}
+
+			char toChar(__int64 valor)
+			{
+				return (char)valor;
+			}
+
+			char* toCharP(__int64 valor)
+			{
+				__int64 vIn = valor;
+				char vOut[21];
+				_i64toa_s(vIn, vOut, sizeof(vOut), 10);
+				return vOut;
+			}
+			double toDouble(__int64 valor)
+			{
+				return (double)valor;
+			}
+			float toFloat(__int64 valor)
+			{
+				return (float)valor;
+			}
+			int toInt(__int64 valor)
+			{
+				return (int)valor;
+			}
+			short toShort(__int64 valor)
+			{
+				return (short)valor;
+			}
+			long toLong(__int64 valor)
+			{
+				return (long)valor;
+			}
+			unsigned __int64 toUnsigned__int64(__int64 valor)
+			{
+				return  (unsigned __int64)valor;
+			}
+			unsigned char toUnsigned_char(__int64 valor)
+			{
+				return  (unsigned char)valor;
+			}
+			unsigned int toUnsigned_int(__int64 valor)
+			{
+				return (unsigned int)valor;
+			}
+			unsigned long toUnsigned_long(__int64 valor)
+			{
+				return (unsigned long)valor;
+			}
+			unsigned short toUnsigned_short(__int64 valor)
+			{
+				return (unsigned short)valor;
+			}
+			wchar_t toWchar_t(__int64 valor)
+			{
+				return (wchar_t)valor;
+			}
+			wchar_t* toWchar_tP(__int64 valor)
+			{
+				__int64 vIn = valor;
+				wchar_t vOut[21];
+				_i64tow_s(vIn, vOut, sizeof(vOut) / 2, 10);
+				return vOut;
+			}
+		}
+
+		namespace Bool
+		{
+			__int64 to__Int64(bool valor)
+			{
+				bool vIn = valor;
+				__int64 vOut = vIn ? 1 : 0;
+				return vOut;
+			}
+			char toChar(bool valor)
+			{
+				bool vIn = valor;
+				char vOut = vIn ? 1 : 0;
+				return vOut;
+			}
+			char* toCharP(bool valor)
+			{
+				const char* a;
+				if (valor)
+					a = "true";
+				else
+					a = "false";
+				return (char*)a;
+			}
+			double toDouble(bool valor)
+			{
+				bool vIn = valor;
+				double vOut = vIn ? 1.0 : 0.0;
+				return vOut;
+			}
+			float tofloat(bool valor)
+			{
+				bool vIn = valor;
+				float vOut = vIn ? 1.0f : 0.0f;
+				return vOut;
+			}
+			int toInt(bool valor)
+			{
+				bool vIn = valor;
+				int vOut = vIn ? 1 : 0;
+				return vOut;
+			}
+			long toLong(bool valor)
+			{
+				bool vIn = valor;
+				long vOut = vIn ? 1 : 0;
+				return vOut;
+			}
+			short toShort(bool valor)
+			{
+				bool vIn = valor;
+				short vOut = vIn ? 1 : 0;
+				return vOut;
+			}
+			unsigned __int64 toUnsigned__int64(bool valor)
+			{
+				bool vIn = valor;
+				unsigned __int64 vOut = vIn ? 1 : 0;
+				return vOut;
+			}
+			unsigned char toUnsigned_char(bool valor)
+			{
+				bool vIn = valor;
+				unsigned char vOut = vIn ? 1 : 0;
+				return vOut;
+			}
+			unsigned int toUnsigned_int(bool valor)
+			{
+				bool vIn = valor;
+				unsigned int vOut = vIn ? 1 : 0;
+				return vOut;
+			}
+			unsigned long toUnsigned_long(bool valor)
+			{
+				bool vIn = valor;
+				unsigned long vOut = vIn ? 1 : 0;
+
+				return vOut;
+			}
+			unsigned short toUnsigned_short(bool valor)
+			{
+				bool vIn = valor;
+				unsigned short vOut = vIn ? 1 : 0;
+				return vOut;
+			}
+			wchar_t toWchar_t(bool valor)
+			{
+				bool vIn = valor;
+				wchar_t vOut = vIn ? 1 : 0;
+				return vOut;
+			}
+			const char* toConstChar(bool valor)
+			{
+				if (valor)
+					return "true";
+				else
+					return "false";
+			}
+
+			string toString(bool valor)
+			{
+				if (valor)
+					return "true";
+				else
+					return "false";
+			}
+
+		}
+
+		namespace Char
+		{
+			__int64 to___int64(char valor)
+			{
+				return (__int64)valor;
+			}
+
+			bool toBool(char valor)
+			{
+				char vIn = valor;
+				bool vOut = vIn != 0;
+				return vOut;
+			}
+
+			char* toCharP(char valor)
+			{
+				char vIn = valor;
+				char vOut[2] = { vIn,0 };
+				return vOut;
+			}
+
+			double toDouble(char valor)
+			{
+				return (double)valor;
+			}
+			float toFloat(char valor)
+			{
+				return (float)valor;
+			}
+			int toInt(char valor)
+			{
+				return (int)valor;
+			}
+			long toLong(char valor)
+			{
+				return (long)valor;
+			}
+			short toShort(char valor)
+			{
+				return (short)valor;;
+			}
+			unsigned __int64 toUnsigned__int64(char valor)
+			{
+				return (unsigned __int64)valor;
+			}
+			unsigned char toUnsigned_char(char valor)
+			{
+				return (unsigned char)valor;
+			}
+			unsigned int toUnsigned_int(char valor)
+			{
+				return (unsigned int)valor;
+			}
+			unsigned long toUnsigned_long(char valor)
+			{
+				return (unsigned long)valor;
+			}
+			unsigned short toUnsigned_short(char valor)
+			{
+				return (unsigned short)valor;
+			}
+			wchar_t toWchar_t(char valor)
+			{
+				return (wchar_t)valor;
+			}
+			wchar_t* toWchar_tP(char valor)
+			{
+				char vIn = valor;
+				wchar_t vOut[5];
+				_itow_s(vIn, vOut, (sizeof(vOut) / 2), 10);
+				return vOut;
+			}
+		}
+
+		namespace CharP
+		{
+			__int64 to__int64(char* valor)
+			{
+				return _atoi64(valor);
+			}
+			bool toBool(char* valor)
+			{
+				return valor && stricmp(valor, "true") == 0;;
+			}
+			char toChar(char* valor)
+			{
+				return (char)atoi(valor);;
+			}
+			double toDouble(char* valor)
+			{
+				return strtod(valor, NULL);;
+			}
+			int toInt(char* valor)
+			{
+				return atoi(valor);;
+			}
+			float toFloat(char* valor)
+			{
+				return (float)strtod(valor, NULL);;
+			}
+			long toLong(char* vIn)
+			{
+				return strtol(vIn, NULL, 10);;
+			}
+			short to(char* vIn)
+			{
+				return (short)atoi(vIn);
+			}
+			unsigned __int64 toUnsigned__int64(char* vIn)
+			{
+				return _strtoui64(vIn, NULL, 10);
+			}
+			unsigned char toUnsigned_char(char* vIn)
+			{
+				return (unsigned char)strtol(vIn, NULL, 10);
+			}
+			unsigned int toUnsigned_int(char* vIn)
+			{
+				return strtoul(vIn, NULL, 10);
+			}
+			unsigned long toUnsigned_long(char* vIn)
+			{
+				return strtoul(vIn, NULL, 10);;
+			}
+		}
+
+		namespace Double
+		{
+			__int64 to__int64(double vIn)
+			{
+				return (__int64)vIn;
+			}
+
+			bool to_bool(double vIn)
+			{
+				return vIn != 0.0;
+			}
+
+			char to_char(double vIn)
+			{
+				return (char)vIn;;
+			}
+
+			char* to_CharP(double vIn)
+			{
+				char vOut[26];
+				_gcvt_s(vOut, sizeof(vOut), vIn, 17);
+				return vOut;
+			}
+
+			float to_float(double vIn)
+			{
+				return (float)vIn;
+			}
+
+			int to_int(double vIn)
+			{
+				return (int)vIn;
+			}
+
+			long to_long(double vIn)
+			{
+				return (long)vIn;
+			}
+
+			short to_short(double vIn)
+			{
+				return (short)vIn;
+			}
+
+			unsigned __int64 to_unsigned__int64(double vIn)
+			{
+				return (unsigned __int64)vIn;
+			}
+
+			unsigned char to_unsigned_char(double vIn)
+			{
+				return (unsigned char)vIn;
+			}
+
+			unsigned int to_unsigned_int(double vIn)
+			{
+				return (unsigned int)vIn;
+			}
+
+			unsigned long to_unsigned_long(double vIn)
+			{
+				return (unsigned long)vIn;
+			}
+
+			unsigned short to_unsigned_short(double vIn)
+			{
+				return (unsigned short)vIn;
+			}
+
+			wchar_t to_wchar_t(double vIn)
+			{
+				return (wchar_t)vIn;
+			}
+
+			wchar_t* to_wchar_tP(double vIn)
+			{
+				char vOutChar[26];
+				_gcvt_s(vOutChar, sizeof(vOutChar), vIn, 17);
+				wchar_t vOut[26];
+				mbstowcs_s(NULL, vOut, sizeof(vOut) / 2, vOutChar, sizeof(vOutChar));
+				return vOut;
+			}
+		}
+	}
+}
+
+
+ 
+ 
+
+
+int main(int argc, TCHAR* argv[])
+{ 
+	
+}
