@@ -1,0 +1,33 @@
+ static List<string> LerTXT(string arquivo)
+        {
+            List<string> lista= new List<string>();
+            using (StreamReader sr = new StreamReader(arquivo))
+            {
+                string linha;
+               while((linha = sr.ReadLine())!=null)
+                {
+                    lista.Add(linha);   
+                }
+            }
+            return lista;
+        }
+
+
+        static List<string> LerTXTColunas(string arquivo, int item, char separador = ',')//1 =primeiro item da linha
+        {
+            List<string> lista = new List<string>();
+            using (StreamReader sr = new StreamReader(arquivo))
+            {
+                string linha;
+                while ((linha = sr.ReadLine()) != null)
+                {
+                    string[] il =linha.Split(separador);
+                    if(item >=1 && item<=il.Length)
+                    {
+                        string id = il[item -1];
+                        lista.Add(id);
+                    }
+                }
+            }
+            return lista;
+        }
